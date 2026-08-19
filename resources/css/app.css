@@ -1,3 +1,29 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    --color-cream: #fefcf8;
+    --color-ink: #1f1c19;
+    --color-ochre: #c9803c;
+    --color-gold: #ad8544;
+    --color-burgundy: #630a0a;
+
+    --font-sans: "Inter", sans-serif;
+    --font-serif: "Playfair Display", serif;
+}
+
+@layer base {
+    body {
+        @apply bg-cream text-ink font-sans antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply font-serif;
+    }
+}
+
+@utility tracking-luxe {
+    letter-spacing: 0.18em;
+}
