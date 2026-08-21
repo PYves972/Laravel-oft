@@ -6,6 +6,7 @@ use App\Models\Service;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\BookingController;
 
 // Catalogue des formations
 Route::get('/formations', [TrainingController::class, 'index'])->name('trainings.index');
@@ -36,4 +37,10 @@ Route::middleware('auth')->group(function () {
 // En bas de web.php
 Route::get('/formations', [TrainingController::class, 'index'])->name('trainings.index');
 Route::get('/formations/{slug}', [TrainingController::class, 'show'])->name('trainings.show');
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('/sessions/{session}/book', [BookingController::class, 'store'])->name('bookings.store');
+});
+
 require __DIR__.'/auth.php';
