@@ -1,21 +1,21 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProfileController;
 use App\Models\Service;
 use App\Models\Testimonial;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $services = Service::all();
     $testimonials = Testimonial::all();
+
     return view('welcome', compact('services', 'testimonials'));
 });
-Route::get('/', function () {
-    return view('welcome');
-});
-// route de contact
+
+// Route de contact
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
