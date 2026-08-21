@@ -210,72 +210,25 @@
 
 </section>
 <!-- SECTION TÉMOIGNAGES -->
-<section class="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-20">
-
-    <!-- Titre -->
-    <div class="text-center mb-12">
-        <h2 class="font-serif text-3xl md:text-4xl text-[#2D3B22] font-normal">
-            Nos clients parlent de nous
-        </h2>
-    </div>
-
-    <!-- Grille des 3 témoignages -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <!-- Témoignage 1 -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    @foreach($testimonials as $testimonial)
         <div class="bg-[#F2EFE9] rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-6">
             <div class="flex items-start gap-3">
                 <span class="text-[#2D3B22] text-3xl font-serif leading-none font-bold">“</span>
                 <p class="text-xs text-gray-700 leading-relaxed pt-1">
-                    Une équipe à l'écoute, des cours de qualité et une ambiance au top !
+                    {{ $testimonial->contenu }}
                 </p>
             </div>
             <div class="flex items-center gap-3">
-                <img src="https://i.pravatar.cc/100?img=5" alt="Sophie L." class="w-10 h-10 rounded-full object-cover">
+                <img src="{{ $testimonial->avatar }}" alt="{{ $testimonial->nom }}" class="w-10 h-10 rounded-full object-cover">
                 <div>
-                    <h4 class="font-semibold text-xs text-gray-900">Sophie L.</h4>
-                    <p class="text-[11px] text-gray-500">Élève en couture</p>
+                    <h4 class="font-semibold text-xs text-gray-900">{{ $testimonial->nom }}</h4>
+                    <p class="text-[11px] text-gray-500">{{ $testimonial->role }}</p>
                 </div>
             </div>
         </div>
-
-        <!-- Témoignage 2 -->
-        <div class="bg-[#F2EFE9] rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-6">
-            <div class="flex items-start gap-3">
-                <span class="text-[#2D3B22] text-3xl font-serif leading-none font-bold">“</span>
-                <p class="text-xs text-gray-700 leading-relaxed pt-1">
-                    Grâce à l'atelier, j'ai pu réaliser ma robe de mariée. Un rêve devenu réalité !
-                </p>
-            </div>
-            <div class="flex items-center gap-3">
-                <img src="https://i.pravatar.cc/100?img=9" alt="Julie M." class="w-10 h-10 rounded-full object-cover">
-                <div>
-                    <h4 class="font-semibold text-xs text-gray-900">Julie M.</h4>
-                    <p class="text-[11px] text-gray-500">Cliente</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Témoignage 3 -->
-        <div class="bg-[#F2EFE9] rounded-2xl p-6 shadow-sm flex flex-col justify-between space-y-6">
-            <div class="flex items-start gap-3">
-                <span class="text-[#2D3B22] text-3xl font-serif leading-none font-bold">“</span>
-                <p class="text-xs text-gray-700 leading-relaxed pt-1">
-                    Des ateliers variés et inspirants. Je recommande vivement !
-                </p>
-            </div>
-            <div class="flex items-center gap-3">
-                <img src="https://i.pravatar.cc/100?img=16" alt="Claire D." class="w-10 h-10 rounded-full object-cover">
-                <div>
-                    <h4 class="font-semibold text-xs text-gray-900">Claire D.</h4>
-                    <p class="text-[11px] text-gray-500">Participante aux ateliers</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-</section>
+    @endforeach
+</div>
 <!-- SECTION CONTACT -->
 <section id="contact" class="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-20">
     <div class="bg-[#F2EFE9] rounded-3xl p-8 md:p-12 shadow-sm relative overflow-hidden">

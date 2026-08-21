@@ -3,7 +3,14 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
+use App\Models\Service;
+use App\Models\Testimonial;
 
+Route::get('/', function () {
+    $services = Service::all();
+    $testimonials = Testimonial::all();
+    return view('welcome', compact('services', 'testimonials'));
+});
 Route::get('/', function () {
     return view('welcome');
 });

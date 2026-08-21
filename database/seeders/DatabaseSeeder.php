@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Service;
 use Illuminate\Database\Seeder;
-
+use App\Models\Testimonial;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -34,3 +34,26 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
+
+
+// Dans public function run(): void
+Testimonial::create([
+    'nom' => 'Sophie L.',
+    'role' => 'Élève en couture',
+    'contenu' => 'Une équipe à l\'écoute, des cours de qualité et une ambiance au top !',
+    'avatar' => 'https://i.pravatar.cc/100?img=5',
+]);
+
+Testimonial::create([
+    'nom' => 'Julie M.',
+    'role' => 'Cliente',
+    'contenu' => 'Grâce à l\'atelier, j\'ai pu réaliser ma robe de mariée. Un rêve devenu réalité !',
+    'avatar' => 'https://i.pravatar.cc/100?img=9',
+]);
+
+Testimonial::create([
+    'nom' => 'Claire D.',
+    'role' => 'Participante aux ateliers',
+    'contenu' => 'Des ateliers variés et inspirants. Je recommande vivement !',
+    'avatar' => 'https://i.pravatar.cc/100?img=16',
+]);
