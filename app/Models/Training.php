@@ -34,10 +34,10 @@ class Training extends Model
     /**
      * Une formation peut être associée à plusieurs tags (RM-12).
      */
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class);
-    }
+  public function tags(): BelongsToMany
+{
+    return $this->belongsToMany(Tag::class, 'training_tag');
+}
 
     /**
      * Une formation comporte plusieurs séances (RM-13).

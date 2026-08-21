@@ -32,6 +32,9 @@ class DatabaseSeeder extends Seeder
             'image' => 'images/confections.jpg',
             'lien' => '#',
         ]);
+        $this->call([
+    CategoryTrainingSeeder::class,
+]);
     }
 }
 

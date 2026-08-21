@@ -5,7 +5,13 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Service;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TrainingController;
 
+// Catalogue des formations
+Route::get('/formations', [TrainingController::class, 'index'])->name('trainings.index');
+
+// Fiche détaillée d'une formation
+Route::get('/formations/{slug}', [TrainingController::class, 'show'])->name('trainings.show');
 Route::get('/', function () {
     $services = Service::all();
     $testimonials = Testimonial::all();
@@ -26,4 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+// En bas de web.php
+Route::get('/formations', [TrainingController::class, 'index'])->name('trainings.index');
+Route::get('/formations/{slug}', [TrainingController::class, 'show'])->name('trainings.show');
 require __DIR__.'/auth.php';

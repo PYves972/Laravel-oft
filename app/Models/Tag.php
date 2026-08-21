@@ -15,8 +15,8 @@ class Tag extends Model
     /**
      * Un tag peut appartenir à plusieurs formations.
      */
-    public function trainings(): BelongsToMany
-    {
-        return $this->belongsToMany(Training::class);
-    }
+public function trainings(): BelongsToMany
+{
+    return $this->belongsToMany(Training::class, 'training_tag');
+}
 }
