@@ -21,6 +21,9 @@ Schema::create('trainings', function (Blueprint $table) {
             $table->integer('duration_minutes'); // Durée en minutes
             $table->decimal('price', 8, 2); // Tarif
             $table->boolean('is_active')->default(true);
+            $table->string('color', 30)->default('teal');
+$table->unsignedInteger('capacity')->default(5);
+$table->text('materials')->nullable();
             $table->timestamps();
         });
     }

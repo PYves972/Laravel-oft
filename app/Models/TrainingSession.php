@@ -22,29 +22,41 @@ class TrainingSession extends Model
     protected $casts = [
         'start_at' => 'datetime',
         'end_at' => 'datetime',
+        'capacity_max' => 'integer',
     ];
 
-    /**
-     * Chaque séance est rattachée à une seule formation.
-     */
     public function training(): BelongsTo
     {
         return $this->belongsTo(Training::class);
     }
 
-    /**
-     * Relation avec les réservations
-     */
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
     }
 
-    /**
-     * Vérifie s'il reste des places disponibles
-     */
+    public function confirmedBookingsCount(): int
+    {
+        return $this->bookings()
+            ->where('status', 'confirmed')
+            ->count();
+    }
+
+    public function remainingSeats(): int
+    {
+        return max(
+            0,
+            $this->capacity_max - $this->confirmedBookingsCount()
+        );
+    }
+
     public function hasAvailableSeats(): bool
     {
-        return $this->bookings()->where('status', 'confirmed')->count() < $this->capacity_max;
+        return $this->remainingSeats() > 0;
+    }
+
+    public function isFull(): bool
+    {
+        return !$this->hasAvailableSeats();
     }
 }

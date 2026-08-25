@@ -12,19 +12,22 @@ class Training extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'category_id',
-        'title',
-        'slug',
-        'description',
-        'learning_objectives',
-        'duration_minutes',
-        'price',
-        'is_active',
-    ];
+protected $fillable = [
+    'category_id',
+    'title',
+    'slug',
+    'description',
+    'learning_objectives',
+    'duration_minutes',
+    'price',
+    'color',
+    'capacity',
+    'materials',
+    'is_active',
+];
 
     /**
-     * Une formation appartient à une seule catégorie (RM-07).
+     * Une formation appartient à une seule catégorie.
      */
     public function category(): BelongsTo
     {
@@ -32,15 +35,15 @@ class Training extends Model
     }
 
     /**
-     * Une formation peut être associée à plusieurs tags (RM-12).
+     * Une formation peut être associée à plusieurs tags.
      */
-  public function tags(): BelongsToMany
-{
-    return $this->belongsToMany(Tag::class, 'training_tag');
-}
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'training_tag');
+    }
 
     /**
-     * Une formation comporte plusieurs séances (RM-13).
+     * Une formation comporte plusieurs séances.
      */
     public function sessions(): HasMany
     {
