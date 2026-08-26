@@ -9,26 +9,26 @@ use Illuminate\Database\Seeder;
 
 class TrainingSessionSeeder extends Seeder
 {
-    /**
-     * Crée les séances du mardi au samedi.
-     *
-     * Créneaux :
-     * 09h00 → 11h00
-     * 11h00 → 13h00
-     * 14h00 → 16h00
-     */
     public function run(): void
     {
         /*
          * ============================================================
-         * RÉCUPÉRATION DES 5 ATELIERS
+         * RÉCUPÉRATION DES ATELIERS
          * ============================================================
-         *
-         * On sélectionne uniquement les ateliers concernés
-         * par le calendrier.
          */
 
-        $slugs = [
+        $trainings = Training::whereIn('slug', [
+            'broderie',
+            'couture',
+            'tricot-et-crochet',
+            'tissage',
+            'teinture',
+        ])->get()->keyBy('slug');
+
+        /*
+         * Vérification
+         */
+        $requiredTrainings = [
             'broderie',
             'couture',
             'tricot-et-crochet',
@@ -36,118 +36,120 @@ class TrainingSessionSeeder extends Seeder
             'teinture',
         ];
 
-        $trainings = Training::whereIn('slug', $slugs)->get();
+        foreach ($requiredTrainings as $slug) {
+            if (! isset($trainings[$slug])) {
+                $this->command->error(
+                    "Atelier introuvable : {$slug}"
+                );
 
-        if ($trainings->count() !== 5) {
-            $this->command->error(
-                'Les 5 ateliers attendus n\'ont pas été trouvés.'
-            );
-
-            $this->command->info(
-                'Lance d’abord CategoryTrainingSeeder.'
-            );
-
-            return;
-        }
-
-        /*
-         * ============================================================
-         * SUPPRESSION DES ANCIENNES SÉANCES
-         * ============================================================
-         *
-         * Permet de relancer le seeder sans créer de doublons.
-         */
-
-        TrainingSession::query()->delete();
-
-        /*
-         * ============================================================
-         * CALENDRIER
-         * ============================================================
-         *
-         * On part du lundi de la semaine actuelle.
-         *
-         * +1 = mardi
-         * +2 = mercredi
-         * +3 = jeudi
-         * +4 = vendredi
-         * +5 = samedi
-         */
-
-        $monday = Carbon::now()->startOfWeek(Carbon::MONDAY);
-
-        $days = [
-            1, // Mardi
-            2, // Mercredi
-            3, // Jeudi
-            4, // Vendredi
-            5, // Samedi
-        ];
-
-        /*
-         * ============================================================
-         * CRÉNEAUX
-         * ============================================================
-         */
-
-        $timeSlots = [
-            [
-                'start' => '09:00',
-                'end' => '11:00',
-            ],
-            [
-                'start' => '11:00',
-                'end' => '13:00',
-            ],
-            [
-                'start' => '14:00',
-                'end' => '16:00',
-            ],
-        ];
-
-        /*
-         * ============================================================
-         * CRÉATION DES SÉANCES
-         * ============================================================
-         */
-
-        foreach ($days as $day) {
-
-            $date = $monday->copy()->addDays($day);
-
-            foreach ($trainings as $training) {
-
-                foreach ($timeSlots as $slot) {
-
-                    $startAt = Carbon::parse(
-                        $date->format('Y-m-d') . ' ' . $slot['start']
-                    );
-
-                    $endAt = Carbon::parse(
-                        $date->format('Y-m-d') . ' ' . $slot['end']
-                    );
-
-                    TrainingSession::create([
-                        'training_id' => $training->id,
-                        'start_at' => $startAt,
-                        'end_at' => $endAt,
-                        'capacity_max' => $training->capacity,
-                        'status' => 'open',
-                    ]);
-                }
+                return;
             }
         }
 
         /*
          * ============================================================
-         * RÉSULTAT
+         * RÉPARTITION DU CALENDRIER
+         * ============================================================
+         *
+         * Un seul atelier par créneau.
+         *
+         * Mardi → Samedi
+         *
+         * 09:00 → 11:00
+         * 11:00 → 13:00
+         * 14:00 → 16:00
+         *
+         * Pause : 13:00 → 14:00
+         */
+
+        $schedule = [
+            'mardi' => [
+                ['09:00', '11:00', 'broderie'],
+                ['11:00', '13:00', 'couture'],
+                ['14:00', '16:00', 'tissage'],
+            ],
+
+            'mercredi' => [
+                ['09:00', '11:00', 'tricot-et-crochet'],
+                ['11:00', '13:00', 'teinture'],
+                ['14:00', '16:00', 'broderie'],
+            ],
+
+            'jeudi' => [
+                ['09:00', '11:00', 'couture'],
+                ['11:00', '13:00', 'tissage'],
+                ['14:00', '16:00', 'tricot-et-crochet'],
+            ],
+
+            'vendredi' => [
+                ['09:00', '11:00', 'teinture'],
+                ['11:00', '13:00', 'broderie'],
+                ['14:00', '16:00', 'couture'],
+            ],
+
+            'samedi' => [
+                ['09:00', '11:00', 'tissage'],
+                ['11:00', '13:00', 'tricot-et-crochet'],
+                ['14:00', '16:00', 'teinture'],
+            ],
+        ];
+
+        /*
+         * ============================================================
+         * PROCHAINE SEMAINE DE CALENDRIER
+         * ============================================================
+         *
+         * On commence au prochain mardi.
+         */
+
+        $date = Carbon::now()->next(Carbon::TUESDAY);
+
+        /*
+         * ============================================================
+         * CRÉATION DES 15 SÉANCES
          * ============================================================
          */
 
-        $count = TrainingSession::count();
+        foreach ($schedule as $day => $slots) {
+            foreach ($slots as [$start, $end, $trainingSlug]) {
+                $training = $trainings[$trainingSlug];
+
+                $startAt = $date->copy()->setTimeFromTimeString($start);
+                $endAt = $date->copy()->setTimeFromTimeString($end);
+
+                TrainingSession::updateOrCreate(
+                    [
+                        'start_at' => $startAt,
+                    ],
+                    [
+                        'training_id' => $training->id,
+                        'end_at' => $endAt,
+                        'capacity_max' => $training->capacity,
+                        'status' => 'open',
+                    ]
+                );
+
+                $this->command->info(
+                    "Séance créée : {$training->title} - " .
+                    "{$startAt->format('d/m/Y')} " .
+                    "{$start} → {$end} - " .
+                    "{$training->capacity} places"
+                );
+            }
+
+            $date->addDay();
+        }
+
+        /*
+         * ============================================================
+         * RÉSUMÉ
+         * ============================================================
+         */
+
+        $this->command->newLine();
 
         $this->command->info(
-            "{$count} séances ont été créées avec succès."
+            'Les 15 séances du calendrier ont été créées avec succès.'
         );
     }
 }

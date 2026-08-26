@@ -3,15 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\Service;
-use Illuminate\Database\Seeder;
 use App\Models\Testimonial;
+use Illuminate\Database\Seeder;
+
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
+        /*
+         * ============================================================
+         * SERVICES
+         * ============================================================
+         */
+
         Service::create([
             'titre' => 'Formations',
             'description' => 'Apprenez les bases ou perfectionnez vos techniques avec nos formations complètes.',
@@ -32,31 +36,43 @@ class DatabaseSeeder extends Seeder
             'image' => 'images/confections.jpg',
             'lien' => '#',
         ]);
+
+        /*
+         * ============================================================
+         * CATÉGORIES + ATELIERS + SÉANCES
+         * ============================================================
+         */
+
         $this->call([
-    CategoryTrainingSeeder::class,
-]);
+            CategoryTrainingSeeder::class,
+            TrainingSessionSeeder::class,
+        ]);
+
+        /*
+         * ============================================================
+         * TÉMOIGNAGES
+         * ============================================================
+         */
+
+        Testimonial::create([
+            'nom' => 'Sophie L.',
+            'role' => 'Élève en couture',
+            'contenu' => "Une équipe à l'écoute, des cours de qualité et une ambiance au top !",
+            'avatar' => 'https://i.pravatar.cc/100?img=5',
+        ]);
+
+        Testimonial::create([
+            'nom' => 'Julie M.',
+            'role' => 'Cliente',
+            'contenu' => "Grâce à l'atelier, j'ai pu réaliser ma robe de mariée. Un rêve devenu réalité !",
+            'avatar' => 'https://i.pravatar.cc/100?img=9',
+        ]);
+
+        Testimonial::create([
+            'nom' => 'Claire D.',
+            'role' => 'Participante aux ateliers',
+            'contenu' => 'Des ateliers variés et inspirants. Je recommande vivement !',
+            'avatar' => 'https://i.pravatar.cc/100?img=16',
+        ]);
     }
 }
-
-
-// Dans public function run(): void
-Testimonial::create([
-    'nom' => 'Sophie L.',
-    'role' => 'Élève en couture',
-    'contenu' => 'Une équipe à l\'écoute, des cours de qualité et une ambiance au top !',
-    'avatar' => 'https://i.pravatar.cc/100?img=5',
-]);
-
-Testimonial::create([
-    'nom' => 'Julie M.',
-    'role' => 'Cliente',
-    'contenu' => 'Grâce à l\'atelier, j\'ai pu réaliser ma robe de mariée. Un rêve devenu réalité !',
-    'avatar' => 'https://i.pravatar.cc/100?img=9',
-]);
-
-Testimonial::create([
-    'nom' => 'Claire D.',
-    'role' => 'Participante aux ateliers',
-    'contenu' => 'Des ateliers variés et inspirants. Je recommande vivement !',
-    'avatar' => 'https://i.pravatar.cc/100?img=16',
-]);

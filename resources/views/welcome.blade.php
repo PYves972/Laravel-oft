@@ -17,8 +17,9 @@
     <div class="relative z-10 max-w-3xl mx-auto text-[#2D3B22] space-y-6 px-6 pt-16">
 
         <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-normal leading-tight drop-shadow-sm">
-            Créez, apprenez, réalisez vos idées avec <span class="italic font-light">passion</span>
-        </h1>
+            Ô fil du temps </h1>
+
+
 
         <div class="flex items-center justify-center my-6">
             <div class="h-[1px] w-16 bg-[#2D3B22]/40"></div>
@@ -27,7 +28,7 @@
         </div>
 
         <p class="text-base md:text-lg font-light text-gray-800 max-w-xl mx-auto">
-            Atelier de couture – Formations, ateliers et confections pour tous les niveaux.
+        Retouches, formations et ateliers de transmission
         </p>
 
         <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
