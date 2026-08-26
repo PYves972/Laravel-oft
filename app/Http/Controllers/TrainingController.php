@@ -3,25 +3,72 @@
 namespace App\Http\Controllers;
 
 use App\Models\Training;
+use App\Models\TrainingSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class TrainingController extends Controller
 {
     /**
-     * Affiche le catalogue public des formations.
+     * Affiche le calendrier des ateliers.
      */
     public function index(): View
     {
-        $trainings = Training::with([
-            'category',
-            'tags',
-        ])
-            ->where('is_active', true)
-            ->orderBy('title')
-            ->get();
+        // Semaine du mardi 1er au samedi 5 septembre 2026
+        $startDate = now()->setDate(2026, 9, 1)->startOfDay();
+        $endDate = now()->setDate(2026, 9, 5)->endOfDay();
 
-        return view('trainings.index', compact('trainings'));
+        $days = collect();
+
+        for (
+            $date = $startDate->copy();
+            $date->lte($endDate);
+            $date->addDay()
+        ) {
+            $days->push($date->copy());
+        }
+
+        $sessions = TrainingSession::with([
+            'training',
+        ])
+            ->withCount([
+                'bookings as confirmed_bookings_count' => function ($query) {
+                    $query->where('status', 'confirmed');
+                },
+            ])
+            ->when(Auth::check(), function ($query) {
+                $query->with([
+                    'bookings' => function ($bookingQuery) {
+                        $bookingQuery->where('user_id', Auth::id());
+                    },
+                ]);
+            })
+            ->whereIn('status', ['open', 'full'])
+            ->whereBetween('start_at', [$startDate, $endDate])
+            ->orderBy('start_at')
+            ->get()
+            ->each(function ($session) {
+                $session->remaining_seats = max(
+                    0,
+                    $session->capacity_max
+                    - $session->confirmed_bookings_count
+                );
+
+                $session->is_full = $session->remaining_seats === 0;
+
+                $session->can_reserve = $session->remaining_seats > 0;
+
+                $session->user_booking = $session->bookings->first();
+
+                $session->is_reserved =
+                    $session->user_booking
+                    && $session->user_booking->status === 'confirmed';
+            });
+
+        return view('training-calendar.index', compact(
+            'days',
+            'sessions'
+        ));
     }
 
     /**
@@ -33,54 +80,22 @@ class TrainingController extends Controller
             'category',
             'tags',
 
-            /*
-             * On récupère uniquement les séances :
-             * - ouvertes
-             * - à venir
-             * - triées par date
-             */
             'sessions' => function ($query) {
-
                 $query
                     ->withCount([
-                        /*
-                         * Nombre de réservations confirmées
-                         * pour chaque séance.
-                         */
                         'bookings as confirmed_bookings_count' => function ($bookingQuery) {
                             $bookingQuery->where('status', 'confirmed');
                         },
                     ])
-
-                    /*
-                     * Si l'utilisateur est connecté,
-                     * on récupère sa réservation éventuelle
-                     * pour chaque séance.
-                     */
                     ->when(Auth::check(), function ($query) {
-
                         $query->with([
                             'bookings' => function ($bookingQuery) {
-                                $bookingQuery
-                                    ->where('user_id', Auth::id());
+                                $bookingQuery->where('user_id', Auth::id());
                             },
                         ]);
                     })
-
-                    /*
-                     * Une séance annulée n'est pas affichée.
-                     */
                     ->where('status', 'open')
-
-                    /*
-                     * On affiche uniquement les séances
-                     * qui n'ont pas encore commencé.
-                     */
                     ->where('start_at', '>=', now())
-
-                    /*
-                     * Les séances les plus proches en premier.
-                     */
                     ->orderBy('start_at');
             },
         ])
