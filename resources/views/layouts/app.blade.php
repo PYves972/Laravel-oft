@@ -27,9 +27,27 @@
             </header>
         @endisset
 
-        <main>
-            {{ $slot }}
-        </main>
+<main>
+
+    @if (session('success'))
+        <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+            <div class="rounded-lg border border-green-300 bg-green-100 px-4 py-3 text-green-800">
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+            <div class="rounded-lg border border-red-300 bg-red-100 px-4 py-3 text-red-800">
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
+
+    {{ $slot }}
+
+</main>
     </div>
 </body>
 </html>

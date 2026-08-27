@@ -11,18 +11,23 @@ class TrainingSession extends Model
 {
     use HasFactory;
 
+    public const STATUS_OPEN = 'open';
+
+    public const STATUS_CANCELLED = 'cancelled';
+
     protected $fillable = [
         'training_id',
-        'start_at',
-        'end_at',
-        'capacity_max',
+        'starts_at',
+        'ends_at',
+        'capacity_override',
         'status',
     ];
 
     protected $casts = [
-        'start_at' => 'datetime',
-        'end_at' => 'datetime',
-        'capacity_max' => 'integer',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'capacity_override' => 'integer',
+        'status' => 'string',
     ];
 
     public function training(): BelongsTo
@@ -35,28 +40,19 @@ class TrainingSession extends Model
         return $this->hasMany(Booking::class);
     }
 
-    public function confirmedBookingsCount(): int
+    public function getCapacityAttribute(): int
     {
-        return $this->bookings()
-            ->where('status', 'confirmed')
-            ->count();
+        return $this->capacity_override
+            ?? $this->training->capacity;
     }
 
-    public function remainingSeats(): int
+    public function isOpen(): bool
     {
-        return max(
-            0,
-            $this->capacity_max - $this->confirmedBookingsCount()
-        );
+        return $this->status === self::STATUS_OPEN;
     }
 
-    public function hasAvailableSeats(): bool
+    public function isCancelled(): bool
     {
-        return $this->remainingSeats() > 0;
-    }
-
-    public function isFull(): bool
-    {
-        return !$this->hasAvailableSeats();
+        return $this->status === self::STATUS_CANCELLED;
     }
 }
