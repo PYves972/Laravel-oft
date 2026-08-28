@@ -4,48 +4,49 @@ namespace App\Http\Controllers;
 
 use App\Models\TrainingSession;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TrainingCalendarController extends Controller
 {
     /**
-     * Affiche le calendrier hebdomadaire des ateliers.
+     * Affiche le calendrier hebdomadaire des ateliers avec navigation.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        /*
-         * Lundi de la semaine actuelle.
-         */
-        $monday = Carbon::now()->startOfWeek(Carbon::MONDAY);
+        // 1. Récupération de la date passée en paramètre ou date du jour
+        $requestedDate = $request->input('week')
+            ? Carbon::parse($request->input('week'))
+            : Carbon::now();
 
-        /*
-         * Du mardi au samedi.
-         */
-        $days = collect([
-            $monday->copy()->addDay(),
-            $monday->copy()->addDays(2),
-            $monday->copy()->addDays(3),
-            $monday->copy()->addDays(4),
-            $monday->copy()->addDays(5),
-        ]);
+        // 2. Définition du lundi de la semaine ciblée
+        $startOfWeek = $requestedDate->copy()->startOfWeek(Carbon::MONDAY);
 
-        /*
-         * Récupération des séances de la semaine.
-         *
-         * with('training') évite de faire une requête
-         * supplémentaire pour chaque atelier.
-         */
+        // 3. Génération des jours affichés (Mardi au Samedi)
+        $days = collect(range(1, 5))->map(function ($dayOffset) use ($startOfWeek) {
+            return $startOfWeek->copy()->addDays($dayOffset);
+        });
+
+        // 4. Plage de dates et récupération des séances groupées par jour
+        $from = $days->first()->copy()->startOfDay();
+        $to = $days->last()->copy()->endOfDay();
+
         $sessions = TrainingSession::with('training')
-            ->whereBetween('starts_at', [
-                $days->first()->copy()->startOfDay(),
-                $days->last()->copy()->endOfDay(),
-            ])
+            ->whereBetween('starts_at', [$from, $to])
             ->orderBy('starts_at')
-            ->get();
+            ->get()
+            ->groupBy(fn($session) => $session->starts_at->format('Y-m-d'));
 
-        return view('training-calendar.index', [
-            'days' => $days,
-            'sessions' => $sessions,
-        ]);
+        // 5. Dates de navigation (Semaine -1 / Semaine +1)
+        $prevWeek = $startOfWeek->copy()->subWeek()->format('Y-m-d');
+        $nextWeek = $startOfWeek->copy()->addWeek()->format('Y-m-d');
+
+        return view('training-calendar.index', compact(
+            'days',
+            'sessions',
+            'startOfWeek',
+            'prevWeek',
+            'nextWeek'
+        ));
     }
 }
