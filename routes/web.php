@@ -8,7 +8,7 @@ use App\Models\Service;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrainingCalendarController;
-
+use App\Http\Controllers\DashboardController;
 // ========================================
 // ACCUEIL
 // ========================================
@@ -44,11 +44,11 @@ Route::post('/contact', [ContactController::class, 'store'])
 // DASHBOARD
 // ========================================
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])
-  ->name('dashboard');
 
+
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // ========================================
 // ESPACE AUTHENTIFIE
