@@ -17,9 +17,10 @@
   <!-- HEADER EN OVERLAY TRANSPARENT -->
 <header class="fixed top-0 left-0 w-full z-50 bg-white/20 backdrop-blur-md transition">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="{{ url('/') }}" class="text-[#2D3B22] font-serif text-xl font-bold tracking-wide">
-            Atelier Couture
-        </a>
+<!-- Remplacez le texte "Atelier Couture" par ceci : -->
+<a href="{{ url('/') }}" class="flex items-center">
+    <x-application-logo class="w-auto h-8 fill-current text-gray-800" />
+</a>
 
         <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
             <a href="{{ url('/') }}" class="text-[#2D3B22] font-semibold border-b-2 border-[#2D3B22] pb-1">Accueil</a>

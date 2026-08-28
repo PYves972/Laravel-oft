@@ -3,46 +3,32 @@
 @section('content')
 
 <!-- HERO SECTION PROPRE -->
-<section class="relative w-full h-screen min-h-[600px] flex items-center justify-center text-center overflow-hidden">
+<section class="relative h-[calc(100vh-80px)] min-h-[500px] flex items-center justify-center bg-cover bg-center" style="background-image: url('{{ asset('images/hero-bg.jpg') }}');">
 
-    <!-- Image de fond couvrant toute la zone (y compris sous le menu) -->
-    <img src="{{ asset('images/hero-bg.jpg') }}"
-         alt="Atelier Couture"
-         class="absolute inset-0 w-full h-full object-cover object-center">
+        <div class="text-center max-w-xl mx-auto px-4 -mt-16 sm:-mt-20">
+            <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl text-[#2D3B22] font-bold tracking-tight mb-3">
+                Ô fil du temps
+            </h1>
 
-    <!-- Voile très léger pour conserver les contrastes -->
-    <div class="absolute inset-0 bg-black/10"></div>
+            <div class="w-12 h-0.5 bg-[#2D3B22]/30 mx-auto mb-6"></div>
 
-    <!-- Contenu Texte centré -->
-    <div class="relative z-10 max-w-3xl mx-auto text-[#2D3B22] space-y-6 px-6 pt-16">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a href="{{ route('training-calendar.index') }}" class="w-full sm:w-auto bg-[#2D3B22] hover:bg-[#1e2817] text-white text-xs font-semibold px-6 py-3 rounded-full transition shadow-md">
+                    Découvrir nos formations
+                </a>
 
-        <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-normal leading-tight drop-shadow-sm">
-            Ô fil du temps </h1>
-
-
-
-        <div class="flex items-center justify-center my-6">
-            <div class="h-[1px] w-16 bg-[#2D3B22]/40"></div>
-            <div class="w-2.5 h-2.5 rotate-45 border border-[#2D3B22] mx-3"></div>
-            <div class="h-[1px] w-16 bg-[#2D3B22]/40"></div>
+                @auth
+                    <a href="{{ route('dashboard') }}" class="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-900 text-xs font-semibold px-6 py-3 rounded-full transition shadow-md border border-gray-200">
+                        Mon Tableau de bord
+                    </a>
+                @else
+                    <a href="#a-propos" class="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-900 text-xs font-semibold px-6 py-3 rounded-full transition shadow-md border border-gray-200">
+                        En savoir plus
+                    </a>
+                @endauth
+            </div>
         </div>
-
-        <p class="text-base md:text-lg font-light text-gray-800 max-w-xl mx-auto">
-        Retouches, formations et ateliers de transmission
-        </p>
-
-        <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#services" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-8 py-3.5 rounded-full text-sm font-medium transition shadow-lg">
-                <span>Découvrir nos formations</span>
-            </a>
-
-            <a href="#portfolio" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/90 hover:bg-white text-gray-900 px-8 py-3.5 rounded-full text-sm font-medium transition shadow-lg">
-                <span>Voir nos créations</span>
-            </a>
-        </div>
-
-    </div>
-</section>
+    </section>
 <!-- SECTION À PROPOS -->
 <section id="a-propos" class="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-20">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
