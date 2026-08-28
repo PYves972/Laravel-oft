@@ -126,7 +126,7 @@
                                  */
                                 $remainingSeats = max(
                                     0,
-                                    $session->capacity_max
+                                    $session->capacity
                                     - $session->confirmed_bookings_count
                                 );
 
@@ -150,7 +150,7 @@
 
                                     <p class="font-semibold text-gray-800 capitalize">
 
-                                        {{ $session->start_at
+                                        {{ $session->starts_at
                                             ->locale('fr')
                                             ->isoFormat('dddd D MMMM YYYY [à] HH[h]mm')
                                         }}
@@ -168,7 +168,7 @@
                                                 {{ $remainingSeats }}
                                             </span>
 
-                                            / {{ $session->capacity_max }}
+                                            / {{ $session->capacity }}
 
                                         @else
 

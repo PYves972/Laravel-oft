@@ -44,13 +44,13 @@ class TrainingController extends Controller
                 ]);
             })
             ->whereIn('status', ['open', 'full'])
-            ->whereBetween('start_at', [$startDate, $endDate])
-            ->orderBy('start_at')
+            ->whereBetween('starts_at', [$startDate, $endDate])
+            ->orderBy('starts_at')
             ->get()
             ->each(function ($session) {
                 $session->remaining_seats = max(
                     0,
-                    $session->capacity_max
+                    $session->capacity
                     - $session->confirmed_bookings_count
                 );
 
@@ -95,8 +95,8 @@ class TrainingController extends Controller
                         ]);
                     })
                     ->where('status', 'open')
-                    ->where('start_at', '>=', now())
-                    ->orderBy('start_at');
+                    ->where('starts_at', '>=', now())
+                    ->orderBy('starts_at');
             },
         ])
             ->where('slug', $slug)

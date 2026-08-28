@@ -36,11 +36,11 @@ class TrainingCalendarController extends Controller
          * supplémentaire pour chaque atelier.
          */
         $sessions = TrainingSession::with('training')
-            ->whereBetween('start_at', [
+            ->whereBetween('starts_at', [
                 $days->first()->copy()->startOfDay(),
                 $days->last()->copy()->endOfDay(),
             ])
-            ->orderBy('start_at')
+            ->orderBy('starts_at')
             ->get();
 
         return view('training-calendar.index', [

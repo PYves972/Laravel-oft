@@ -117,17 +117,17 @@ class TrainingSessionSeeder extends Seeder
                 $startAt = $date->copy()->setTimeFromTimeString($start);
                 $endAt = $date->copy()->setTimeFromTimeString($end);
 
-                TrainingSession::updateOrCreate(
-                    [
-                        'start_at' => $startAt,
-                    ],
-                    [
-                        'training_id' => $training->id,
-                        'end_at' => $endAt,
-                        'capacity_max' => $training->capacity,
-                        'status' => 'open',
-                    ]
-                );
+TrainingSession::updateOrCreate(
+    [
+        'starts_at' => $startAt,
+    ],
+    [
+        'training_id' => $training->id,
+        'ends_at' => $endAt,
+        'capacity_override' => $training->capacity,
+        'status' => 'open',
+    ]
+);
 
                 $this->command->info(
                     "Séance créée : {$training->title} - " .

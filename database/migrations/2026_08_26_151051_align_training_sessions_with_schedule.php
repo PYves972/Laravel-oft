@@ -34,9 +34,10 @@ return new class extends Migration
                 ->nullable(false)
                 ->change();
 
-            $table->renameColumn('starts_at', 'start_at');
-            $table->renameColumn('ends_at', 'end_at');
-            $table->renameColumn('capacity_override', 'capacity_max');
+$table->renameColumn('start_at', 'starts_at');
+$table->renameColumn('end_at', 'ends_at');
+$table->renameColumn('capacity_max', 'capacity_override');
+
         });
     }
 };

@@ -47,7 +47,7 @@ class BookingController extends Controller
                 /*
                  * Vérifier qu'il reste une place.
                  */
-                if ($confirmedBookings >= $session->capacity_max) {
+                if ($confirmedBookings >= $session->capacity) {
                     $session->update([
                         'status' => 'full',
                     ]);
@@ -113,7 +113,7 @@ class BookingController extends Controller
                  * Si c'était la dernière place,
                  * la séance devient complète.
                  */
-                if ($confirmedBookings >= $session->capacity_max) {
+                if ($confirmedBookings >= $session->capacity) {
                     $session->update([
                         'status' => 'full',
                     ]);

@@ -29,8 +29,8 @@
 
                         @foreach (
                             $sessions
-                                ->where('start_at', '>=', $day->copy()->startOfDay())
-                                ->where('start_at', '<=', $day->copy()->endOfDay())
+                                ->where('starts_at', '>=', $day->copy()->startOfDay())
+                                ->where('starts_at', '<=', $day->copy()->endOfDay())
                             as $session
                         )
 
@@ -46,7 +46,7 @@
 
                                 {{-- Horaires --}}
                                 <div class="text-sm mt-1">
-                                    {{ $session->start_at->format('H:i') }}
+                                    {{ $session->starts_at->format('H:i') }}
                                     →
                                     {{ $session->end_at->format('H:i') }}
                                 </div>
