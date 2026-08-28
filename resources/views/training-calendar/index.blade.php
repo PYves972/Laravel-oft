@@ -44,12 +44,13 @@
                                     {{ $session->training->title }}
                                 </div>
 
-                                {{-- Horaires --}}
-                                <div class="text-sm mt-1">
-                                    {{ $session->starts_at->format('H:i') }}
-                                    →
-                                    {{ $session->end_at->format('H:i') }}
-                                </div>
+                              {{-- Horaires --}}
+<div class="text-sm mt-1">
+    {{ $session->starts_at?->format('H:i') }}
+    @if($session->ends_at)
+        → {{ $session->ends_at->format('H:i') }}
+    @endif
+</div>
 
 
                                 {{-- ========================================= --}}
