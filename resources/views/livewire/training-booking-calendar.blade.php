@@ -17,10 +17,10 @@
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $selectedTraining->title }}</h1>
                     <div class="flex items-center gap-2">
                         <span class="px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800">
-                            {{ $selectedTraining->type ?? 'Stage' }}
+                            {{ $selectedTraining->type ?? 'Atelier' }}
                         </span>
                         <span class="px-3 py-1 rounded-full text-sm font-medium bg-amber-500 text-white">
-                            {{ $selectedTraining->level ?? 'Intermédiaire' }}
+                            {{ $selectedTraining->level ?? 'Tous niveaux' }}
                         </span>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                             {{ number_format($selectedTraining->price, 2, ',', ' ') }}€
                         </div>
                         <div class="text-xs text-gray-500">
-                            Le cours de {{ floor($selectedTraining->duration_minutes / 60) }}h{{ sprintf('%02d', $selectedTraining->duration_minutes % 60) }}
+                            Le cours
                         </div>
                     </div>
                 </div>
@@ -45,38 +45,27 @@
     <!-- Grille de réservation -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
 
-        <!-- Calendrier (Mardi au Samedi = 5 colonnes) -->
+        <!-- Calendrier -->
         <div class="md:col-span-6 lg:col-span-5 border border-gray-200 rounded-2xl p-4 shadow-sm">
-            <!-- Navigation Mois -->
             <div class="flex justify-between items-center mb-4 px-2">
                 <button wire:click="previousMonth" class="p-1 hover:bg-gray-100 rounded-lg text-gray-600 font-bold">&laquo;</button>
                 <span class="font-semibold text-gray-800 capitalize">{{ $monthLabel }}</span>
                 <button wire:click="nextMonth" class="p-1 hover:bg-gray-100 rounded-lg text-gray-600 font-bold">&raquo;</button>
             </div>
 
-            <!-- Jours de la semaine : du Mardi au Samedi -->
             <div class="grid grid-cols-5 text-center font-medium text-xs text-gray-700 mb-2">
                 <span>ma</span><span>me</span><span>j</span><span>v</span><span>s</span>
             </div>
 
-            <!-- Jours du mois -->
             <div class="grid grid-cols-5 gap-y-1 text-center text-sm">
                 @foreach($calendarDays as $day)
-                    @php
-                        $isSelected = $selectedDate === $day['date'];
-                    @endphp
-
+                    @php $isSelected = $selectedDate === $day['date']; @endphp
                     <div class="relative py-1 flex items-center justify-center">
                         @if($day['is_disabled'])
-                            <span class="text-gray-300 line-through select-none">
-                                {{ $day['day_number'] }}
-                            </span>
+                            <span class="text-gray-300 line-through select-none">{{ $day['day_number'] }}</span>
                         @else
-                            <button
-                                wire:click="selectDate('{{ $day['date'] }}')"
-                                class="w-8 h-8 rounded-lg flex flex-col items-center justify-center transition-all relative
-                                    {{ $isSelected ? 'bg-gray-900 text-white font-bold' : 'text-gray-800 hover:bg-gray-100' }}"
-                            >
+                            <button wire:click="selectDate('{{ $day['date'] }}')"
+                                    class="w-8 h-8 rounded-lg flex flex-col items-center justify-center transition-all relative {{ $isSelected ? 'bg-gray-900 text-white font-bold' : 'text-gray-800 hover:bg-gray-100' }}">
                                 {{ $day['day_number'] }}
                                 <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500"></span>
                             </button>
@@ -90,7 +79,8 @@
         <div class="md:col-span-6 lg:col-span-7 space-y-4">
             @forelse($selectedSessions as $session)
                 @php
-                    $remainingPlaces = $session->capacity - $session->bookings_count;
+                    $maxCapacity = $session->capacity_override ?? $selectedTraining->capacity ?? 6;
+                    $remainingPlaces = max(0, $maxCapacity - $session->bookings_count);
                 @endphp
                 <div class="border-2 border-emerald-600 rounded-2xl p-5 bg-white shadow-sm flex flex-col justify-between gap-4">
                     <div>
@@ -106,12 +96,12 @@
                     <!-- Bouton de réservation -->
                     @auth
                         @if($remainingPlaces > 0)
-                            <form action="{{ route('bookings.store', $session->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow transition duration-150">
-                                    Réserver ce créneau
-                                </button>
-                            </form>
+                            <button wire:click="bookSession({{ $session->id }})"
+                                    wire:loading.attr="disabled"
+                                    class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow transition duration-150">
+                                <span wire:loading.remove wire:target="bookSession({{ $session->id }})">Réserver ce créneau</span>
+                                <span wire:loading wire:target="bookSession({{ $session->id }})">Réservation en cours...</span>
+                            </button>
                         @else
                             <button disabled class="w-full py-2.5 px-4 bg-gray-200 text-gray-500 font-semibold rounded-xl cursor-not-allowed">
                                 Complet

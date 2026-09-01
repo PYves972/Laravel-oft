@@ -5,7 +5,9 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Training;
 use App\Models\TrainingSession;
+use App\Models\Booking;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingBookingCalendar extends Component
 {
@@ -19,7 +21,6 @@ class TrainingBookingCalendar extends Component
     {
         $this->trainings = Training::where('is_active', true)->get();
 
-        // Récupère l'ID passé dans l'URL (/calendrier?training=ID)
         $requestedTrainingId = request()->query('training');
 
         if ($requestedTrainingId && $this->trainings->contains('id', $requestedTrainingId)) {
@@ -66,6 +67,27 @@ class TrainingBookingCalendar extends Component
         $this->selectedSessionId = $session?->id;
     }
 
+    public function bookSession(int $sessionId)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $session = TrainingSession::findOrFail($sessionId);
+
+        // Réservation
+        Booking::firstOrCreate([
+            'user_id' => Auth::id(),
+            'training_session_id' => $session->id,
+        ], [
+            'status' => 'confirmed',
+        ]);
+
+        session()->flash('success', 'Votre réservation a été enregistrée !');
+
+        return redirect()->route('dashboard');
+    }
+
     private function getSessionsQuery()
     {
         $start = Carbon::createFromFormat('Y-m', $this->currentMonth)->startOfMonth();
@@ -74,7 +96,9 @@ class TrainingBookingCalendar extends Component
         return TrainingSession::where('training_id', $this->selectedTrainingId)
             ->whereBetween('starts_at', [$start, $end])
             ->where('status', 'open')
-            ->withCount('bookings');
+            ->withCount(['bookings' => function ($query) {
+                $query->where('status', 'confirmed');
+            }]);
     }
 
     private function autoSelectFirstDate()

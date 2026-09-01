@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Models;
-
 namespace App\Http\Controllers;
 
 use App\Models\Training;
@@ -11,19 +9,39 @@ use Illuminate\View\View;
 class TrainingController extends Controller
 {
     /**
-     * Affiche le catalogue complet des formations.
+     * Page dédiée aux Formations (Couture).
      */
-    public function index(): View
+    public function formations(): View
     {
         $trainings = Training::with(['category'])
             ->where('is_active', true)
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'couture')
+                      ->orWhere('name', 'LIKE', '%couture%');
+            })
             ->get();
 
-        return view('trainings.index', compact('trainings'));
+        return view('trainings.formations', compact('trainings'));
     }
 
     /**
-     * Affiche la fiche détaillée d'une formation.
+     * Page dédiée aux Ateliers créatifs (Tricot, Crochet, Teinture, Broderie, Tissage).
+     */
+    public function workshops(): View
+    {
+        $trainings = Training::with(['category'])
+            ->where('is_active', true)
+            ->whereHas('category', function ($query) {
+                $query->where('slug', '!=', 'couture')
+                      ->where('name', 'NOT LIKE', '%couture%');
+            })
+            ->get();
+
+        return view('trainings.workshops', compact('trainings'));
+    }
+
+    /**
+     * Affiche la fiche détaillée d'un atelier ou d'une formation.
      */
     public function show(string $slug): View
     {
