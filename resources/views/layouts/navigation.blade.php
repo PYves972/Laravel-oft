@@ -9,14 +9,12 @@
                 </a>
             </div>
 
-            <!-- Liens de navigation -->
-            <div class="hidden md:flex space-x-8 items-center font-medium text-sm text-gray-800">
+            <!-- Liens de navigation (Galerie pointe vers la page dédiée) -->
+            <div class="hidden md:flex space-x-6 items-center font-medium text-sm text-gray-800">
                 <a href="{{ url('/') }}#accueil" class="hover:text-[#2D3B22] transition-colors">Accueil</a>
                 <a href="{{ url('/') }}#a-propos" class="hover:text-[#2D3B22] transition-colors">À propos</a>
-                <a href="{{ url('/') }}#services" class="hover:text-[#2D3B22] transition-colors">Ateliers et formations</a>
-                @if(Route::has('training-calendar.index'))
-                    <a href="{{ route('training-calendar.index') }}" class="hover:text-[#2D3B22] transition-colors font-semibold text-[#2D3B22]">Calendrier</a>
-                @endif
+                <a href="{{ url('/') }}#offres" class="hover:text-[#2D3B22] transition-colors">Nos Offres</a>
+                <a href="{{ url('/galerie') }}" class="hover:text-[#2D3B22] transition-colors">Galerie</a>
                 <a href="{{ url('/') }}#temoignages" class="hover:text-[#2D3B22] transition-colors">Témoignages</a>
                 <a href="{{ url('/') }}#contact" class="hover:text-[#2D3B22] transition-colors">Contact</a>
             </div>

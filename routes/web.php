@@ -15,13 +15,14 @@ Route::get('/', function () {
     $services = Service::all();
     $testimonials = Testimonial::all();
     return view('welcome', compact('services', 'testimonials'));
-});
+})->name('home');
 
-// Calendrier direct Livewire (prend en compte l'atelier sélectionné)
+// Calendrier direct (accessible après le choix d'une formation ou d'un atelier)
 Route::get('/calendrier', TrainingBookingCalendar::class)->name('training-calendar.index');
 
-// Catalogue des formations
-Route::get('/formations', [TrainingController::class, 'index'])->name('trainings.index');
+// Catalogues
+Route::get('/formations', [TrainingController::class, 'formations'])->name('trainings.formations');
+Route::get('/ateliers', [TrainingController::class, 'workshops'])->name('trainings.workshops');
 Route::get('/formations/{slug}', [TrainingController::class, 'show'])->name('trainings.show');
 
 // Contact
