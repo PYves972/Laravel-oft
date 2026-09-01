@@ -6,19 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('training_sessions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('training_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('start_at');
-            $table->dateTime('end_at')->nullable();
-            $table->unsignedInteger('capacity_max');
-            $table->enum('status', ['open', 'full', 'cancelled'])->default('open');
+            $table->foreignId('training_id')->constrained()->onDelete('cascade');
+            $table->dateTime('starts_at');
+            $table->dateTime('ends_at');
+            $table->integer('capacity')->default(7);
+            $table->string('status')->default('open');
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('training_sessions');

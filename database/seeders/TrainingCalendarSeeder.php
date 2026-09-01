@@ -15,67 +15,61 @@ class CategoryTrainingSeeder extends Seeder
             [
                 'title' => 'Atelier Tricot',
                 'category_name' => 'Tricot',
-                'description' => 'Apprenez les mailles de base et réalisez vos premiers ouvrages en laine.',
-                'duration_minutes' => 120,
                 'price' => 45.00,
+                'duration' => '2h00',
                 'is_active' => true,
             ],
             [
                 'title' => 'Atelier Crochet',
                 'category_name' => 'Crochet',
-                'description' => 'Découvrez l’art du crochet et façonnez vos accessoires faits main.',
-                'duration_minutes' => 120,
                 'price' => 45.00,
+                'duration' => '2h00',
                 'is_active' => true,
             ],
             [
                 'title' => 'Atelier Couture',
                 'category_name' => 'Couture',
-                'description' => 'Maîtrisez votre machine à coudre et assemblez vos premiers vêtements.',
-                'duration_minutes' => 120,
                 'price' => 60.00,
+                'duration' => '2h00',
                 'is_active' => true,
             ],
             [
                 'title' => 'Atelier Teinture',
                 'category_name' => 'Teinture',
-                'description' => 'Initiez-vous aux techniques de teinture textile naturelle et végétale.',
-                'duration_minutes' => 120,
                 'price' => 55.00,
+                'duration' => '2h00',
                 'is_active' => true,
             ],
             [
                 'title' => 'Atelier Broderie',
                 'category_name' => 'Broderie',
-                'description' => 'Explorez les différents points de broderie pour personnaliser vos tissus.',
-                'duration_minutes' => 120,
                 'price' => 40.00,
+                'duration' => '2h00',
                 'is_active' => true,
             ],
             [
                 'title' => 'Atelier Tissage',
                 'category_name' => 'Tissage',
-                'description' => 'Créez vos premières pièces tissées sur un métier à tisser manuel.',
-                'duration_minutes' => 120,
                 'price' => 50.00,
+                'duration' => '2h00',
                 'is_active' => true,
             ],
         ];
 
         foreach ($workshops as $workshop) {
+            // 1. Création ou récupération de la catégorie
             $category = Category::firstOrCreate(
                 ['name' => $workshop['category_name']],
                 ['slug' => Str::slug($workshop['category_name'])]
             );
 
+            // 2. Création de l'atelier lié à la catégorie
             Training::firstOrCreate(
                 ['title' => $workshop['title']],
                 [
                     'category_id' => $category->id,
-                    'slug' => Str::slug($workshop['title']),
-                    'description' => $workshop['description'],
-                    'duration_minutes' => $workshop['duration_minutes'],
                     'price' => $workshop['price'],
+                    'duration' => $workshop['duration'],
                     'is_active' => $workshop['is_active'],
                 ]
             );

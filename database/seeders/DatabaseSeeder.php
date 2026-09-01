@@ -39,13 +39,14 @@ class DatabaseSeeder extends Seeder
 
         /*
          * ============================================================
-         * CATÉGORIES + ATELIERS + SÉANCES
+         * CATÉGORIES + ATELIERS + SÉANCES (OPTION 2)
          * ============================================================
          */
 
         $this->call([
             CategoryTrainingSeeder::class,
             TrainingSessionSeeder::class,
+            TrainingSeeder::class,
         ]);
 
         /*

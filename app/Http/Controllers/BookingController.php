@@ -4,182 +4,87 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\TrainingSession;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
     /**
-     * Réserver une place pour une séance.
+     * Enregistrer une réservation.
      */
-    public function store(TrainingSession $session): RedirectResponse
+    public function store(Request $request)
     {
-        try {
-            DB::transaction(function () use ($session) {
+        $request->validate([
+            'training_session_id' => 'required|exists:training_sessions,id',
+        ]);
 
-                /*
-                 * On verrouille la séance pendant la réservation.
-                 * Cela évite que deux utilisateurs prennent
-                 * simultanément la dernière place.
-                 */
-                $session = TrainingSession::query()
-                    ->lockForUpdate()
-                    ->findOrFail($session->id);
+        $session = TrainingSession::findOrFail($request->training_session_id);
 
-                /*
-                 * Une séance annulée ne peut pas être réservée.
-                 */
-                if ($session->status === 'cancelled') {
-                    throw new \RuntimeException(
-                        'Cette séance a été annulée et n’est plus disponible.'
-                    );
-                }
+        // 1. Vérification des places disponibles
+        $placesRestantes = $session->available_places ?? $session->places_restantes ?? 0;
 
-                /*
-                 * On compte uniquement les réservations confirmées.
-                 */
-                $confirmedBookings = Booking::query()
-                    ->where('training_session_id', $session->id)
-                    ->where('status', 'confirmed')
-                    ->count();
-
-                /*
-                 * Vérifier qu'il reste une place.
-                 */
-                if ($confirmedBookings >= $session->capacity) {
-                    $session->update([
-                        'status' => 'full',
-                    ]);
-
-                    throw new \RuntimeException(
-                        'Désolé, cette séance est déjà complète.'
-                    );
-                }
-
-                /*
-                 * Chercher une réservation existante de cet utilisateur.
-                 *
-                 * IMPORTANT :
-                 * bookings possède une contrainte unique sur
-                 * user_id + training_session_id.
-                 *
-                 * On ne crée donc pas une deuxième ligne si
-                 * l'utilisateur avait auparavant annulé sa réservation.
-                 */
-                $booking = Booking::query()
-                    ->where('user_id', Auth::id())
-                    ->where('training_session_id', $session->id)
-                    ->first();
-
-                /*
-                 * Une réservation confirmée existe déjà.
-                 */
-                if ($booking && $booking->status === 'confirmed') {
-                    throw new \RuntimeException(
-                        'Vous êtes déjà inscrit à cette séance.'
-                    );
-                }
-
-                /*
-                 * Si une ancienne réservation était annulée,
-                 * on la réactive.
-                 */
-                if ($booking && $booking->status === 'cancelled') {
-
-                    $booking->update([
-                        'status' => 'confirmed',
-                    ]);
-
-                } else {
-
-                    /*
-                     * Première réservation de cet utilisateur
-                     * pour cette séance.
-                     */
-                    Booking::create([
-                        'user_id' => Auth::id(),
-                        'training_session_id' => $session->id,
-                        'status' => 'confirmed',
-                    ]);
-                }
-
-                /*
-                 * Recompter après la réservation.
-                 */
-                $confirmedBookings++;
-
-                /*
-                 * Si c'était la dernière place,
-                 * la séance devient complète.
-                 */
-                if ($confirmedBookings >= $session->capacity) {
-                    $session->update([
-                        'status' => 'full',
-                    ]);
-                } else {
-                    $session->update([
-                        'status' => 'open',
-                    ]);
-                }
-            });
-
-            return back()->with(
-                'success',
-                'Votre inscription à la séance a bien été enregistrée !'
-            );
-
-        } catch (\RuntimeException $e) {
-
-            return back()->with(
-                'error',
-                $e->getMessage()
-            );
+        if ($placesRestantes <= 0) {
+            return back()->with('error', 'Désolé, cette session est déjà complète.');
         }
-    }
 
+        // 2. Vérification pour éviter les doublons de réservation
+        $existingBooking = Booking::where('user_id', Auth::id())
+            ->where('training_session_id', $session->id)
+            ->exists();
+
+        if ($existingBooking) {
+            return back()->with('error', 'Vous êtes déjà inscrit à cette session.');
+        }
+
+        // 3. Création de la réservation
+        Booking::create([
+            'user_id' => Auth::id(),
+            'training_session_id' => $session->id,
+            'status' => 'confirmed',
+        ]);
+
+        // 4. Décrémenter le nombre de places restantes
+        if (isset($session->available_places)) {
+            $session->decrement('available_places');
+        } elseif (isset($session->places_restantes)) {
+            $session->decrement('places_restantes');
+        }
+
+        return back()->with('success', 'Votre réservation a bien été enregistrée !');
+    }
 
     /**
      * Annuler une réservation.
      */
-    public function cancel(Booking $booking): RedirectResponse
+    public function cancel($id)
     {
-        /*
-         * Un utilisateur ne peut annuler que sa propre réservation.
-         */
-        abort_unless(
-            $booking->user_id === Auth::id(),
-            403
-        );
+        // Récupérer la réservation appartenant à l'utilisateur connecté
+        $booking = Booking::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
-        /*
-         * Si la réservation est déjà annulée.
-         */
-        if ($booking->status === 'cancelled') {
-            return back()->with(
-                'error',
-                'Cette réservation est déjà annulée.'
-            );
+        $session = TrainingSession::find($booking->training_session_id);
+
+        // Supprimer la réservation
+        $booking->delete();
+
+        // Réaugmenter le nombre de places disponibles
+        if ($session) {
+            if (isset($session->available_places)) {
+                $session->increment('available_places');
+            } elseif (isset($session->places_restantes)) {
+                $session->increment('places_restantes');
+            }
         }
 
-        $booking->update([
-            'status' => 'cancelled',
-        ]);
+        return back()->with('success', 'Votre réservation a été annulée avec succès.');
+    }
 
-        /*
-         * Une place vient d'être libérée.
-         */
-        $session = $booking->trainingSession;
-
-        if ($session->status === 'full') {
-            $session->update([
-                'status' => 'open',
-            ]);
-        }
-
-        return back()->with(
-            'success',
-            'Votre réservation a bien été annulée.'
-        );
+    /**
+     * Alternative courante REST (destroy).
+     */
+    public function destroy($id)
+    {
+        return $this->cancel($id);
     }
 }
