@@ -7,7 +7,7 @@ use App\Models\Category;
 use App\Models\Training;
 use Illuminate\Support\Str;
 
-class CategoryTrainingSeeder extends Seeder
+class TrainingCalendarSeeder extends Seeder
 {
     public function run(): void
     {
