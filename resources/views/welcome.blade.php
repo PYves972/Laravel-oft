@@ -2,14 +2,9 @@
 
 @section('content')
 
-
-<!-- Section Hero en pleine largeur/hauteur -->
-<section class="relative w-full min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center m-0 p-0" style="background-image: url('{{ asset('images/hero-bg.jpg') }}');">
-
-    <!-- Contenu centré sur le tableau -->
+<!-- HERO SECTION -->
+<section id="accueil" class="relative w-full min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center m-0 p-0" style="background-image: url('{{ asset('images/hero-bg.jpg') }}');">
     <div class="text-center px-4 max-w-2xl mx-auto">
-
-        <!-- Logo Textuel Noir & Or -->
         <div class="select-none mb-4">
             <h1 class="font-serif text-6xl md:text-7xl font-extralight tracking-tight text-neutral-900 leading-none">
                 Oft
@@ -23,21 +18,19 @@
             Ateliers divers et créations sur-mesure.
         </p>
 
-        <!-- Boutons d'action -->
         <div class="flex flex-wrap justify-center gap-4">
-            <a href="/formations" class="px-6 py-3 bg-[#82C341] text-white font-semibold rounded-lg shadow-md hover:bg-opacity-90 transition">
-                Découvrir nos ateliers
+            <a href="#offres" class="px-6 py-3 bg-[#82C341] text-white font-semibold rounded-lg shadow-md hover:bg-opacity-90 transition">
+                Découvrir nos offres
             </a>
-            <a href="/calendrier" class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-50 transition border border-gray-200">
-                Voir le calendrier
+            <a href="#a-propos" class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-50 transition border border-gray-200">
+                À propos de l'atelier
             </a>
         </div>
-
     </div>
 </section>
 
 <!-- SECTION À PROPOS -->
-<section id="a-propos" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
+<section id="a-propos" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
         <div class="md:col-span-5">
             <div class="rounded-3xl overflow-hidden shadow-md bg-gray-200 aspect-[4/3] md:aspect-[1/1] relative">
@@ -54,8 +47,8 @@
                 <p>Dans une ambiance chaleureuse et conviviale, nous vous proposons des formations, des ateliers créatifs et des confections sur mesure adaptées à vos envies.</p>
             </div>
             <div>
-                <a href="#services" class="inline-flex items-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-6 py-3 rounded-full text-sm font-medium transition">
-                    <span>En savoir plus</span>
+                <a href="#temoignages" class="inline-flex items-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-6 py-3 rounded-full text-sm font-medium transition">
+                    <span>En savoir plus sur l'esprit de l'atelier</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </a>
             </div>
@@ -71,80 +64,84 @@
     </div>
 </section>
 
-<!-- SECTION FORMATIONS & ATELIERS -->
-<section id="services" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
-    <div class="text-center mb-12">
+<!-- SECTION NOS OFFRES -->
+<section id="offres" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
+    <div class="text-center mb-12 space-y-3">
+        <span class="text-xs uppercase tracking-widest text-[#B58D56] font-semibold">Découverte</span>
         <h2 class="font-serif text-3xl md:text-4xl text-[#2D3B22] font-normal">
-            Découvrez nos formations et ateliers
+            Nos Offres
         </h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-        <!-- Carte 1 -->
+        <!-- Carte 1 : Formations -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-                <div class="p-6 border-t-4 border-emerald-500">
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold text-white bg-emerald-500 inline-block mb-3">
-                        Initiation
-                    </span>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">
-                        Cours & Ateliers Débutants
-                    </h3>
-                    <p class="text-gray-600 text-sm">
-                        Découvrez les bases de la couture, la prise en main de votre machine et vos premiers projets guidés.
-                    </p>
-                </div>
-                <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
-                    <a href="{{ route('trainings.index') }}"
-                       class="block text-center w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition text-sm">
-                        Voir les formations
-                    </a>
-                </div>
+            <div class="p-6 border-t-4 border-emerald-500">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold text-white bg-emerald-500 inline-block mb-3">
+                    Initiation
+                </span>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Cours & Formations</h3>
+                <p class="text-gray-600 text-sm">
+                    Découvrez les bases de la couture, la prise en main de votre machine et vos premiers projets guidés.
+                </p>
             </div>
-        <!-- Carte 2 -->
+            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
+                <a href="{{ route('trainings.formations') }}" class="block text-center w-full py-2.5 px-4 bg-[#82C341] hover:bg-opacity-90 text-white font-semibold rounded-xl transition text-sm">
+                    Voir les formations
+                </a>
+            </div>
+        </div>
+
+        <!-- Carte 2 : Ateliers -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-                <div class="p-6 border-t-4 border-blue-500">
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold text-white bg-blue-500 inline-block mb-3">
-                        Perfectionnement
-                    </span>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">
-                        Stages & Projets Avancés
-                    </h3>
-                    <p class="text-gray-600 text-sm">
-                        Confectionnez des pièces complexes : patrons, vêtements sur-mesure et techniques de finition.
-                    </p>
-                </div>
-                <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
-                    <a href="{{ route('trainings.index') }}"
-                       class="block text-center w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition text-sm">
-                        Voir les formations
-                    </a>
+            <div class="p-6 border-t-4 border-blue-500">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold text-white bg-blue-500 inline-block mb-3">
+                    Perfectionnement
+                </span>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Ateliers Créatifs</h3>
+                <p class="text-gray-600 text-sm">
+                    Confectionnez des pièces thématiques : tricot, crochet, teinture, broderie et tissage.
+                </p>
+            </div>
+            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
+                <a href="{{ route('trainings.workshops') }}" class="block text-center w-full py-2.5 px-4 bg-[#82C341] hover:bg-opacity-90 text-white font-semibold rounded-xl transition text-sm">
+                    Voir les ateliers
+                </a>
+            </div>
+        </div>
+
+        <!-- Carte 3 : Galerie des confections -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+            <div class="p-6 border-t-4 border-amber-400">
+                <span class="px-3 py-1 rounded-full text-xs font-bold text-amber-950 bg-amber-400 inline-block mb-3">
+                    Galerie
+                </span>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Nos Confections</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Aperçu des pièces et créations confectionnées à la main au sein de notre atelier.
+                </p>
+
+                <div class="grid grid-cols-3 gap-2 my-4">
+                    <img src="{{ asset('storage/gallery/couture.jpg') }}" alt="Confection 1" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=300&q=80'">
+                    <img src="{{ asset('storage/gallery/tricot.jpg') }}" alt="Confection 2" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=300&q=80'">
+                    <img src="{{ asset('storage/gallery/broderie.jpg') }}" alt="Confection 3" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=300&q=80'">
+                    <img src="{{ asset('storage/gallery/teinture.jpg') }}" alt="Confection 4" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=300&q=80'">
+                    <img src="{{ asset('storage/gallery/tissage.jpg') }}" alt="Confection 5" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1528458876861-544fd1761a91?auto=format&fit=crop&w=300&q=80'">
+                    <img src="{{ asset('storage/gallery/confection6.jpg') }}" alt="Confection 6" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1619252584172-a83a949b6efd?auto=format&fit=crop&w=300&q=80'">
                 </div>
             </div>
 
-        <!-- Carte 3 -->
-        <div class="bg-[#F2EFE9] rounded-2xl overflow-hidden shadow-sm flex flex-col">
-            <div class="h-56 relative bg-gray-200">
-                <img src="{{ asset('images/confections.jpg') }}" alt="Confections" class="w-full h-full object-cover">
-                <div class="absolute -bottom-6 left-6 w-12 h-12 rounded-full bg-[#2D3B22] text-white flex items-center justify-center shadow">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                </div>
-            </div>
-            <div class="p-6 pt-10 flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                    <h3 class="font-serif text-2xl text-[#2D3B22] font-semibold mb-3">Confections</h3>
-                    <p class="text-sm md:text-base text-gray-700 leading-relaxed">Des créations uniques et sur mesure, pensées pour vous.</p>
-                </div>
-<a href="{{ Route::has('gallery.index') ? route('gallery.index') : '#' }}"
-                       class="block text-center w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition text-sm">
-                        Explorer la galerie
-                    </a>
+            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
+                <a href="{{ url('/galerie') }}" class="block text-center w-full py-2.5 px-4 bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold rounded-xl transition text-sm">
+                    Voir toute la galerie
+                </a>
             </div>
         </div>
     </div>
 </section>
 
 <!-- SECTION TÉMOIGNAGES -->
-<section id="temoignages" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
+<section id="temoignages" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
     <div class="text-center mb-12 space-y-3">
         <span class="text-xs uppercase tracking-widest text-[#B58D56] font-semibold">Témoignages</span>
         <h2 class="font-serif text-3xl md:text-5xl text-[#2D3B22] font-normal italic">
@@ -176,7 +173,7 @@
 </section>
 
 <!-- SECTION CONTACT -->
-<section id="contact" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
+<section id="contact" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
     <div class="bg-[#F2EFE9] rounded-3xl p-8 md:p-12 shadow-sm relative overflow-hidden">
         @if(session('success'))
             <div class="mb-6 bg-green-100 border border-green-400 text-green-800 px-4 py-3 rounded-xl text-sm">
@@ -184,43 +181,133 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
-            <div class="md:col-span-5 space-y-6">
-                <h2 class="font-serif text-3xl md:text-4xl text-[#2D3B22] font-normal">Contactez-nous</h2>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start relative z-10">
+            <!-- Infos de contact à gauche -->
+            <div class="md:col-span-4 space-y-6">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-[#B58D56] font-semibold">Échangeons</span>
+                    <h2 class="font-serif text-3xl md:text-4xl text-[#2D3B22] font-normal mt-1">Contactez-nous</h2>
+                </div>
+
                 <div class="space-y-4 text-sm md:text-base text-gray-800">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-[#2D3B22]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h32a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path></svg>
-                        <span>+596 696 92 62 64</span>
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2D3B22] shadow-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h32a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path></svg>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-gray-500 font-medium">Téléphone</span>
+                            <span class="font-medium">+596 696 92 62 64</span>
+                        </div>
                     </div>
+
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-[#2D3B22]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        <span>oftcreation@gmail.com</span>
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2D3B22] shadow-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-gray-500 font-medium">Email</span>
+                            <span class="font-medium">oftcreation@gmail.com</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2D3B22] shadow-sm">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-gray-500 font-medium">Horaires d'ouverture</span>
+                            <span class="font-medium">Lun - Ven : 8h30 - 17h00</span>
+                        </div>
                     </div>
                 </div>
-                <p class="text-sm text-gray-600 leading-relaxed pt-2">N'hésitez pas à nous écrire, nous vous répondrons dans les meilleurs délais.</p>
+
+                <div class="p-4 bg-white/60 rounded-2xl border border-stone-200/50 text-xs text-gray-600 leading-relaxed">
+                    Vous souhaitez un devis personnalisé pour une confection sur-mesure ou une privatisation d'atelier ? Remplissez ce formulaire et nous vous recontacterons sous 48h.
+                </div>
             </div>
 
-            <div class="md:col-span-7">
-                <form action="{{ route('contact.store') }}" method="POST" class="space-y-4">
+            <!-- Formulaire de contact enrichi à droite -->
+            <div class="md:col-span-8 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200/60">
+                <form action="{{ route('contact.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
+
+                    <!-- Ligne 1 : Nom & Prénom -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <input type="text" name="nom" placeholder="Nom" value="{{ old('nom') }}" class="w-full px-4 py-3 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
-                            @error('nom') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Nom <span class="text-red-500">*</span></label>
+                            <input type="text" name="nom" placeholder="Votre nom" value="{{ old('nom') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
+                            @error('nom') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
                         <div>
-                            <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" class="w-full px-4 py-3 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
-                            @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Prénom</label>
+                            <input type="text" name="prenom" placeholder="Votre prénom" value="{{ old('prenom') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]">
+                            @error('prenom') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
                     </div>
 
-                    <div>
-                        <textarea name="message" rows="4" placeholder="Message" class="w-full px-4 py-3 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>{{ old('message') }}</textarea>
-                        @error('message') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    <!-- Ligne 2 : Email & Téléphone -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
+                            <input type="email" name="email" placeholder="votre@email.com" value="{{ old('email') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
+                            @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Téléphone</label>
+                            <input type="tel" name="telephone" placeholder="06 96 XX XX XX" value="{{ old('telephone') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]">
+                            @error('telephone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
                     </div>
 
+                    <!-- Ligne 3 : Objet & Niveau / Type de projet -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Sujet de la demande <span class="text-red-500">*</span></label>
+                            <select name="sujet" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
+                                <option value="" disabled {{ old('sujet') ? '' : 'selected' }}>Sélectionnez un sujet</option>
+                                <option value="Information cours" {{ old('sujet') == 'Information cours' ? 'selected' : '' }}>Renseignement sur un cours / formation</option>
+                                <option value="Inscription atelier" {{ old('sujet') == 'Inscription atelier' ? 'selected' : '' }}>Inscription à un atelier créatif</option>
+                                <option value="Creation sur mesure" {{ old('sujet') == 'Creation sur mesure' ? 'selected' : '' }}>Commande / Confection sur-mesure</option>
+                                <option value="Privatisation" {{ old('sujet') == 'Privatisation' ? 'selected' : '' }}>Privatisation d'événement / Atelier groupe</option>
+                                <option value="Autre" {{ old('sujet') == 'Autre' ? 'selected' : '' }}>Autre demande</option>
+                            </select>
+                            @error('sujet') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Votre niveau en couture</label>
+                            <select name="niveau" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]">
+                                <option value="" selected>Non renseigné</option>
+                                <option value="Debutant" {{ old('niveau') == 'Debutant' ? 'selected' : '' }}>Débutant(e) complet</option>
+                                <option value="Intermediaire" {{ old('niveau') == 'Intermediaire' ? 'selected' : '' }}>Intermédiaire (quelques bases)</option>
+                                <option value="Avance" {{ old('niveau') == 'Avance' ? 'selected' : '' }}>Avancé(e) / Autonome</option>
+                            </select>
+                            @error('niveau') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
+                    <!-- Ligne 4 : Pièce jointe optionnelle (Inspiration / Modèle) -->
                     <div>
-                        <button type="submit" class="inline-flex items-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-6 py-3 rounded-xl text-sm font-medium transition shadow-sm">
+                        <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Joindre une image ou un croquis (Optionnel)</label>
+                        <input type="file" name="fichier" accept="image/*,.pdf" class="w-full text-xs text-gray-600 bg-[#F9F8F3] border border-gray-200 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#2D3B22] file:text-white hover:file:bg-[#1e2817] cursor-pointer">
+                        <span class="text-[11px] text-gray-500 mt-1 block">Formats acceptés : JPG, PNG, PDF (max 5 Mo)</span>
+                        @error('fichier') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Ligne 5 : Message -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Message / Détails de votre projet <span class="text-red-500">*</span></label>
+                        <textarea name="message" rows="4" placeholder="Décrivez votre projet, vos disponibilités ou vos questions..." class="w-full px-4 py-3 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>{{ old('message') }}</textarea>
+                        @error('message') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Ligne 6 : Consentement & Bouton -->
+                    <div class="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <label class="flex items-start gap-2 cursor-pointer text-xs text-gray-600">
+                            <input type="checkbox" name="rgpd" required class="mt-0.5 rounded border-gray-300 text-[#2D3B22] focus:ring-[#2D3B22]">
+                            <span>J'accepte que mes données soient utilisées pour traiter ma demande.</span>
+                        </label>
+
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-8 py-3 rounded-xl text-sm font-medium transition shadow-sm whitespace-nowrap">
                             <span>Envoyer le message</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                         </button>
