@@ -19,9 +19,10 @@
             @include('layouts.navigation')
 
             <!-- Marge haute (pt-6) pour éviter tout chevauchement -->
-            <main class="pt-6 pb-12">
-                {{ $slot }}
-            </main>
+<!-- Dans app.blade.php -->
+<main class="w-full p-0 m-0">
+    {{ $slot ?? $content }}
+</main>
         </div>
     </body>
 </html>

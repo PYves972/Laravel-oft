@@ -1,32 +1,41 @@
-<nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-20 items-center">
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 h-20 bg-[#F9F8F3] border-b border-gray-200/60 shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div class="flex justify-between items-center h-full">
 
-            {{-- Logo --}}
+            <!-- Logo -->
             <div class="flex-shrink-0 flex items-center">
-                <a href="{{ url('/') }}" class="flex items-center">
-                    <x-application-logo class="h-10 w-auto fill-current text-[#2D3B22]" />
+                <a href="{{ url('/') }}" class="flex items-center gap-2">
+                    <img src="{{ asset('images/logo.png') }}" alt="Oft Atelier" class="h-10 w-auto object-contain" />
                 </a>
             </div>
 
-            {{-- Liens principaux --}}
-            <div class="hidden sm:flex sm:items-center sm:space-x-8">
-                <a href="{{ url('/') }}" class="text-sm font-medium text-gray-700 hover:text-[#2D3B22] transition">Accueil</a>
-                <a href="#a-propos" class="text-sm font-medium text-gray-700 hover:text-[#2D3B22] transition">À propos</a>
-                <a href="{{ route('training-calendar.index') }}" class="text-sm font-medium text-gray-700 hover:text-[#2D3B22] transition">Formations</a>
-                <a href="#services" class="text-sm font-medium text-gray-700 hover:text-[#2D3B22] transition">Services</a>
-                <a href="#contact" class="text-sm font-medium text-gray-700 hover:text-[#2D3B22] transition">Contact</a>
+            <!-- Liens de navigation -->
+            <div class="hidden md:flex space-x-8 items-center font-medium text-sm text-gray-800">
+                <a href="{{ url('/') }}#accueil" class="hover:text-[#2D3B22] transition-colors">Accueil</a>
+                <a href="{{ url('/') }}#a-propos" class="hover:text-[#2D3B22] transition-colors">À propos</a>
+                <a href="{{ url('/') }}#services" class="hover:text-[#2D3B22] transition-colors">Ateliers et formations</a>
+                @if(Route::has('training-calendar.index'))
+                    <a href="{{ route('training-calendar.index') }}" class="hover:text-[#2D3B22] transition-colors font-semibold text-[#2D3B22]">Calendrier</a>
+                @endif
+                <a href="{{ url('/') }}#temoignages" class="hover:text-[#2D3B22] transition-colors">Témoignages</a>
+                <a href="{{ url('/') }}#contact" class="hover:text-[#2D3B22] transition-colors">Contact</a>
             </div>
 
-            {{-- Bouton Connexion / Dashboard --}}
-            <div class="hidden sm:flex sm:items-center">
+            <!-- Boutons d'action -->
+            <div class="flex items-center gap-3">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="bg-[#2D3B22] text-white text-xs font-semibold px-5 py-2.5 rounded-full hover:bg-[#1e2817] transition shadow-sm">
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white bg-[#2D3B22] hover:bg-[#1e2817] rounded-full transition-all shadow-sm">
                         Mon Tableau de bord
                     </a>
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-semibold uppercase tracking-wider text-red-700 hover:text-red-900 border border-red-200 hover:border-red-400 rounded-full transition-all">
+                            Déconnexion
+                        </button>
+                    </form>
                 @else
-                    <a href="{{ route('login') }}" class="bg-[#2D3B22] text-white text-xs font-semibold px-5 py-2.5 rounded-full hover:bg-[#1e2817] transition shadow-sm">
-                        Se connecter
+                    <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white bg-[#2D3B22] hover:bg-[#1e2817] rounded-full transition-all shadow-sm">
+                        Connexion
                     </a>
                 @endauth
             </div>
