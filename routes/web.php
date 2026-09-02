@@ -5,15 +5,17 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\GalleryController;
 use App\Livewire\TrainingBookingCalendar;
 use App\Models\Service;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\TestimonialController;
 // Accueil
 Route::get('/', function () {
     $services = Service::all();
-    $testimonials = Testimonial::all();
+    $testimonials = Testimonial::where('is_published', true)->latest()->take(3)->get();
+
     return view('welcome', compact('services', 'testimonials'));
 })->name('home');
 
@@ -25,6 +27,8 @@ Route::get('/formations', [TrainingController::class, 'formations'])->name('trai
 Route::get('/ateliers', [TrainingController::class, 'workshops'])->name('trainings.workshops');
 Route::get('/formations/{slug}', [TrainingController::class, 'show'])->name('trainings.show');
 
+Route::get('/galerie', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/temoignages', [TestimonialController::class, 'index'])->name('testimonials.index');
 // Contact
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 

@@ -14,7 +14,7 @@
                 <a href="{{ url('/') }}#accueil" class="hover:text-[#2D3B22] transition-colors">Accueil</a>
                 <a href="{{ url('/') }}#a-propos" class="hover:text-[#2D3B22] transition-colors">À propos</a>
                 <a href="{{ url('/') }}#offres" class="hover:text-[#2D3B22] transition-colors">Nos Offres</a>
-                <a href="{{ url('/galerie') }}" class="hover:text-[#2D3B22] transition-colors">Galerie</a>
+                <a href="{{ route('gallery.index') }}" class="hover:text-[#2D3B22] transition-colors">Galerie</a>
                 <a href="{{ url('/') }}#temoignages" class="hover:text-[#2D3B22] transition-colors">Témoignages</a>
                 <a href="{{ url('/') }}#contact" class="hover:text-[#2D3B22] transition-colors">Contact</a>
             </div>

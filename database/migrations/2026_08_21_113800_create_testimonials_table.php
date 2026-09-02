@@ -13,10 +13,11 @@ public function up(): void
 {
     Schema::create('testimonials', function (Blueprint $table) {
         $table->id();
-        $table->string('nom');
-        $table->string('role');
-        $table->text('contenu');
-        $table->string('avatar')->nullable();
+        $table->string('author');
+        $table->string('role')->nullable();
+        $table->text('content');
+        $table->unsignedTinyInteger('rating')->default(5);
+        $table->boolean('is_published')->default(true);
         $table->timestamps();
     });
 }

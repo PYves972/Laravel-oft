@@ -132,7 +132,7 @@
             </div>
 
             <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
-                <a href="{{ url('/galerie') }}" class="block text-center w-full py-2.5 px-4 bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold rounded-xl transition text-sm">
+                <a href="{{ route('gallery.index') }}" class="block text-center w-full py-2.5 px-4 bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold rounded-xl transition text-sm">
                     Voir toute la galerie
                 </a>
             </div>
@@ -149,27 +149,30 @@
         </h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        @if(isset($testimonials) && count($testimonials) > 0)
-            @foreach($testimonials as $testimonial)
-                <div class="bg-[#F2EFE9] rounded-2xl p-8 shadow-sm flex flex-col justify-between space-y-6">
-                    <div class="space-y-4">
-                        <div class="flex text-[#B58D56] gap-1">
-                            ★ ★ ★ ★ ★
-                        </div>
-                        <p class="text-sm md:text-base text-gray-800 leading-relaxed">« {{ $testimonial->contenu }} »</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <img src="{{ asset($testimonial->avatar) }}" alt="{{ $testimonial->nom }}" class="w-12 h-12 rounded-full object-cover">
-                        <div>
-                            <h4 class="font-semibold text-sm text-gray-900">{{ $testimonial->nom }}</h4>
-                            <p class="text-xs text-gray-600">{{ $testimonial->role }}</p>
-                        </div>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    @forelse($testimonials as $testimonial)
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between">
+            <div>
+                <!-- Étoiles de notation -->
+                <div class="flex text-amber-400 mb-3 text-lg">
+                    @for($i = 0; $i < ($testimonial->rating ?? 5); $i++)
+                        ★
+                    @endfor
                 </div>
-            @endforeach
-        @endif
-    </div>
+                <!-- Contenu -->
+                <p class="text-gray-600 italic mb-4">"{{ $testimonial->content }}"</p>
+            </div>
+            <div>
+                <p class="font-semibold text-gray-800">{{ $testimonial->author }}</p>
+                @if($testimonial->role)
+                    <p class="text-sm text-gray-500">{{ $testimonial->role }}</p>
+                @endif
+            </div>
+        </div>
+    @empty
+        <p class="col-span-full text-center text-gray-500">Aucun témoignage pour le moment.</p>
+    @endforelse
+</div>
 </section>
 
 <!-- SECTION CONTACT -->

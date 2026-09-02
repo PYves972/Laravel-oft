@@ -18,11 +18,9 @@
         <div class="min-h-screen">
             @include('layouts.navigation')
 
-            <!-- Marge haute (pt-6) pour éviter tout chevauchement -->
-<!-- Dans app.blade.php -->
-<main class="w-full p-0 m-0">
-    {{ $slot ?? $content }}
-</main>
+            <main class="w-full p-0 m-0">
+                {{ $slot }}
+            </main>
         </div>
     </body>
 </html>

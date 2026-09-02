@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Service;
-use App\Models\Testimonial;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -39,7 +38,7 @@ class DatabaseSeeder extends Seeder
 
         /*
          * ============================================================
-         * CATÉGORIES + ATELIERS + SÉANCES (OPTION 2)
+         * ATELIERS, SÉANCES & TÉMOIGNAGES
          * ============================================================
          */
 
@@ -47,33 +46,7 @@ class DatabaseSeeder extends Seeder
             CategoryTrainingSeeder::class,
             TrainingSessionSeeder::class,
             TrainingSeeder::class,
-        ]);
-
-        /*
-         * ============================================================
-         * TÉMOIGNAGES
-         * ============================================================
-         */
-
-        Testimonial::create([
-            'nom' => 'Sophie L.',
-            'role' => 'Élève en couture',
-            'contenu' => "Une équipe à l'écoute, des cours de qualité et une ambiance au top !",
-            'avatar' => 'https://i.pravatar.cc/100?img=5',
-        ]);
-
-        Testimonial::create([
-            'nom' => 'Julie M.',
-            'role' => 'Cliente',
-            'contenu' => "Grâce à l'atelier, j'ai pu réaliser ma robe de mariée. Un rêve devenu réalité !",
-            'avatar' => 'https://i.pravatar.cc/100?img=9',
-        ]);
-
-        Testimonial::create([
-            'nom' => 'Claire D.',
-            'role' => 'Participante aux ateliers',
-            'contenu' => 'Des ateliers variés et inspirants. Je recommande vivement !',
-            'avatar' => 'https://i.pravatar.cc/100?img=16',
+            TestimonialSeeder::class,
         ]);
     }
 }
