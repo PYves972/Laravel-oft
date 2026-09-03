@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str; // <-- AJOUTER CETTE LIGNE
 
 class Training extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'category_id',
         'title',
@@ -20,21 +17,26 @@ class Training extends Model
         'duration_minutes',
         'price',
         'is_active',
+         'image_path',
     ];
 
-    /**
-     * Relation avec la catégorie.
-     */
+    protected static function booted(): void
+    {
+        static::creating(function (Training $training) {
+            if (empty($training->slug)) {
+                $training->slug = Str::slug($training->title);
+            }
+        });
+
+        static::updating(function (Training $training) {
+            if ($training->isDirty('title') && empty($training->slug)) {
+                $training->slug = Str::slug($training->title);
+            }
+        });
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    /**
-     * Relation avec les sessions.
-     */
-    public function sessions(): HasMany
-    {
-        return $this->hasMany(TrainingSession::class);
     }
 }
