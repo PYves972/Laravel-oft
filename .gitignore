@@ -26,3 +26,9 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 public/images/galerie/
+# Ignorer le contenu des images statiques/publiques
+/public/images/*
+!/public/images/.gitkeep
+
+# Sécurité pour le stockage public
+/storage/app/public/*
