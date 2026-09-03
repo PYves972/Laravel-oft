@@ -11,6 +11,7 @@ use App\Models\Service;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestimonialController;
+use Illuminate\Support\Facades\Storage;
 // Accueil
 Route::get('/', function () {
     $services = Service::all();
@@ -47,4 +48,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bookings/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
+Route::get('/storage/trainings/{filename}', function ($filename) {
+    $path = storage_path('app/public/trainings/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+});
 require __DIR__.'/auth.php';

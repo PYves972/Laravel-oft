@@ -12,15 +12,33 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @forelse($trainings as $training)
                 <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between">
-                    <div class="p-6 space-y-4">
+
+                    {{-- BALISE IMAGE RAJOUTÉE ICI --}}
+<div class="h-48 w-full overflow-hidden bg-gray-100">
+    @if($training->image_path)
+<img src="{{ Storage::disk('public')->url($training->image_path) }}"
+     alt="{{ $training->title }}">
+             class="w-full h-full object-cover">
+    @else
+        <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
+            Pas d'image
+        </div>
+    @endif
+</div>
+
+                    <div class="p-6 space-y-4 flex-1">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-semibold px-3 py-1 rounded-full text-white" style="background-color: {{ $training->color ?? '#82C341' }}">
                                 {{ $training->category->name ?? 'Couture' }}
                             </span>
-                            <span class="text-xs text-gray-500 font-medium">⏱ {{ $training->duration ?? '2h00' }}</span>
+                            <span class="text-xs text-gray-500 font-medium">⏱ {{ $training->duration_minutes ?? '120' }} min</span>
                         </div>
                         <h3 class="font-serif text-xl font-bold text-gray-900">{{ $training->title }}</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">{{ $training->description }}</p>
+
+                        {{-- Utilisation de {!! !!} si vous utilisez RichEditor dans Filament --}}
+                        <div class="text-sm text-gray-600 leading-relaxed">
+                            {!! $training->description !!}
+                        </div>
                     </div>
 
                     <div class="p-6 pt-0 flex items-center justify-between border-t border-gray-100 mt-4">
