@@ -18,6 +18,8 @@
                     <li><a href="{{ url('/') }}#services" class="hover:text-white transition">Ateliers et formations</a></li>
                     <li><a href="{{ url('/') }}#temoignages" class="hover:text-white transition">Témoignages</a></li>
                     <li><a href="{{ url('/') }}#contact" class="hover:text-white transition">Contact</a></li>
+                    <li><a href="{{ route('faq.index') }}" class=" hover:text-white transition font-medium">
+    FAQ </a></li>
                 </ul>
             </div>
 

@@ -12,7 +12,14 @@ use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\SubscriberController;
 
+
+Route::post('/newsletter/subscribe', [SubscriberController::class, 'store'])->name('newsletter.subscribe');
+
+// Page d'information & FAQ
+Route::get('/faq', FaqController::class)->name('faq.index');
 
 Route::get('/', [TrainingController::class, 'index'])->name('home');
 // Accueil

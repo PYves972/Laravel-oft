@@ -363,5 +363,37 @@
         </div>
     </div>
 </section>
+<div class="bg-amber-50 rounded-2xl p-8 border border-amber-200 max-w-3xl mx-auto my-12 text-center">
+    <h3 class="text-2xl font-bold text-gray-900">Restez informé(e) des prochains ateliers</h3>
+    <p class="text-gray-600 mt-2 text-sm">Recevez directement nos nouveaux créneaux et -10% sur votre première réservation.</p>
 
+    @if(session('newsletter_success'))
+        <div class="mt-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg text-sm font-medium">
+            {{ session('newsletter_success') }}
+        </div>
+    @else
+        <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            @csrf
+            <div class="flex-1">
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Votre adresse e-mail"
+                    value="{{ old('email') }}"
+                    required
+                    class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-sm"
+                >
+                @error('email')
+                    <p class="text-red-500 text-xs text-left mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            <button
+                type="submit"
+                class="px-6 py-3 bg-amber-600 text-white font-semibold rounded-xl shadow hover:bg-amber-700 transition text-sm whitespace-nowrap"
+            >
+                S'inscrire
+            </button>
+        </form>
+    @endif
+</div>
 @endsection
