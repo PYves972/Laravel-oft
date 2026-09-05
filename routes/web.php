@@ -12,6 +12,9 @@ use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Storage;
+
+
+Route::get('/', [TrainingController::class, 'index'])->name('home');
 // Accueil
 Route::get('/', function () {
     $services = Service::all();

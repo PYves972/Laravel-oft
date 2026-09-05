@@ -64,6 +64,7 @@
     </div>
 </section>
 
+
 <!-- SECTION NOS OFFRES -->
 <section id="offres" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
     <div class="text-center mb-12 space-y-3">
@@ -76,36 +77,78 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
         <!-- Carte 1 : Formations -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-            <div class="p-6 border-t-4 border-emerald-500">
-                <span class="px-3 py-1 rounded-full text-xs font-semibold text-white bg-emerald-500 inline-block mb-3">
-                    Initiation
-                </span>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Cours & Formations</h3>
-                <p class="text-gray-600 text-sm">
-                    Découvrez les bases de la couture, la prise en main de votre machine et vos premiers projets guidés.
-                </p>
+            <div class="border-t-4 border-emerald-500">
+                <div class="h-48 w-full bg-gray-100 overflow-hidden relative">
+                    {{-- Vérification si l'enregistrement possède une image en base de données --}}
+                    @if(!empty($featuredFormation?->image_path))
+                        <img src="{{ asset('storage/' . $featuredFormation->image_path) }}" alt="{{ $featuredFormation->title ?? 'Cours & Formations' }}" class="w-full h-full object-cover">
+                    @else
+                        {{-- Image temporaire si aucune image n'est enregistrée en base de données --}}
+                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400 text-xs">
+                            Aucune image disponible
+                        </div>
+                    @endif
+                    <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white bg-emerald-500 shadow-sm">
+                        Initiation
+                    </span>
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        {{ $featuredFormation->title ?? 'Cours & Formations' }}
+                    </h3>
+                    <p class="text-gray-600 text-sm">
+                        {{ $featuredFormation->description ?? 'Découvrez les bases de la couture, la prise en main de votre machine et vos premiers projets guidés.' }}
+                    </p>
+                </div>
             </div>
-            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
+
+            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto space-y-2">
+                @if(isset($featuredFormation))
+                    <a href="{{ route('trainings.show', $featuredFormation->id) }}" class="block text-center w-full py-2 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition text-xs">
+                        En savoir plus sur ce cours
+                    </a>
+                @endif
                 <a href="{{ route('trainings.formations') }}" class="block text-center w-full py-2.5 px-4 bg-[#82C341] hover:bg-opacity-90 text-white font-semibold rounded-xl transition text-sm">
-                    Voir les formations
+                    Voir toutes les formations
                 </a>
             </div>
         </div>
 
-        <!-- Carte 2 : Ateliers -->
+        <!-- Carte 2 : Ateliers Créatifs -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-            <div class="p-6 border-t-4 border-blue-500">
-                <span class="px-3 py-1 rounded-full text-xs font-semibold text-white bg-blue-500 inline-block mb-3">
-                    Perfectionnement
-                </span>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Ateliers Créatifs</h3>
-                <p class="text-gray-600 text-sm">
-                    Confectionnez des pièces thématiques : tricot, crochet, teinture, broderie et tissage.
-                </p>
+            <div class="border-t-4 border-blue-500">
+                <div class="h-48 w-full bg-gray-100 overflow-hidden relative">
+                    @if(!empty($featuredWorkshop?->image_path))
+                        <img src="{{ asset('storage/' . $featuredWorkshop->image_path) }}" alt="{{ $featuredWorkshop->title ?? 'Ateliers Créatifs' }}" class="w-full h-full object-cover">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400 text-xs">
+                            Aucune image disponible
+                        </div>
+                    @endif
+                    <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white bg-blue-500 shadow-sm">
+                        Perfectionnement
+                    </span>
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        {{ $featuredWorkshop->title ?? 'Ateliers Créatifs' }}
+                    </h3>
+                    <p class="text-gray-600 text-sm">
+                        {{ $featuredWorkshop->description ?? 'Confectionnez des pièces thématiques : tricot, crochet, teinture, broderie et tissage.' }}
+                    </p>
+                </div>
             </div>
-            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
+
+            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto space-y-2">
+                @if(isset($featuredWorkshop))
+                    <a href="{{ route('trainings.show', $featuredWorkshop->id) }}" class="block text-center w-full py-2 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition text-xs">
+                        En savoir plus sur cet atelier
+                    </a>
+                @endif
                 <a href="{{ route('trainings.workshops') }}" class="block text-center w-full py-2.5 px-4 bg-[#82C341] hover:bg-opacity-90 text-white font-semibold rounded-xl transition text-sm">
-                    Voir les ateliers
+                    Voir tous les ateliers
                 </a>
             </div>
         </div>

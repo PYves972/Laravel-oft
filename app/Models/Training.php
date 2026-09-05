@@ -9,16 +9,26 @@ use Illuminate\Support\Str; // <-- AJOUTER CETTE LIGNE
 class Training extends Model
 {
     protected $fillable = [
-        'category_id',
-        'title',
-        'slug',
-        'color',
-        'description',
-        'duration_minutes',
-        'price',
-        'is_active',
-         'image_path',
-    ];
+    'category_id',
+    'title',
+    'slug',
+    'price',
+    'duration_minutes',
+    'description',
+    'image_path',
+    'gallery_images',
+    'prerequisites',
+    'provided_equipment',
+    'required_equipment',
+    'program_steps',
+    'is_active',
+];
+
+protected $casts = [
+    'gallery_images' => 'array',
+    'program_steps' => 'array',
+    'is_active' => 'boolean',
+];
 
     protected static function booted(): void
     {
