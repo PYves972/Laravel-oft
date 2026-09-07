@@ -32,7 +32,7 @@ Route::get('/', function () {
 
 // Calendrier direct (accessible après le choix d'une formation ou d'un atelier)
 Route::get('/calendrier', TrainingBookingCalendar::class)->name('training-calendar.index');
-
+Route::get('/calendrier/{training}', [BookingController::class, 'showCalendar'])->name('calendar.show');
 // Catalogues
 Route::get('/formations', [TrainingController::class, 'formations'])->name('trainings.formations');
 Route::get('/ateliers', [TrainingController::class, 'workshops'])->name('trainings.workshops');

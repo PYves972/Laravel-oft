@@ -19,22 +19,30 @@ class TrainingBookingCalendar extends Component
 
     public function mount()
     {
-        $this->trainings = Training::where('is_active', true)->get();
+        // 1. Initialise le mois courant (Ex: "2026-09")
+        $this->currentMonth = now()->format('Y-m');
 
+        // 2. Récupère toutes les formations/ateliers
+        $this->trainings = Training::all();
+
+        // 3. Capture l'ID passé dans l'URL (?training=X)
         $requestedTrainingId = request()->query('training');
 
-        if ($requestedTrainingId && $this->trainings->contains('id', $requestedTrainingId)) {
+        if ($requestedTrainingId && Training::where('id', $requestedTrainingId)->exists()) {
             $this->selectedTrainingId = (int) $requestedTrainingId;
         } else {
             $this->selectedTrainingId = $this->trainings->first()?->id;
         }
 
-        $this->currentMonth = now()->startOfMonth()->format('Y-m');
+        // 4. Auto-sélectionne la première date disponible
         $this->autoSelectFirstDate();
     }
 
+    // Réaction au changement d'option dans le menu déroulant
     public function updatedSelectedTrainingId()
     {
+        $this->selectedDate = null;
+        $this->selectedSessionId = null;
         $this->autoSelectFirstDate();
     }
 
@@ -75,7 +83,6 @@ class TrainingBookingCalendar extends Component
 
         $session = TrainingSession::findOrFail($sessionId);
 
-        // Réservation
         Booking::firstOrCreate([
             'user_id' => Auth::id(),
             'training_session_id' => $session->id,

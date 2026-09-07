@@ -2,21 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Testimonial;
 use App\Models\Training;
 use Illuminate\Http\Request;
 
 class TrainingController extends Controller
 {
-    public function home()
+    public function formations()
     {
-        // Récupération des témoignages
-        $testimonials = Testimonial::all();
+        // Ne récupère QUE les formations (exclut les ateliers)
+        $trainings = Training::where('type', 'formation')
+            ->where('is_active', true)
+            ->get();
 
-        // Récupération dynamique du premier cours et atelier
-        $featuredFormation = Training::first();
-        $featuredWorkshop  = Training::skip(1)->first();
+        return view('trainings.formations', compact('trainings'));
+    }
 
-        return view('home', compact('testimonials', 'featuredFormation', 'featuredWorkshop'));
+    public function workshops()
+    {
+        // Ne récupère QUE les ateliers (si 'type' n'est pas renseigné, on peut aussi filtrer par le nom de la catégorie si besoin)
+        $trainings = Training::where('type', 'atelier')
+            ->where('is_active', true)
+            ->get();
+
+        return view('trainings.workshops', compact('trainings'));
     }
 }

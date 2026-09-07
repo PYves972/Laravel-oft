@@ -2,33 +2,51 @@
 
 @section('content')
 
-<!-- HERO SECTION -->
-<section id="accueil" class="relative w-full min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center m-0 p-0" style="background-image: url('{{ asset('images/hero-bg.jpg') }}');">
-    <div class="text-center px-4 max-w-2xl mx-auto">
-        <div class="select-none mb-4">
-            <h1 class="font-serif text-6xl md:text-7xl font-extralight tracking-tight text-neutral-900 leading-none">
-                Oft
-            </h1>
-            <span class="block font-sans text-sm md:text-base font-medium tracking-[0.35em] uppercase text-[#C59B27] mt-1 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+<section id="accueil" class="relative w-full min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-start m-0 p-0 px-8 md:px-16 lg:px-24" style="background-image: url('{{ asset('images/hero-bg.jpg') }}');">
+    <div class="flex flex-col items-center text-center max-w-xl my-auto">
+
+        <!-- Slogan Haut (Terracotta) -->
+        <span class="block font-sans text-xs md:text-sm font-normal tracking-[0.25em] uppercase text-[#D17B5D] mb-6">
+            APPRENDRE • CRÉER • TRANSMETTRE
+        </span>
+
+        <!-- Titre Style Logo "Oft ATELIER" -->
+        <div class="flex flex-col items-center mb-6">
+            <!-- "Oft" avec la ligne traversante derrière le t -->
+            <div class="relative inline-block leading-none">
+                <h1 class="font-serif text-6xl sm:text-7xl md:text-8xl font-medium text-[#2D4030] relative z-10">
+                    Oft
+                </h1>
+                <!-- Ligne horizontale derrière la lettre "t" -->
+                <div class="absolute top-[48%] right-[-12px] w-12 h-[1.5px] bg-[#999999] z-0"></div>
+            </div>
+
+            <!-- "ATELIER" en majuscules espacées -->
+            <span class="font-sans text-sm sm:text-base md:text-lg tracking-[0.35em] uppercase text-[#D17B5D] font-medium mt-2">
                 ATELIER
             </span>
         </div>
 
-        <p class="text-lg md:text-xl text-gray-800 font-medium mb-6">
-            Ateliers divers et créations sur-mesure.
+        <!-- Trait Séparateur -->
+        <div class="w-10 h-[1.5px] bg-[#D17B5D] mb-6"></div>
+
+        <!-- Description -->
+        <p class="text-base md:text-lg text-[#333333] font-normal leading-relaxed mb-8 max-w-lg">
+            Formations en couture et ateliers créatifs pour tous les niveaux.<br />
+            De la première couture à la maîtrise des savoir-faire.
         </p>
 
-        <div class="flex flex-wrap justify-center gap-4">
-            <a href="#offres" class="px-6 py-3 bg-[#82C341] text-white font-semibold rounded-lg shadow-md hover:bg-opacity-90 transition">
-                Découvrir nos offres
+        <!-- Boutons d'action -->
+        <div class="flex flex-wrap justify-center gap-4 w-full">
+            <a href="{{ route('trainings.formations') }}" class="px-6 py-3.5 bg-[#2D4030] hover:bg-[#233326] text-white font-medium text-xs md:text-sm tracking-wider uppercase rounded-sm shadow-sm transition duration-200">
+                DÉCOUVRIR LES FORMATIONS
             </a>
-            <a href="#a-propos" class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-50 transition border border-gray-200">
-                À propos de l'atelier
+            <a href="{{ route('trainings.workshops') }}" class="px-6 py-3.5 bg-transparent text-[#2D4030] font-medium text-xs md:text-sm tracking-wider uppercase rounded-sm border border-[#2D4030] hover:bg-[#2D4030]/5 transition duration-200">
+                VOIR LES ATELIERS
             </a>
         </div>
     </div>
 </section>
-
 <!-- SECTION À PROPOS -->
 <section id="a-propos" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">

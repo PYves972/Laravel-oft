@@ -8,12 +8,14 @@ use Illuminate\Support\Str; // <-- AJOUTER CETTE LIGNE
 
 class Training extends Model
 {
-    protected $fillable = [
+protected $fillable = [
     'category_id',
     'title',
     'slug',
+    'type', // <-- Indispensable
     'price',
     'duration_minutes',
+    'is_active',
     'description',
     'image_path',
     'gallery_images',
@@ -21,7 +23,6 @@ class Training extends Model
     'provided_equipment',
     'required_equipment',
     'program_steps',
-    'is_active',
 ];
 
 protected $casts = [
@@ -49,4 +50,9 @@ protected $casts = [
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function sessions()
+{
+    return $this->hasMany(TrainingSession::class);
+}
 }

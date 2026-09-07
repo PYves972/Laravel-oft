@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Filament\Resources\Trainings;
 
 use App\Filament\Resources\Trainings\Pages;
+use App\Filament\Resources\Trainings\RelationManagers;
 use App\Models\Training;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -37,6 +40,16 @@ class TrainingResource extends Resource
             ->components([
                 Section::make('Informations Principales')
                     ->schema([
+                        Select::make('type')
+                            ->label('Type d\'offre')
+                            ->options([
+                                'atelier' => 'Atelier',
+                                'formation' => 'Formation',
+                            ])
+                            ->default('atelier')
+                            ->required()
+                            ->native(false),
+
                         Select::make('category_id')
                             ->label('Catégorie')
                             ->relationship('category', 'name')
@@ -45,7 +58,7 @@ class TrainingResource extends Resource
                             ->preload(),
 
                         TextInput::make('title')
-                            ->label('Titre de l\'atelier')
+                            ->label('Titre')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
@@ -134,6 +147,17 @@ class TrainingResource extends Resource
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('type')
+                    ->label('Type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'formation' => 'warning',
+                        'atelier' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state))
+                    ->sortable(),
+
                 TextColumn::make('category.name')
                     ->label('Catégorie')
                     ->sortable(),
@@ -151,6 +175,13 @@ class TrainingResource extends Resource
                 EditAction::make(),
                 DeleteAction::make(),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\SessionsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
