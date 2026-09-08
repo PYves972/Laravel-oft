@@ -14,6 +14,7 @@ use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\SubscriberController;
+use App\Livewire\UserDashboard;
 
 
 Route::post('/newsletter/subscribe', [SubscriberController::class, 'store'])->name('newsletter.subscribe');
@@ -21,7 +22,6 @@ Route::post('/newsletter/subscribe', [SubscriberController::class, 'store'])->na
 // Page d'information & FAQ
 Route::get('/faq', FaqController::class)->name('faq.index');
 
-Route::get('/', [TrainingController::class, 'index'])->name('home');
 // Accueil
 Route::get('/', function () {
     $services = Service::all();
@@ -31,7 +31,7 @@ Route::get('/', function () {
 })->name('home');
 
 // Calendrier direct (accessible après le choix d'une formation ou d'un atelier)
-Route::get('/calendrier', TrainingBookingCalendar::class)->name('training-calendar.index');
+Route::get('/calendrier', TrainingBookingCalendar::class)->name('web.calendar');
 Route::get('/calendrier/{training}', [BookingController::class, 'showCalendar'])->name('calendar.show');
 // Catalogues
 Route::get('/formations', [TrainingController::class, 'formations'])->name('trainings.formations');
@@ -44,10 +44,9 @@ Route::get('/temoignages', [TestimonialController::class, 'index'])->name('testi
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Dashboard
-Route::get('/dashboard', DashboardController::class)
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 // Espace Authentifié
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -50,11 +50,11 @@
                             <span class="text-xs text-gray-400 block">Tarif</span>
                             <span class="font-bold text-xl text-gray-900">{{ number_format($training->price, 2, ',', ' ') }}€</span>
                         </div>
-                        <a href="{{ route('training-calendar.index', ['training' => $training->id]) }}"
-                           class="px-5 py-2.5 rounded-xl font-semibold text-white shadow-sm transition hover:opacity-90"
-                           style="background-color: {{ $training->color ?? '#82C341' }}">
-                            Réserver
-                        </a>
+                        <a href="{{ route('web.calendar', ['training' => $training->id]) }}"
+   class="px-5 py-2.5 rounded-xl font-semibold text-white shadow-sm transition hover:opacity-90"
+   style="background-color: {{ $training->color ?? '#82C341' }}">
+    Réserver
+</a>
                     </div>
                 </div>
             @empty

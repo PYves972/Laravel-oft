@@ -30,7 +30,19 @@ class TrainingSession extends Model
     }
 
     public function bookings(): HasMany
-    {
-        return $this->hasMany(Booking::class);
-    }
+{
+    return $this->hasMany(Booking::class);
+}
+
+/**
+ * Nombre de places encore disponibles pour cette session.
+ */
+public function availablePlaces(): int
+{
+    $confirmedBookingsCount = $this->bookings()
+        ->where('status', 'confirmed')
+        ->count();
+
+    return max(0, $this->capacity - $confirmedBookingsCount);
+}
 }
