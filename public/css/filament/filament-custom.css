@@ -1,0 +1,33 @@
+/* Entête du tableau style maquette */
+.fi-ta-header-cell {
+    background-color: #24303e !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    text-transform: uppercase;
+}
+
+.fi-ta-header-cell-label {
+    color: #ffffff !important;
+}
+
+/* Boutons d'action */
+.fi-btn-primary {
+    background-color: #d99b66 !important;
+    border-radius: 8px !important;
+}
+
+/* Badges de statut arrondis */
+.fi-badge {
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+}
+
+/* Lignes du tableau */
+.fi-ta-record {
+    transition: background-color 0.2s ease;
+}
+
+.fi-ta-record:hover {
+    background-color: #f8fafc !important;
+}
