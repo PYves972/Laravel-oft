@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Training::class, 'bookings');
     }
+
+    public function progressions(): HasMany
+{
+    return $this->hasMany(Progression::class);
+}
 }

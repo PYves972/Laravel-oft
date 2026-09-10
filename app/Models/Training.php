@@ -61,4 +61,9 @@ class Training extends Model
     {
         return $this->hasMany(PedagogicalDocument::class);
     }
+
+    public function progressions(): HasMany
+{
+    return $this->hasMany(Progression::class);
+}
 }
