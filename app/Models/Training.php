@@ -4,32 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str; // <-- AJOUTER CETTE LIGNE
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Training extends Model
 {
-protected $fillable = [
-    'category_id',
-    'title',
-    'slug',
-    'type', // <-- Indispensable
-    'price',
-    'duration_minutes',
-    'is_active',
-    'description',
-    'image_path',
-    'gallery_images',
-    'prerequisites',
-    'provided_equipment',
-    'required_equipment',
-    'program_steps',
-];
+    protected $fillable = [
+        'category_id',
+        'title',
+        'slug',
+        'type',
+        'price',
+        'duration_minutes',
+        'is_active',
+        'description',
+        'image_path',
+        'gallery_images',
+        'prerequisites',
+        'provided_equipment',
+        'required_equipment',
+        'program_steps',
+    ];
 
-protected $casts = [
-    'gallery_images' => 'array',
-    'program_steps' => 'array',
-    'is_active' => 'boolean',
-];
+    protected $casts = [
+        'gallery_images' => 'array',
+        'program_steps' => 'array',
+        'is_active' => 'boolean',
+    ];
 
     protected static function booted(): void
     {
@@ -51,8 +52,13 @@ protected $casts = [
         return $this->belongsTo(Category::class);
     }
 
-    public function sessions()
-{
-    return $this->hasMany(TrainingSession::class);
-}
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(TrainingSession::class);
+    }
+
+    public function pedagogicalDocuments(): HasMany
+    {
+        return $this->hasMany(PedagogicalDocument::class);
+    }
 }

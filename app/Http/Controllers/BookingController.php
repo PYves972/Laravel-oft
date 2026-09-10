@@ -12,46 +12,28 @@ class BookingController extends Controller
     /**
      * Enregistrer une réservation.
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'training_session_id' => 'required|exists:training_sessions,id',
-        ]);
+public function store(Request $request, $sessionId)
+{
+    $user = auth()->user();
 
-        $session = TrainingSession::findOrFail($request->training_session_id);
+    // Vérifier si la réservation existe déjà
+    $existingBooking = Booking::where('user_id', $user->id)
+        ->where('training_session_id', $sessionId)
+        ->first();
 
-        // 1. Vérification des places disponibles
-        $placesRestantes = $session->available_places ?? $session->places_restantes ?? 0;
-
-        if ($placesRestantes <= 0) {
-            return back()->with('error', 'Désolé, cette session est déjà complète.');
-        }
-
-        // 2. Vérification pour éviter les doublons de réservation
-        $existingBooking = Booking::where('user_id', Auth::id())
-            ->where('training_session_id', $session->id)
-            ->exists();
-
-        if ($existingBooking) {
-            return back()->with('error', 'Vous êtes déjà inscrit à cette session.');
-        }
-
-        // 3. Création de la réservation
-        Booking::create([
-            'user_id' => Auth::id(),
-            'training_session_id' => $session->id,
-            'status' => 'confirmed',
-        ]);
-
-        // 4. Décrémenter le nombre de places restantes
-        if (isset($session->available_places)) {
-            $session->decrement('available_places');
-        } elseif (isset($session->places_restantes)) {
-            $session->decrement('places_restantes');
-        }
-
-        return back()->with('success', 'Votre réservation a bien été enregistrée !');
+    if ($existingBooking) {
+        return back()->with('error', 'Vous êtes déjà inscrit à cette session.');
     }
+
+    // Création de la réservation
+    Booking::create([
+        'user_id' => $user->id,
+        'training_session_id' => $sessionId,
+        'status' => 'confirmed', // Ajustez selon vos statuts
+    ]);
+
+    return redirect()->route('dashboard')->with('success', 'Votre réservation a été enregistrée avec succès !');
+}
 
     /**
      * Annuler une réservation.

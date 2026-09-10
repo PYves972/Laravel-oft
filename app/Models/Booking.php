@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Booking extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'training_session_id',
