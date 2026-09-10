@@ -2,22 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use App\Models\Booking;
+use App\Models\PedagogicalDocument;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-public function __invoke(): View
+    public function index()
     {
-        /** @var User $user */
-        $user = Auth::user();
+        $user = auth()->user();
 
-        $bookings = $user->bookings()
-            ->with(['trainingSession.training'])
-            ->where('status', 'confirmed')
+        // Récupérer les réservations à venir de l'utilisateur
+        $bookings = Booking::with(['trainingSession.training'])
+            ->where('user_id', $user->id)
             ->get();
 
-        return view('dashboard', compact('bookings'));
+        // Récupérer les identifiants des formations réservées
+        $trainingIds = $bookings->pluck('trainingSession.training_id')->unique();
+
+        // Récupérer les documents pédagogiques associés
+        $documents = PedagogicalDocument::whereIn('training_id', $trainingIds)
+            ->where('is_public', true)
+            ->get();
+
+        return view('dashboard', compact('bookings', 'documents'));
     }
 }
