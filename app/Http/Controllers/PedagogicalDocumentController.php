@@ -4,34 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\PedagogicalDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class PedagogicalDocumentController extends Controller
 {
-    public function download(PedagogicalDocument $document)
+    /**
+     * Télécharge un document pédagogique de manière sécurisée (RM-28).
+     */
+    public function download(PedagogicalDocument $document): BinaryFileResponse
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
-        // Vérifier si le document est public
-        if (!$document->is_public) {
-            abort(403, 'Ce document n\'est pas disponible au téléchargement.');
+        // 1. Si le document n'est pas marqué comme public, vérifier les droits d'accès
+        if (! $document->is_public) {
+
+            // Vérifier si l'utilisateur possède une réservation confirmée pour la formation associée (RM-28)
+            $hasConfirmedBooking = $user->bookings()
+                ->where('status', 'confirmed')
+                ->whereHas('trainingSession', function ($query) use ($document) {
+                    $query->where('training_id', $document->training_id);
+                })
+                ->exists();
+
+            if (! $hasConfirmedBooking) {
+                abort(403, 'Accès non autorisé. Vous devez être inscrit à cette formation pour télécharger ce document.');
+            }
         }
 
-        // Vérifier que l'utilisateur est bien inscrit à la formation liée à ce document
-        $hasBooked = $user->bookings()
-            ->whereHas('trainingSession', function ($query) use ($document) {
-                $query->where('training_id', $document->training_id);
-            })->exists();
-
-        if (!$hasBooked) {
-            abort(403, 'Vous n\'avez pas accès aux documents de cette formation.');
+        // 2. Vérification de l'existence physique du fichier dans le stockage local/S3
+        if (! Storage::disk('public')->exists($document->file_path)) {
+            abort(404, 'Le fichier demandé est introuvable sur le serveur.');
         }
 
-        // Retourner le fichier en téléchargement
-        if (!Storage::disk('public')->exists($document->file_path)) {
-            abort(404, 'Fichier introuvable sur le serveur.');
-        }
-
-        return Storage::disk('public')->download($document->file_path, $document->title);
+        // 3. Servir le fichier en téléchargement
+        return response()->download(
+            Storage::disk('public')->path($document->file_path),
+            $document->title . '.' . pathinfo($document->file_path, PATHINFO_EXTENSION)
+        );
     }
 }

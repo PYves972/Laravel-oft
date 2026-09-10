@@ -19,10 +19,14 @@ class TrainingSession extends Model
         'status',
     ];
 
-    protected $casts = [
-        'starts_at' => 'datetime',
-        'ends_at'   => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'starts_at' => 'datetime',
+            'ends_at'   => 'datetime',
+            'capacity'  => 'integer',
+        ];
+    }
 
     public function training(): BelongsTo
     {
@@ -30,19 +34,27 @@ class TrainingSession extends Model
     }
 
     public function bookings(): HasMany
-{
-    return $this->hasMany(Booking::class);
-}
+    {
+        return $this->hasMany(Booking::class);
+    }
 
-/**
- * Nombre de places encore disponibles pour cette session.
- */
-public function availablePlaces(): int
-{
-    $confirmedBookingsCount = $this->bookings()
-        ->where('status', 'confirmed')
-        ->count();
+    /**
+     * Nombre de places encore disponibles pour cette session.
+     */
+    public function availablePlaces(): int
+    {
+        $confirmedBookingsCount = $this->bookings()
+            ->where('status', 'confirmed')
+            ->count();
 
-    return max(0, $this->capacity - $confirmedBookingsCount);
-}
+        return max(0, $this->capacity - $confirmedBookingsCount);
+    }
+
+    /**
+     * Indique si la session peut recevoir de nouvelles réservations.
+     */
+    public function isBookable(): bool
+    {
+        return $this->status === 'open' && $this->availablePlaces() > 0;
+    }
 }

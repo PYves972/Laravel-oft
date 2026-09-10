@@ -12,6 +12,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Enums\FiltersLayout;
 
+
 class TrainingResource extends Resource
 {
     protected static ?string $model = Training::class;
