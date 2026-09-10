@@ -15,7 +15,17 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\SubscriberController;
 use App\Livewire\UserDashboard;
+use App\Http\Controllers\PedagogicalDocumentController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/documents/{document}/download', [PedagogicalDocumentController::class, 'download'])
+        ->name('documents.download');
+});
 
 Route::post('/newsletter/subscribe', [SubscriberController::class, 'store'])->name('newsletter.subscribe');
 
@@ -30,9 +40,15 @@ Route::get('/', function () {
     return view('welcome', compact('services', 'testimonials'));
 })->name('home');
 
-// Calendrier direct (accessible après le choix d'une formation ou d'un atelier)
-Route::get('/calendrier', TrainingBookingCalendar::class)->name('web.calendar');
+// Calendrier (Ajout de l'alias 'training-calendar.index' attendu par Blade)
+// Route principale du calendrier avec alias pour éviter tout conflit de nom
+Route::get('/calendrier', TrainingBookingCalendar::class)->name('training-calendar.index');
+Route::get('/calendrier-index', TrainingBookingCalendar::class)->name('web.calendar');
+
 Route::get('/calendrier/{training}', [BookingController::class, 'showCalendar'])->name('calendar.show');
+
+// Dashboard (Utiliser DashboardController au lieu de la closure anonyme)
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 // Catalogues
 Route::get('/formations', [TrainingController::class, 'formations'])->name('trainings.formations');
 Route::get('/ateliers', [TrainingController::class, 'workshops'])->name('trainings.workshops');
@@ -43,10 +59,7 @@ Route::get('/temoignages', [TestimonialController::class, 'index'])->name('testi
 // Contact
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+
 // Espace Authentifié
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
