@@ -6,33 +6,18 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\PedagogicalDocumentController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Livewire\TrainingBookingCalendar;
+use App\Livewire\ShowAtelier;
 use App\Models\Service;
 use App\Models\Testimonial;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestimonialController;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\FaqController;
-use App\Http\Controllers\SubscriberController;
-use App\Livewire\UserDashboard;
-use App\Http\Controllers\PedagogicalDocumentController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
-
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-});
-Route::middleware(['auth'])->group(function () {
-    Route::get('/documents/{document}/download', [PedagogicalDocumentController::class, 'download'])
-        ->name('documents.download');
-});
-
-Route::post('/newsletter/subscribe', [SubscriberController::class, 'store'])->name('newsletter.subscribe');
-
-// Page d'information & FAQ
-Route::get('/faq', FaqController::class)->name('faq.index');
-
-// Accueil
+// 1. ACCUEIL & PAGES D'INFORMATION
 Route::get('/', function () {
     $services = Service::all();
     $testimonials = Testimonial::where('is_published', true)->latest()->take(3)->get();
@@ -40,28 +25,37 @@ Route::get('/', function () {
     return view('welcome', compact('services', 'testimonials'));
 })->name('home');
 
-// Calendrier (Ajout de l'alias 'training-calendar.index' attendu par Blade)
-// Route principale du calendrier avec alias pour éviter tout conflit de nom
+Route::get('/faq', FaqController::class)->name('faq.index');
+Route::get('/galerie', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/temoignages', [TestimonialController::class, 'index'])->name('testimonials.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/newsletter/subscribe', [SubscriberController::class, 'store'])->name('newsletter.subscribe');
+
+// 2. GRAND CALENDRIER GLOBAL (Planning mensuel de tous les cours)
 Route::get('/calendrier', TrainingBookingCalendar::class)->name('training-calendar.index');
 Route::get('/calendrier-index', TrainingBookingCalendar::class)->name('web.calendar');
 
-Route::get('/calendrier/{training}', [BookingController::class, 'showCalendar'])->name('calendar.show');
-
-// Dashboard (Utiliser DashboardController au lieu de la closure anonyme)
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
-// Catalogues
+// 3. CATALOGUES D'ATELIERS ET FORMATIONS
 Route::get('/formations', [TrainingController::class, 'formations'])->name('trainings.formations');
 Route::get('/ateliers', [TrainingController::class, 'workshops'])->name('trainings.workshops');
+
+// 4. DÉTAIL & RÉSERVATION D'UN ATELIER SPÉCIFIQUE (NOUVEAU MODULE DE RÉSERVATION)
+// Les routes de réservation individuelle renvoient désormais sur la fiche produit de l'atelier
+Route::get('/ateliers/{slug}', [TrainingController::class, 'show'])->name('ateliers.show');
 Route::get('/formations/{slug}', [TrainingController::class, 'show'])->name('trainings.show');
+Route::get('/calendrier/{training:slug}', [TrainingController::class, 'show'])->name('calendar.show');
 
-Route::get('/galerie', [GalleryController::class, 'index'])->name('gallery.index');
-Route::get('/temoignages', [TestimonialController::class, 'index'])->name('testimonials.index');
-// Contact
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+// 5. ESPACE CLIENT & TABLEAU DE BORD
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+});
 
-// Espace Authentifié
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('/documents/{document}/download', [PedagogicalDocumentController::class, 'download'])
+        ->name('documents.download');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -70,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bookings/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
+// 6. FICHIERS D'IMAGES DU STORAGE
 Route::get('/storage/trainings/{filename}', function ($filename) {
     $path = storage_path('app/public/trainings/' . $filename);
 
@@ -79,4 +74,5 @@ Route::get('/storage/trainings/{filename}', function ($filename) {
 
     return response()->file($path);
 });
+
 require __DIR__.'/auth.php';
