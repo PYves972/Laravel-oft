@@ -13,18 +13,18 @@
             @forelse($trainings as $training)
                 <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between">
 
-                    {{-- BALISE IMAGE RAJOUTÉE ICI --}}
-<div class="h-48 w-full overflow-hidden bg-gray-100">
-    @if($training->image_path)
-<img src="{{ Storage::disk('public')->url($training->image_path) }}"
-     alt="{{ $training->title }}">
-             class="w-full h-full object-cover">
-    @else
-        <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
-            Pas d'image
-        </div>
-    @endif
-</div>
+                    {{-- Image de l'atelier --}}
+                    <div class="h-48 w-full overflow-hidden bg-gray-100">
+                        @if($training->image_path)
+                            <img src="{{ Storage::disk('public')->url($training->image_path) }}"
+                                 alt="{{ $training->title }}"
+                                 class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
+                                Pas d'image
+                            </div>
+                        @endif
+                    </div>
 
                     <div class="p-6 space-y-4 flex-1">
                         <div class="flex items-center justify-between">
@@ -35,22 +35,23 @@
                         </div>
                         <h3 class="font-serif text-xl font-bold text-gray-900">{{ $training->title }}</h3>
 
-                        {{-- Utilisation de {!! !!} si vous utilisez RichEditor dans Filament --}}
-                        <div class="text-sm text-gray-600 leading-relaxed">
+                        <div class="text-sm text-gray-600 leading-relaxed line-clamp-3">
                             {!! $training->description !!}
                         </div>
                     </div>
 
-                    <div class="p-6 pt-0 flex items-center justify-between border-t border-gray-100 mt-4">
+                    {{-- Pied de carte avec tarif et bouton de réservation --}}
+                    <div class="p-6 pt-4 flex items-center justify-between border-t border-gray-100 mt-4">
                         <div>
                             <span class="text-xs text-gray-400 block">Tarif</span>
                             <span class="font-bold text-xl text-gray-900">{{ number_format($training->price, 2, ',', ' ') }}€</span>
                         </div>
-<a href="{{ route('training-calendar.index', ['training' => $training->id]) }}"
-   class="px-5 py-2.5 rounded-xl font-semibold text-white shadow-sm transition hover:opacity-90"
-   style="background-color: {{ $training->color ?? '#82C341' }}">
-    Réserver
-</a>
+
+                        {{-- Bouton vers le nouveau module de réservation --}}
+                        <a href="{{ route('ateliers.show', $training->slug) }}"
+                           class="px-5 py-2.5 bg-[#82C341] hover:bg-[#72b033] text-white font-bold rounded-xl shadow-sm text-sm transition">
+                            Réserver cet atelier
+                        </a>
                     </div>
                 </div>
             @empty

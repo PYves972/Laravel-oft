@@ -39,22 +39,24 @@
 
                         <h3 class="font-serif text-xl font-bold text-gray-900">{{ $training->title }}</h3>
 
-                        <div class="text-sm text-gray-600 leading-relaxed">
+                        <div class="text-sm text-gray-600 leading-relaxed line-clamp-3">
                             {!! $training->description !!}
                         </div>
                     </div>
 
                     <!-- Pied de carte -->
-                    <div class="p-6 pt-0 flex items-center justify-between border-t border-gray-100 mt-4">
+                    <div class="p-6 pt-4 flex items-center justify-between border-t border-gray-100 mt-4">
                         <div>
                             <span class="text-xs text-gray-400 block">Tarif</span>
                             <span class="font-bold text-xl text-gray-900">{{ number_format($training->price, 2, ',', ' ') }}€</span>
                         </div>
-                        <a href="{{ route('web.calendar', ['training' => $training->id]) }}"
-   class="px-5 py-2.5 rounded-xl font-semibold text-white shadow-sm transition hover:opacity-90"
-   style="background-color: {{ $training->color ?? '#82C341' }}">
-    Réserver
-</a>
+
+                        <!-- Redirection vers le module de réservation individuel -->
+                        <a href="{{ route('ateliers.show', $training->slug) }}"
+                           class="px-5 py-2.5 rounded-xl font-semibold text-white shadow-sm transition hover:opacity-90"
+                           style="background-color: {{ $training->color ?? '#82C341' }}">
+                            Réserver
+                        </a>
                     </div>
                 </div>
             @empty

@@ -7,23 +7,41 @@ use Illuminate\Http\Request;
 
 class TrainingController extends Controller
 {
+    /**
+     * Affiche la page "Nos Formations de Couture" (/formations)
+     */
     public function formations()
     {
-        // Ne récupère QUE les formations (exclut les ateliers)
-        $trainings = Training::where('type', 'formation')
-            ->where('is_active', true)
-            ->get();
+        $trainings = Training::whereIn('type', ['formation', 'Formation'])->get();
+
+        if ($trainings->isEmpty()) {
+            $trainings = Training::all();
+        }
 
         return view('trainings.formations', compact('trainings'));
     }
 
+    /**
+     * Affiche la page "Nos Ateliers Créatifs" (/ateliers)
+     */
     public function workshops()
     {
-        // Ne récupère QUE les ateliers (si 'type' n'est pas renseigné, on peut aussi filtrer par le nom de la catégorie si besoin)
-        $trainings = Training::where('type', 'atelier')
-            ->where('is_active', true)
-            ->get();
+        $trainings = Training::whereIn('type', ['atelier', 'Atelier', 'workshop', 'Workshop'])->get();
+
+        if ($trainings->isEmpty()) {
+            $trainings = Training::all();
+        }
 
         return view('trainings.workshops', compact('trainings'));
     }
+
+    /**
+     * Affiche la fiche détaillée d'un atelier ou d'une formation
+     */
+public function show($slug)
+{
+    $training = Training::where('slug', $slug)->firstOrFail();
+
+    return view('trainings.show', compact('training'));
+}
 }
