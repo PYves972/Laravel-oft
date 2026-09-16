@@ -61,12 +61,13 @@
                 À propos de l'atelier
             </h2>
             <div class="space-y-4 text-gray-700 text-base md:text-lg leading-relaxed">
-                <p>Depuis 2010, notre atelier de couture accompagne les passionnés dans la découverte et la maîtrise de l'art de la couture.</p>
-                <p>Dans une ambiance chaleureuse et conviviale, nous vous proposons des formations, des ateliers créatifs et des confections sur mesure adaptées à vos envies.</p>
+                <p>Chez Oft Atelier, la passion se tisse fil après fil. Mon parcours est atypique : après quinze années dédiées à l'agriculture, j'ai choisi de donner une nouvelle direction à ma vie professionnelle.
+Une formation initiale en tissage a été la porte d'entrée vers ce qui est aujourd'hui mon métier et ma vocation : la couture.</p>
+                <p>Ce qui a commencé comme une activité secondaire est devenu une véritable expertise...</p>
             </div>
             <div>
                 <a href="#temoignages" class="inline-flex items-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-6 py-3 rounded-full text-sm font-medium transition">
-                    <span>En savoir plus sur l'esprit de l'atelier</span>
+                    <span>En savoir plus</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </a>
             </div>
@@ -113,10 +114,10 @@
 
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-2">
-                        {{ $featuredFormation->title ?? 'Cours & Formations' }}
+                        {{ $featuredFormation->title ?? 'Confections sur mesure' }}
                     </h3>
                     <p class="text-gray-600 text-sm">
-                        {{ $featuredFormation->description ?? 'Découvrez les bases de la couture, la prise en main de votre machine et vos premiers projets guidés.' }}
+                        {{ $featuredFormation->description ?? 'Sauver un vêtement, créer du sur-mesure ou retoucher avec soin…' }}
                     </p>
                 </div>
             </div>
@@ -151,7 +152,7 @@
 
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-gray-900 mb-2">
-                        {{ $featuredWorkshop->title ?? 'Ateliers Créatifs' }}
+                        {{ $featuredWorkshop->title ?? 'Ateliers loisir' }}
                     </h3>
                     <p class="text-gray-600 text-sm">
                         {{ $featuredWorkshop->description ?? 'Confectionnez des pièces thématiques : tricot, crochet, teinture, broderie et tissage.' }}
@@ -280,13 +281,13 @@
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 font-medium">Horaires d'ouverture</span>
-                            <span class="font-medium">Lun - Ven : 8h30 - 17h00</span>
+                            <span class="font-medium">Mar - Sam : 9h00 - 16h00</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="p-4 bg-white/60 rounded-2xl border border-stone-200/50 text-xs text-gray-600 leading-relaxed">
-                    Vous souhaitez un devis personnalisé pour une confection sur-mesure ou une privatisation d'atelier ? Remplissez ce formulaire et nous vous recontacterons sous 48h.
+                    Remplissez ce formulaire et nous vous recontacterons sous 48h.
                 </div>
             </div>
 
@@ -349,17 +350,11 @@
                         </div>
                     </div>
 
-                    <!-- Ligne 4 : Pièce jointe optionnelle (Inspiration / Modèle) -->
-                    <div>
-                        <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Joindre une image ou un croquis (Optionnel)</label>
-                        <input type="file" name="fichier" accept="image/*,.pdf" class="w-full text-xs text-gray-600 bg-[#F9F8F3] border border-gray-200 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#2D3B22] file:text-white hover:file:bg-[#1e2817] cursor-pointer">
-                        <span class="text-[11px] text-gray-500 mt-1 block">Formats acceptés : JPG, PNG, PDF (max 5 Mo)</span>
-                        @error('fichier') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                    </div>
+
 
                     <!-- Ligne 5 : Message -->
                     <div>
-                        <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Message / Détails de votre projet <span class="text-red-500">*</span></label>
+                        <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Message  <span class="text-red-500">*</span></label>
                         <textarea name="message" rows="4" placeholder="Décrivez votre projet, vos disponibilités ou vos questions..." class="w-full px-4 py-3 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>{{ old('message') }}</textarea>
                         @error('message') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
@@ -382,8 +377,8 @@
     </div>
 </section>
 <div class="bg-amber-50 rounded-2xl p-8 border border-amber-200 max-w-3xl mx-auto my-12 text-center">
-    <h3 class="text-2xl font-bold text-gray-900">Restez informé(e) des prochains ateliers</h3>
-    <p class="text-gray-600 mt-2 text-sm">Recevez directement nos nouveaux créneaux et -10% sur votre première réservation.</p>
+    <h3 class="text-2xl font-bold text-gray-900">Restez informé des prochains événements</h3>
+
 
     @if(session('newsletter_success'))
         <div class="mt-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg text-sm font-medium">
