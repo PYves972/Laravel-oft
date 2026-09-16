@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components;
 use Filament\Actions;
+use App\Filament\Resources\TrainingResource\RelationManagers\DocumentsRelationManager;
 
 class TrainingResource extends Resource
 {
@@ -27,7 +28,12 @@ class TrainingResource extends Resource
     {
         return 'heroicon-o-academic-cap';
     }
-
+public static function getRelations(): array
+{
+    return [
+        DocumentsRelationManager::class,
+    ];
+}
     public static function form(Schema $schema): Schema
     {
         return $schema
