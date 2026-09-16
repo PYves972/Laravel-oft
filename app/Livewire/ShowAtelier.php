@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\Booking;
 use App\Models\Training;
 use App\Models\TrainingSession;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ShowAtelier extends Component
@@ -34,13 +36,40 @@ class ShowAtelier extends Component
         $this->selectedSessionId = $sessionId;
     }
 
-public function addToCart()
+    public function addToCart()
     {
+        // 1. Rediriger si l'utilisateur n'est pas connecté
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // 2. Vérifier qu'une session est sélectionnée
         if (!$this->selectedSessionId) {
             return;
         }
 
-        // Message mis à jour pour la confirmation directe
+        $session = TrainingSession::findOrFail($this->selectedSessionId);
+
+        // 3. Empêcher les doublons de réservation
+        $existingBooking = Booking::where('user_id', Auth::id())
+            ->where('training_session_id', $session->id)
+            ->first();
+
+        if ($existingBooking) {
+            session()->flash('message', 'Vous avez déjà réservé ce créneau !');
+            return;
+        }
+
+        // 4. Créer l'enregistrement en base de données
+        Booking::create([
+            'user_id'             => Auth::id(),
+            'training_session_id' => $session->id,
+            'status'              => 'confirmed', // Ajustez selon vos statuts (ex: pending, confirmed)
+            'price'               => $this->training->price ?? 0,
+        ]);
+
+        // 5. Réinitialiser la sélection et afficher le message de confirmation
+        $this->selectedSessionId = null;
         session()->flash('message', 'Votre réservation a été confirmée avec succès !');
     }
 
