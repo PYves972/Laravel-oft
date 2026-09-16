@@ -61,7 +61,10 @@ class Training extends Model
     {
         return $this->hasMany(PedagogicalDocument::class);
     }
-
+public function documents(): \Illuminate\Database\Eloquent\Relations\HasMany
+{
+    return $this->hasMany(\App\Models\PedagogicalDocument::class);
+}
     public function progressions(): HasMany
 {
     return $this->hasMany(Progression::class);
