@@ -77,36 +77,19 @@
             <!-- 1. VUE D'ENSEMBLE -->
             <div x-show="activeTab === 'overview'" class="space-y-8">
                 <!-- KPI Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="w-12 h-12 bg-[#d1a153]/20 rounded-xl flex items-center justify-center text-[#d1a153] text-xl">📅</div>
-                        <div>
-                            <span class="text-xs text-slate-400 font-medium uppercase">Réservations</span>
-                            <p class="text-2xl font-bold text-slate-800">{{ $stats['bookings'] ?? 0 }}</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="w-12 h-12 bg-[#d1a153]/20 rounded-xl flex items-center justify-center text-[#d1a153] text-xl">💶</div>
-                        <div>
-                            <span class="text-xs text-slate-400 font-medium uppercase">Chiffre d'affaires</span>
-                            <p class="text-2xl font-bold text-slate-800">{{ $stats['revenue'] ?? 0 }} €</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="w-12 h-12 bg-[#d1a153]/20 rounded-xl flex items-center justify-center text-[#d1a153] text-xl">💬</div>
-                        <div>
-                            <span class="text-xs text-slate-400 font-medium uppercase">Nouveaux messages</span>
-                            <p class="text-2xl font-bold text-slate-800">{{ $unreadMessagesCount ?? 0 }}</p>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div class="w-12 h-12 bg-[#d1a153]/20 rounded-xl flex items-center justify-center text-[#d1a153] text-xl">🎨</div>
-                        <div>
-                            <span class="text-xs text-slate-400 font-medium uppercase">Ateliers actifs</span>
-                            <p class="text-2xl font-bold text-slate-800">{{ $stats['activeWorkshops'] ?? 0 }}</p>
-                        </div>
-                    </div>
-                </div>
+             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    @foreach($kpis as $kpi)
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
+            <div class="w-12 h-12 bg-[#d1a153]/20 rounded-xl flex items-center justify-center text-[#d1a153] text-xl">
+                {{ $kpi['icon'] }}
+            </div>
+            <div>
+                <span class="text-xs text-slate-400 font-medium uppercase">{{ $kpi['label'] }}</span>
+                <p class="text-2xl font-bold text-slate-800">{{ $kpi['value'] }}</p>
+            </div>
+        </div>
+    @endforeach
+</div>
 
                 <!-- Tableau Dernières réservations -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
