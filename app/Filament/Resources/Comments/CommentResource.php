@@ -2,14 +2,16 @@
 
 namespace App\Filament\Resources\Comments;
 
-use BackedEnum;
 use App\Models\Comment;
+use Filament\Schemas\Schema;// À la place de Filament\Schemas\Schema
 use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
 use Filament\Tables\Table;
-use Filament\Actions\Action; // <-- Import corrigé ici
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\DeleteAction;
+
+// Imports d'actions pour Filament v3 :
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+
 use App\Filament\Resources\Comments\Pages\ListComments;
 use App\Filament\Resources\Comments\Pages\CreateComment;
 use App\Filament\Resources\Comments\Pages\EditComment;
@@ -30,10 +32,10 @@ class CommentResource extends Resource
 
     protected static ?string $navigationLabel = 'Avis & Commentaires';
 
-    public static function form(Schema $schema): Schema
-    {
-        return $schema;
-    }
+public static function form(Schema $schema): Schema
+{
+    return $schema;
+}
 
     public static function table(Table $table): Table
     {

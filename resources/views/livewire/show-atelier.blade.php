@@ -10,11 +10,29 @@
 
         <!-- COLONNE GAUCHE : Details -->
         <div>
-            @if($training->image_path)
-                <img src="{{ asset('storage/' . $training->image_path) }}"
-                     alt="{{ $training->title }}"
-                     class="w-full h-96 object-cover rounded-2xl shadow-md mb-6">
-            @endif
+            @php
+                // 1. Récupération du nom de fichier (détecte 'image' ou 'image_path')
+                $imgSrc = $training->image ?? $training->image_path;
+
+                // 2. Construction de l'URL finale
+                if ($imgSrc) {
+                    // Si l'image est un chemin Filament / Storage
+                    if (str_starts_with($imgSrc, 'trainings/') || str_starts_with($imgSrc, 'ateliers/')) {
+                        $imageUrl = asset('storage/' . $imgSrc);
+                    } else {
+                        // Si c'est un fichier du dossier public/images/
+                        $imageUrl = asset('images/' . $imgSrc);
+                    }
+                } else {
+                    // Image par défaut si le champ est vide
+                    $imageUrl = asset('images/atelier.jpg');
+                }
+            @endphp
+
+            <img src="{{ $imageUrl }}"
+                 alt="{{ $training->title }}"
+                 class="w-full h-96 object-cover rounded-2xl shadow-md mb-6"
+                 onerror="this.onerror=null; this.src='{{ asset('images/atelier.jpg') }}';">
 
             <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
                 {{ $training->category->name ?? 'Couture' }}
@@ -118,7 +136,6 @@
             @endif
 
             <!-- Bouton Reserver -->
-
             <button
                 type="button"
                 wire:click="addToCart"
