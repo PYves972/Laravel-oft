@@ -37,10 +37,13 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 RUN npm run build
 
+# Créer le lien symbolique pour le stockage d'images (important pour Laravel)
+RUN php artisan storage:link
+
 # Ajuster les permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 10000
 
-# Commande de démarrage avec port dynamique
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# Commande de démarrage : Réinitialise et remplit la base de données
+CMD php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
