@@ -47,10 +47,11 @@
     43 => 'Carbon\\Laravel\\ServiceProvider',
     44 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     45 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    46 => 'Pest\\Laravel\\PestServiceProvider',
-    47 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    48 => 'App\\Providers\\AppServiceProvider',
-    49 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    46 => 'Orangehill\\Iseed\\IseedServiceProvider',
+    47 => 'Pest\\Laravel\\PestServiceProvider',
+    48 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    49 => 'App\\Providers\\AppServiceProvider',
+    50 => 'App\\Providers\\Filament\\AdminPanelProvider',
   ),
   'eager' => 
   array (
@@ -83,10 +84,11 @@
     26 => 'Carbon\\Laravel\\ServiceProvider',
     27 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     28 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    29 => 'Pest\\Laravel\\PestServiceProvider',
-    30 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    31 => 'App\\Providers\\AppServiceProvider',
-    32 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    29 => 'Orangehill\\Iseed\\IseedServiceProvider',
+    30 => 'Pest\\Laravel\\PestServiceProvider',
+    31 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    32 => 'App\\Providers\\AppServiceProvider',
+    33 => 'App\\Providers\\Filament\\AdminPanelProvider',
   ),
   'deferred' => 
   array (

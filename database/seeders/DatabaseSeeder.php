@@ -4,17 +4,20 @@ namespace Database\Seeders;
 
 use App\Models\Service;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Désactiver temporairement les contraintes de clés étrangères
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         /*
          * ============================================================
          * SERVICES
          * ============================================================
          */
-
         Service::create([
             'titre' => 'Formations',
             'description' => 'Apprenez les bases ou perfectionnez vos techniques avec nos formations complètes.',
@@ -38,15 +41,20 @@ class DatabaseSeeder extends Seeder
 
         /*
          * ============================================================
-         * ATELIERS, SÉANCES & TÉMOIGNAGES
+         * SEEDERS ISSUS DE LA BASE RÉELLE (ISEED)
          * ============================================================
          */
-
         $this->call([
-            CategoryTrainingSeeder::class,
-            TrainingSessionSeeder::class,
-            TrainingSeeder::class,
+            CategoriesTableSeeder::class,
+            TagsTableSeeder::class,
+            TrainingsTableSeeder::class,
+            PedagogicalDocumentsTableSeeder::class,
+            CommentsTableSeeder::class,
+            ProgressionsTableSeeder::class,
             TestimonialSeeder::class,
         ]);
+
+        // Réactiver les contraintes de clés étrangères
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
