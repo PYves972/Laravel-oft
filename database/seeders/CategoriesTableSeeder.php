@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\DB;
 class CategoriesTableSeeder extends Seeder
 {
 
@@ -14,12 +14,12 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('categories')->delete();
-        
+
         \DB::table('categories')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'name' => 'Tricot',
@@ -28,7 +28,7 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 07:26:34',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'name' => 'Crochet',
@@ -37,7 +37,7 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 07:26:34',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'name' => 'Couture',
@@ -46,7 +46,7 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 07:26:34',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'name' => 'Teinture',
@@ -55,7 +55,7 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 07:26:34',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'name' => 'Broderie',
@@ -64,7 +64,7 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 07:26:34',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'name' => 'Tissage',
@@ -74,7 +74,7 @@ class CategoriesTableSeeder extends Seeder
                 'updated_at' => '2026-09-10 07:26:34',
             ),
         ));
-        
-        
+
+
     }
 }

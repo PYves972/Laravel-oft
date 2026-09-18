@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Support\Facades\DB;
 class TrainingsTableSeeder extends Seeder
 {
 
@@ -14,12 +14,12 @@ class TrainingsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('trainings')->delete();
-        
+
         \DB::table('trainings')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'category_id' => 1,
@@ -44,7 +44,7 @@ class TrainingsTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 08:12:12',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'category_id' => 2,
@@ -69,7 +69,7 @@ class TrainingsTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 08:12:51',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'category_id' => 3,
@@ -94,7 +94,7 @@ class TrainingsTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 08:10:38',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'category_id' => 4,
@@ -119,7 +119,7 @@ class TrainingsTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 08:13:58',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'category_id' => 5,
@@ -144,7 +144,7 @@ class TrainingsTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 08:14:28',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'category_id' => 6,
@@ -169,7 +169,7 @@ class TrainingsTableSeeder extends Seeder
                 'created_at' => '2026-09-10 07:26:34',
                 'updated_at' => '2026-09-10 08:15:11',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'category_id' => 3,
@@ -195,7 +195,7 @@ class TrainingsTableSeeder extends Seeder
                 'updated_at' => '2026-09-10 08:27:00',
             ),
         ));
-        
-        
+
+
     }
 }
