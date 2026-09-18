@@ -46,4 +46,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 EXPOSE 10000
 
 # Commande de démarrage : Réinitialise et remplit la base de données
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+CMD php artisan db:seed --force && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
