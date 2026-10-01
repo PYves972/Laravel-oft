@@ -18,9 +18,9 @@
                     <!-- Image de l'atelier -->
                     <div class="h-48 w-full overflow-hidden bg-gray-100">
                         @if($training->image_path)
-                            <img src="{{ Storage::disk('public')->url($training->image_path) }}"
-                                 alt="{{ $training->title }}"
-                                 class="w-full h-full object-cover">
+<img src="{{ route('image.display', $training->image_path) }}"
+         alt="{{ $training->title }}"
+         class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
                                 Pas d'image

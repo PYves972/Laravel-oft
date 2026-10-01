@@ -1,5 +1,6 @@
 <x-app-layout> {{-- Adaptez si votre layout s'appelle autrement, ex: <x-main-layout> --}}
-    <div class="py-12 bg-stone-50 min-h-screen">
+    {{-- Modification ici : pt-28 pour pousser le contenu sous la barre de navigation --}}
+    <div class="pt-28 pb-12 bg-stone-50 min-h-screen">
         <div class="max-w-4xl mx-auto px-6 lg:px-8">
 
             {{-- En-tête --}}
@@ -45,9 +46,9 @@
             <div class="mt-16 bg-amber-50 rounded-2xl p-8 text-center border border-amber-200">
                 <h3 class="text-lg font-bold text-amber-900">Vous avez encore une question ?</h3>
                 <p class="text-amber-700 text-sm mt-1">N'hésitez pas à nous contacter directement, nous vous répondrons rapidement.</p>
-<a href="{{ route('home') }}#contact" class="inline-block mt-4 px-6 py-2.5 bg-amber-600 text-white font-medium rounded-lg shadow hover:bg-amber-700 transition">
-    Nous contacter
-</a>
+                <a href="{{ route('home') }}#contact" class="inline-block mt-4 px-6 py-2.5 bg-amber-600 text-white font-medium rounded-lg shadow hover:bg-amber-700 transition">
+                    Nous contacter
+                </a>
             </div>
 
         </div>

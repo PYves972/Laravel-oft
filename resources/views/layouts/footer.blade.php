@@ -27,9 +27,12 @@
             <div class="space-y-3">
                 <h4 class="text-base font-semibold uppercase tracking-wider text-white">Horaires</h4>
                 <p class="text-sm text-gray-300 leading-relaxed">
-                    Mardi — Samedi<br>
+                    Mardi — Vendredi<br>
                     09h00 – 18h00<br><br>
-                    Fermé le dimanche et lundi.
+                    Samedi <br>
+                    08h00 - 12h00
+
+                
                 </p>
             </div>
 
@@ -47,8 +50,8 @@
         <div class="pt-8 flex flex-col sm:flex-row justify-between items-center text-sm text-gray-400 gap-4">
             <p>&copy; {{ date('Y') }} Ô fil du temps. Tous droits réservés.</p>
             <div class="flex space-x-6">
-                <a href="#" class="hover:text-white transition">Mentions légales</a>
-                <a href="#" class="hover:text-white transition">Politique de confidentialité</a>
+<a href="{{ route('legal.mentions') }}" class="hover:underline">Mentions légales</a>
+<a href="{{ route('legal.privacy') }}" class="hover:underline">Politique de confidentialité</a>
             </div>
         </div>
     </div>

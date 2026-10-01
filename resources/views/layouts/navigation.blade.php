@@ -1,4 +1,8 @@
-<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 h-20 bg-[#F9F8F3] border-b border-gray-200/60 shadow-sm transition-all duration-300">
+<nav id="main-nav" 
+     x-data="{ scrolled: false }"
+     @scroll.window="scrolled = (window.pageYOffset > 20)"
+     :class="{ 'bg-white/95 backdrop-blur-md shadow-sm border-gray-200/80': scrolled, 'bg-transparent border-transparent': !scrolled }"
+     class="fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div class="flex justify-between items-center h-full">
 
@@ -9,8 +13,8 @@
                 </a>
             </div>
 
-            <!-- Liens de navigation (Galerie pointe vers la page dédiée) -->
-            <div class="hidden md:flex space-x-6 items-center font-medium text-sm text-gray-800">
+            <!-- Liens de navigation -->
+            <div id="main-nav-links" class="hidden md:flex space-x-6 items-center font-medium text-sm text-gray-800">
                 <a href="{{ url('/') }}#accueil" class="hover:text-[#2D3B22] transition-colors">Accueil</a>
                 <a href="{{ url('/') }}#a-propos" class="hover:text-[#2D3B22] transition-colors">À propos</a>
                 <a href="{{ url('/') }}#offres" class="hover:text-[#2D3B22] transition-colors">Nos Offres</a>

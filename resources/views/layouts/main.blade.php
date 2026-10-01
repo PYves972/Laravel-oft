@@ -15,6 +15,23 @@
     </main>
 
     @include('layouts.footer')
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nav = document.getElementById('main-nav');
 
+            function toggleNavBackground() {
+                if (window.scrollY > 20) {
+                    nav.classList.remove('bg-transparent', 'border-transparent');
+                    nav.classList.add('bg-[#F9F8F3]/95', 'backdrop-blur-md', 'border-gray-200/60', 'shadow-sm');
+                } else {
+                    nav.classList.remove('bg-[#F9F8F3]/95', 'backdrop-blur-md', 'border-gray-200/60', 'shadow-sm');
+                    nav.classList.add('bg-transparent', 'border-transparent');
+                }
+            }
+
+            toggleNavBackground();
+            window.addEventListener('scroll', toggleNavBackground);
+        });
+    </script>
 </body>
 </html>

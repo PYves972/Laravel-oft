@@ -1,180 +1,79 @@
-<x-app-layout>
-    <div class="min-h-screen bg-[#f8fafc] flex" x-data="{ activeTab: 'overview' }">
+<?php
 
-        <!-- SIDEBAR SOMBRE (GAUCHE) -->
-        <aside class="w-64 bg-[#1e293b] text-slate-300 flex flex-col shrink-0 min-h-screen">
-            <!-- Logo & Marque -->
-            <div class="p-6 text-center border-b border-slate-800">
-                <span class="text-xs text-slate-400 uppercase tracking-widest block">Logo OFT</span>
-                <h1 class="font-serif font-bold text-xl text-white mt-1">Admin OFT</h1>
-            </div>
+namespace App\Providers\Filament;
 
-            <!-- Navigation des onglets -->
-            <nav class="flex-1 p-4 space-y-2 text-sm font-medium">
-                <button @click="activeTab = 'overview'"
-                        :class="activeTab === 'overview' ? 'bg-[#d1a153] text-white font-semibold' : 'hover:bg-slate-800 text-slate-300'"
-                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition">
-                    📈 <span>Vue d'ensemble</span>
-                </button>
+use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Pages;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
+use Filament\Widgets;
+use Illuminate\Support\Facades\Blade;
 
-                <button @click="activeTab = 'workshops'"
-                        :class="activeTab === 'workshops' ? 'bg-[#d1a153] text-white font-semibold' : 'hover:bg-slate-800 text-slate-300'"
-                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition">
-                    🎨 <span>Gestion des Ateliers</span>
-                </button>
+class AdminPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->default()
+            ->id('admin')
+            ->path('admin')
+            ->login()
+            ->brandName('Admin OFT')
+            ->font('Poppins')
+            ->darkMode(false)
+            ->colors([
+                'primary' => Color::Hex('#f2522e'),
+                'gray'    => Color::Zinc,
+            ])
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->pages([
+                Pages\Dashboard::class,
+            ])
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->widgets([])
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => Blade::render('
+                    <style>
+                        /* Fond global gris neutre */
+                        body, .fi-body { background-color: #e2e8f0 !important; }
 
-                <button @click="activeTab = 'bookings'"
-                        :class="activeTab === 'bookings' ? 'bg-[#d1a153] text-white font-semibold' : 'hover:bg-slate-800 text-slate-300'"
-                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition">
-                    📅 <span>Réservations</span>
-                </button>
+                        /* Sidebar sombre avec en-tête coloré */
+                        aside.fi-sidebar { background-color: #2c2525 !important; border-right: none !important; }
+                        aside.fi-sidebar * { color: #a39e9e !important; }
+                        aside.fi-sidebar .fi-sidebar-item-active * { color: #ffffff !important; }
+                        aside.fi-sidebar .fi-sidebar-item-active { background-color: #3d3434 !important; }
+                        
+                        /* Logo / En-tête de sidebar */
+                        .fi-sidebar-header { background-color: #f2522e !important; padding: 1.25rem !important; }
+                        .fi-sidebar-header * { color: #ffffff !important; font-weight: bold !important; }
 
-                <button @click="activeTab = 'users'"
-                        :class="activeTab === 'users' ? 'bg-[#d1a153] text-white font-semibold' : 'hover:bg-slate-800 text-slate-300'"
-                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition">
-                    👥 <span>Utilisateurs</span>
-                </button>
-
-                <button @click="activeTab = 'messages'"
-                        :class="activeTab === 'messages' ? 'bg-[#d1a153] text-white font-semibold' : 'hover:bg-slate-800 text-slate-300'"
-                        class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition">
-                    <div class="flex items-center gap-3">
-                        ✉️ <span>Messages</span>
-                    </div>
-                    @if(isset($unreadMessagesCount) && $unreadMessagesCount > 0)
-                        <span class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">{{ $unreadMessagesCount }}</span>
-                    @endif
-                </button>
-            </nav>
-
-            <!-- Déconnexion -->
-            <div class="p-4 border-t border-slate-800">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition text-sm">
-                        🚪 <span>Déconnexion</span>
-                    </button>
-                </form>
-            </div>
-        </aside>
-
-        <!-- CONTENU PRINCIPAL (DROITE) -->
-        <main class="flex-1 p-8 overflow-y-auto">
-
-            <!-- En-tête avec message de bienvenue -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-slate-800" x-text="
-                    activeTab === 'overview' ? 'Tableau de bord' :
-                    (activeTab === 'workshops' ? 'Gestion des ateliers' :
-                    (activeTab === 'bookings' ? 'Gestion des réservations' :
-                    (activeTab === 'users' ? 'Gestion des utilisateurs' : 'Messages')))
-                "></h2>
-                <div class="text-sm text-slate-500">
-                    Bonjour, <strong class="text-slate-800">{{ auth()->user()->name }}</strong>
-                </div>
-            </div>
-
-            <!-- 1. VUE D'ENSEMBLE -->
-            <div x-show="activeTab === 'overview'" class="space-y-8">
-                <!-- KPI Cards -->
-             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-    @foreach($kpis as $kpi)
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-            <div class="w-12 h-12 bg-[#d1a153]/20 rounded-xl flex items-center justify-center text-[#d1a153] text-xl">
-                {{ $kpi['icon'] }}
-            </div>
-            <div>
-                <span class="text-xs text-slate-400 font-medium uppercase">{{ $kpi['label'] }}</span>
-                <p class="text-2xl font-bold text-slate-800">{{ $kpi['value'] }}</p>
-            </div>
-        </div>
-    @endforeach
-</div>
-
-                <!-- Tableau Dernières réservations -->
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <h3 class="font-bold text-slate-800 text-lg mb-4">Dernières réservations</h3>
-                    <table class="w-full text-left border-collapse text-sm">
-                        <thead>
-                            <tr class="bg-[#1e293b] text-white">
-                                <th class="p-3 rounded-l-lg">Client</th>
-                                <th class="p-3">Atelier</th>
-                                <th class="p-3">Date</th>
-                                <th class="p-3">Statut</th>
-                                <th class="p-3 rounded-r-lg">Montant</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            @forelse($recentBookings ?? [] as $booking)
-                                <tr>
-                                    <td class="p-3 font-medium">{{ $booking->user->name ?? 'N/A' }}</td>
-                                    <td class="p-3">{{ $booking->trainingSession->training->title ?? 'N/A' }}</td>
-                                    <td class="p-3">{{ \Carbon\Carbon::parse($booking->created_at)->format('d/m/Y') }}</td>
-                                    <td class="p-3">
-                                        <span class="px-2.5 py-1 text-xs rounded-full bg-emerald-100 text-emerald-700 font-medium">Confirmé</span>
-                                    </td>
-                                    <td class="p-3 font-bold">{{ $booking->trainingSession->training->price ?? 0 }} €</td>
-                                </tr>
-                            @empty
-                                <tr><td colspan="5" class="p-4 text-center text-slate-400 italic">Aucune réservation récente.</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 2. GESTION DES ATELIERS -->
-            <div x-show="activeTab === 'workshops'" x-cloak class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-slate-800 text-lg">Liste des ateliers</h3>
-                    <a href="{{ route('trainings.create') }}" class="px-4 py-2 bg-[#d1a153] hover:bg-[#b88c42] text-white rounded-xl text-sm font-semibold transition">
-                        + Nouvel atelier
-                    </a>
-                </div>
-                <table class="w-full text-left text-sm">
-                    <thead>
-                        <tr class="bg-[#1e293b] text-white">
-                            <th class="p-3 rounded-l-lg">Atelier</th>
-                            <th class="p-3">Prix</th>
-                            <th class="p-3">Durée</th>
-                            <th class="p-3 rounded-r-lg text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        @forelse($workshops ?? [] as $workshop)
-                            <tr>
-                                <td class="p-3 font-medium">{{ $workshop->title }}</td>
-                                <td class="p-3">{{ $workshop->price }} €</td>
-                                <td class="p-3">{{ $workshop->duration }} h</td>
-                                <td class="p-3 text-right">
-                                    <a href="{{ route('trainings.edit', $workshop) }}" class="text-indigo-600 hover:underline mr-3">Éditer</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr><td colspan="4" class="p-4 text-center text-slate-400 italic">Aucun atelier.</td></tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 3. RÉSERVATIONS -->
-            <div x-show="activeTab === 'bookings'" x-cloak class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h3 class="font-bold text-slate-800 text-lg mb-4">Toutes les réservations</h3>
-                <!-- Contenu table réservations -->
-            </div>
-
-            <!-- 4. UTILISATEURS -->
-            <div x-show="activeTab === 'users'" x-cloak class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h3 class="font-bold text-slate-800 text-lg mb-4">Gestion des utilisateurs</h3>
-                <!-- Contenu table utilisateurs -->
-            </div>
-
-            <!-- 5. MESSAGES -->
-            <div x-show="activeTab === 'messages'" x-cloak class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                <h3 class="font-bold text-slate-800 text-lg mb-4">Messages reçus</h3>
-                <!-- Liste des messages -->
-            </div>
-
-        </main>
-    </div>
-</x-app-layout>
+                        /* Cartes KPI (Stats Overview) */
+                        .fi-wi-stats-overview-stat {
+                            background-color: #ffffff !important;
+                            border-radius: 0.5rem !important;
+                            border: none !important;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+                        }
+                    </style>
+                ')
+            )
+            ->middleware([
+                \Illuminate\Cookie\Middleware\EncryptCookies::class,
+                \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+                \Illuminate\Session\Middleware\StartSession::class,
+                \Illuminate\Session\Middleware\AuthenticateSession::class,
+                \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+                \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+                \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                DispatchServingFilamentEvent::class,
+            ])
+            ->authMiddleware([
+                Authenticate::class,
+            ]);
+    }
+}

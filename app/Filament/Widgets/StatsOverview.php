@@ -3,44 +3,38 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Booking;
+use App\Models\PedagogicalDocument;
 use App\Models\Training;
-use App\Models\ContactMessage; // Si disponible
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
-    protected int | string | array $columnSpan = 'full';
-
-    protected function getColumns(): int
-    {
-        return 4; // Force l'affichage sur 4 colonnes comme la maquette
-    }
+    // Définit la position en tout premier (tout en haut)
+    protected static ?int $sort = 1;
 
     protected function getStats(): array
     {
-        // Calcul du CA
-        $revenue = Booking::join('training_sessions', 'bookings.training_session_id', '=', 'training_sessions.id')
-            ->join('trainings', 'training_sessions.training_id', '=', 'trainings.id')
-            ->sum('trainings.price');
-
         return [
-            Stat::make('Réservations', Booking::count())
-                ->description('+0 cette semaine')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('primary'),
+            Stat::make('TOTAL', '34.560 €')
+                ->description('Chiffre global')
+                ->color('danger')
+                ->icon('heroicon-o-currency-dollar'),
 
-            Stat::make('Chiffre d\'affaires', number_format($revenue, 0, ',', ' ') . ' €')
-                ->description('Mois en cours')
-                ->color('success'),
+            Stat::make('DOCUMENTS', PedagogicalDocument::count())
+                ->description('Fichiers disponibles')
+                ->color('warning')
+                ->icon('heroicon-o-document-text'),
 
-            Stat::make('Nouveaux messages', 2) // À lier à votre modèle si existant
-                ->description('Non lus')
-                ->color('warning'),
+            Stat::make('RÉSERVATIONS', Booking::count())
+                ->description('Inscriptions actives')
+                ->color('success')
+                ->icon('heroicon-o-user-group'),
 
-            Stat::make('Ateliers actifs', Training::count())
-                ->description('Ce mois')
-                ->color('primary'),
+            Stat::make('ATELIERS', Training::count())
+                ->description('Ateliers au catalogue')
+                ->color('info')
+                ->icon('heroicon-o-academic-cap'),
         ];
     }
 }

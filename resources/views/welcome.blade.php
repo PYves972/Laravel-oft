@@ -48,41 +48,80 @@
     </div>
 </section>
 <!-- SECTION À PROPOS -->
+
 <section id="a-propos" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
+
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+
         <div class="md:col-span-5">
+
             <div class="rounded-3xl overflow-hidden shadow-md bg-gray-200 aspect-[4/3] md:aspect-[1/1] relative">
+
                 <img src="{{ asset('images/a-propos.jpg') }}" alt="Machine à coudre de l'atelier" class="w-full h-full object-cover">
+
             </div>
+
         </div>
+
+
 
         <div class="md:col-span-5 space-y-6">
+
             <h2 class="font-serif text-3xl md:text-4xl text-[#2D3B22] font-normal">
+
                 À propos de l'atelier
+
             </h2>
+
             <div class="space-y-4 text-gray-700 text-base md:text-lg leading-relaxed">
+
                 <p>Chez Oft Atelier, la passion se tisse fil après fil. Mon parcours est atypique : après quinze années dédiées à l'agriculture, j'ai choisi de donner une nouvelle direction à ma vie professionnelle.
+
 Une formation initiale en tissage a été la porte d'entrée vers ce qui est aujourd'hui mon métier et ma vocation : la couture.</p>
+
                 <p>Ce qui a commencé comme une activité secondaire est devenu une véritable expertise...</p>
+
             </div>
+
             <div>
-                <a href="#temoignages" class="inline-flex items-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-6 py-3 rounded-full text-sm font-medium transition">
-                    <span>En savoir plus</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
+
+               <a href="{{ route('atelier.about') }}"  class="px-6 py-3.5 bg-[#2D4030] hover:bg-[#233326] text-white font-medium text-xs md:text-sm tracking-wider uppercase rounded-sm shadow-sm transition duration-200">En savoir plus &rarr;</a>
+
             </div>
+
         </div>
+
+
 
         <div class="hidden md:flex md:col-span-2 justify-center items-center opacity-60">
-            <svg class="w-28 h-48" viewBox="0 0 100 180" fill="none" stroke="#2D3B22" stroke-width="1.5">
-                <path d="M50 20 C40 20 35 35 35 50 C35 70 42 85 40 110 C38 125 30 135 30 135 L70 135 C70 135 62 125 60 110 C58 85 65 70 65 50 C65 35 60 20 50 20 Z" />
-                <line x1="50" y1="135" x2="50" y2="175" />
-                <line x1="35" y1="175" x2="65" y2="175" />
-            </svg>
+
+
         </div>
+
     </div>
+
 </section>
 
+
+
+
+@php
+    // Liste des images disponibles dans public/images/
+    $randomImages = [
+        'formation.jpg',
+        'crochet.jpg',
+        'couture.jpg',
+        'tricot.jpg',
+        'broderie.jpg',
+        'confections.jpg'
+
+    ];
+
+    // Sélection de 2 images distinctes pour les cartes 1 et 2
+    $randomKeys = array_rand($randomImages, 2);
+    $imageFormation = $randomImages[$randomKeys[0]];
+    $imageWorkshop = $randomImages[$randomKeys[1]];
+@endphp
 
 <!-- SECTION NOS OFFRES -->
 <section id="offres" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
@@ -98,17 +137,11 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
             <div class="border-t-4 border-emerald-500">
                 <div class="h-48 w-full bg-gray-100 overflow-hidden relative">
-                    {{-- Vérification si l'enregistrement possède une image en base de données --}}
-                    @if(!empty($featuredFormation?->image_path))
-                        <img src="{{ asset('storage/' . $featuredFormation->image_path) }}" alt="{{ $featuredFormation->title ?? 'Cours & Formations' }}" class="w-full h-full object-cover">
-                    @else
-                        {{-- Image temporaire si aucune image n'est enregistrée en base de données --}}
-                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400 text-xs">
-                            Aucune image disponible
-                        </div>
-                    @endif
+                    <img src="{{ asset('images/' . $imageFormation) }}"
+                         alt="{{ $featuredFormation->title ?? 'Cours & Formations' }}"
+                         class="w-full h-full object-cover">
                     <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white bg-emerald-500 shadow-sm">
-                        Initiation
+                        Tous niveaux
                     </span>
                 </div>
 
@@ -138,15 +171,11 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
             <div class="border-t-4 border-blue-500">
                 <div class="h-48 w-full bg-gray-100 overflow-hidden relative">
-                    @if(!empty($featuredWorkshop?->image_path))
-                        <img src="{{ asset('storage/' . $featuredWorkshop->image_path) }}" alt="{{ $featuredWorkshop->title ?? 'Ateliers Créatifs' }}" class="w-full h-full object-cover">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400 text-xs">
-                            Aucune image disponible
-                        </div>
-                    @endif
+                    <img src="{{ asset('images/' . $imageWorkshop) }}"
+                         alt="{{ $featuredWorkshop->title ?? 'Ateliers Créatifs' }}"
+                         class="w-full h-full object-cover">
                     <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white bg-blue-500 shadow-sm">
-                        Perfectionnement
+                        Initiation
                     </span>
                 </div>
 
@@ -172,36 +201,52 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
             </div>
         </div>
 
-        <!-- Carte 3 : Galerie des confections -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
-            <div class="p-6 border-t-4 border-amber-400">
-                <span class="px-3 py-1 rounded-full text-xs font-bold text-amber-950 bg-amber-400 inline-block mb-3">
-                    Galerie
-                </span>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Nos Confections</h3>
-                <p class="text-gray-600 text-sm mb-4">
-                    Aperçu des pièces et créations confectionnées à la main au sein de notre atelier.
-                </p>
+       <!-- Carte 3 : Galerie des confections -->
+        @php
+            $imageFiles = \Illuminate\Support\Facades\File::files(public_path('images/galerie'));
+            $validImages = array_filter($imageFiles, function ($file) {
+                return in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif']);
+            });
+            shuffle($validImages);
+            $randomGalleryImages = array_slice($validImages, 0, 1);
+        @endphp
 
-                <div class="grid grid-cols-3 gap-2 my-4">
-                    <img src="{{ asset('storage/gallery/couture.jpg') }}" alt="Confection 1" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=300&q=80'">
-                    <img src="{{ asset('storage/gallery/tricot.jpg') }}" alt="Confection 2" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=300&q=80'">
-                    <img src="{{ asset('storage/gallery/broderie.jpg') }}" alt="Confection 3" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=300&q=80'">
-                    <img src="{{ asset('storage/gallery/teinture.jpg') }}" alt="Confection 4" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=300&q=80'">
-                    <img src="{{ asset('storage/gallery/tissage.jpg') }}" alt="Confection 5" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1528458876861-544fd1761a91?auto=format&fit=crop&w=300&q=80'">
-                    <img src="{{ asset('storage/gallery/confection6.jpg') }}" alt="Confection 6" class="w-full h-20 object-cover rounded-lg shadow-sm" onerror="this.src='https://images.unsplash.com/photo-1619252584172-a83a949b6efd?auto=format&fit=crop&w=300&q=80'">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+            <div class="border-t-4 border-purple-500">
+                <div class="h-48 w-full bg-gray-100 overflow-hidden relative">
+                    @forelse($randomGalleryImages as $image)
+                        <img src="{{ asset('images/galerie/' . $image->getFilename()) }}"
+                             alt="Galerie confection"
+                             class="w-full h-full object-cover">
+                    @empty
+                        <div class="w-full h-full flex items-center justify-center text-xs text-gray-400">
+                            Aucune image disponible
+                        </div>
+                    @endforelse
+                    <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold text-white bg-purple-500 shadow-sm">
+                        Créations
+                    </span>
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">
+                        Galerie de l'Atelier
+                    </h3>
+                    <p class="text-gray-600 text-sm">
+                        Découvrez nos créations uniques et l'ensemble des réalisations confectionnées au sein de nos ateliers.
+                    </p>
                 </div>
             </div>
 
-            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto">
-                <a href="{{ route('gallery.index') }}" class="block text-center w-full py-2.5 px-4 bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold rounded-xl transition text-sm">
-                    Voir toute la galerie
+            <div class="p-6 bg-stone-50 border-t border-gray-100 mt-auto space-y-2">
+                <a href="{{ route('gallery.index') }}" class="block text-center w-full py-2.5 px-4 bg-[#82C341] hover:bg-opacity-90 text-white font-semibold rounded-xl transition text-sm">
+                    Afficher la galerie
                 </a>
             </div>
         </div>
+
     </div>
 </section>
-
 <!-- SECTION TÉMOIGNAGES -->
 <section id="temoignages" class="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 scroll-mt-20">
     <div class="text-center mb-12 space-y-3">
@@ -281,7 +326,8 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
                         </div>
                         <div>
                             <span class="block text-xs text-gray-500 font-medium">Horaires d'ouverture</span>
-                            <span class="font-medium">Mar - Sam : 9h00 - 16h00</span>
+                            <span class="font-medium">Mardi - Vendredi : 9h00 - 16h00</span><br>
+                            <span class="font-medium">Samedi : 8h00 - 12h00</span>
                         </div>
                     </div>
                 </div>
@@ -333,7 +379,7 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
                                 <option value="Information cours" {{ old('sujet') == 'Information cours' ? 'selected' : '' }}>Renseignement sur un cours / formation</option>
                                 <option value="Inscription atelier" {{ old('sujet') == 'Inscription atelier' ? 'selected' : '' }}>Inscription à un atelier créatif</option>
                                 <option value="Creation sur mesure" {{ old('sujet') == 'Creation sur mesure' ? 'selected' : '' }}>Commande / Confection sur-mesure</option>
-                                <option value="Privatisation" {{ old('sujet') == 'Privatisation' ? 'selected' : '' }}>Privatisation d'événement / Atelier groupe</option>
+                                <option value="Privatisation" {{ old('sujet') == 'Privatisation' ? 'selected' : '' }}>Commité d'entreprise / Atelier groupe</option>
                                 <option value="Autre" {{ old('sujet') == 'Autre' ? 'selected' : '' }}>Autre demande</option>
                             </select>
                             @error('sujet') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
@@ -341,10 +387,10 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
                         <div>
                             <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Votre niveau en couture</label>
                             <select name="niveau" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]">
-                                <option value="" selected>Non renseigné</option>
-                                <option value="Debutant" {{ old('niveau') == 'Debutant' ? 'selected' : '' }}>Débutant(e) complet</option>
-                                <option value="Intermediaire" {{ old('niveau') == 'Intermediaire' ? 'selected' : '' }}>Intermédiaire (quelques bases)</option>
-                                <option value="Avance" {{ old('niveau') == 'Avance' ? 'selected' : '' }}>Avancé(e) / Autonome</option>
+                                <option value="" selected>Niveau</option>
+                                <option value="Debutant" {{ old('niveau') == 'Debutant' ? 'selected' : '' }}>Débutant</option>
+                                <option value="Intermediaire" {{ old('niveau') == 'Intermediaire' ? 'selected' : '' }}>Intermédiaire </option>
+                                <option value="Avance" {{ old('niveau') == 'Avance' ? 'selected' : '' }}>Avancé</option>
                             </select>
                             @error('niveau') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
@@ -377,7 +423,7 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
     </div>
 </section>
 <div class="bg-amber-50 rounded-2xl p-8 border border-amber-200 max-w-3xl mx-auto my-12 text-center">
-    <h3 class="text-2xl font-bold text-gray-900">Restez informé des prochains événements</h3>
+    <h3 class="text-2xl font-bold text-gray-900">Newsletter</h3>
 
 
     @if(session('newsletter_success'))
@@ -409,4 +455,54 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
         </form>
     @endif
 </div>
+<!-- MODAL POP-UP ÉVÉNEMENT -->
+@if(isset($annonce) && $annonce)
+    <div x-data="{ open: false }"
+         x-init="if (!sessionStorage.getItem('event_popup_seen')) { open = true; }"
+         x-show="open"
+         x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity">
+
+        <div @click.away="open = false; sessionStorage.setItem('event_popup_seen', 'true')"
+             class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-stone-200">
+
+            <!-- Bouton Fermer (Croix) -->
+            <button @click="open = false; sessionStorage.setItem('event_popup_seen', 'true')"
+                    class="absolute right-4 top-4 text-gray-400 hover:text-gray-700 text-2xl font-bold transition">
+                &times;
+            </button>
+
+            <!-- Image de l'événement -->
+    @if($annonce->image)
+    <div class="mb-4 h-48 w-full overflow-hidden rounded-xl bg-gray-100">
+        <img src="{{ asset('storage/' . $annonce->image) }}"
+             alt="{{ $annonce->title }}"
+             class="h-full w-full object-cover"
+             onerror="this.onerror=null; this.src='{{ route('image.display', ['path' => $annonce->image]) }}';">
+    </div>
+@endif
+
+            <!-- Titre & Contenu -->
+            <h3 class="text-2xl font-serif font-bold text-[#2D3B22] mb-2">
+                {{ $annonce->title }}
+            </h3>
+
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                {{ $annonce->description }}
+            </p>
+
+            @if($annonce->event_date)
+                <p class="text-xs font-semibold text-[#D17B5D] uppercase tracking-wider mb-6">
+                    📅 Date : {{ \Carbon\Carbon::parse($annonce->event_date)->format('d/m/Y') }}
+                </p>
+            @endif
+
+            <!-- Bouton de fermeture -->
+            <button @click="open = false; sessionStorage.setItem('event_popup_seen', 'true')"
+                    class="w-full rounded-xl bg-[#2D4030] py-3 text-white font-medium hover:bg-[#233326] transition shadow-sm text-sm uppercase tracking-wider">
+                Fermer
+            </button>
+        </div>
+    </div>
+@endif
 @endsection

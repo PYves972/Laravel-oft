@@ -1,0 +1,75 @@
+058b36b | 2026-09-18 | Fix: PostgreSQL compatibility with Schema helper for foreign keys
+ae79a18 | 2026-09-18 | Fix: Add db:seed to Dockerfile CMD
+a9b75e8 | 2026-09-18 | Fix: force HTTPS scheme and set APP_URL
+d954149 | 2026-09-18 | Fix: migration standard pour PostgreSQL et mise a jour Dockerfile
+71ba3a3 | 2026-09-17 | Fix: reset database and add storage link in Dockerfile
+abac222 | 2026-09-17 | Fix syntax and intl extension in Dockerfile
+470e860 | 2026-09-17 | Correction affichage et styles
+6220d42 | 2026-09-17 | refactor(admin): cleanup Filament CommentResource and ProgressionResource schemas
+c343430 | 2026-09-17 | feat(database): integrate iseed package and update seeders from database
+b1ee35a | 2026-09-16 | feat(views): update welcome page copy, public contact form, and newsletter section
+aac7f64 | 2026-09-16 | feat(models): add documents relation alias on Training model
+44bcba8 | 2026-09-16 | feat(booking): add livewire direct booking logic with auth check and duplicate handling
+a41db0e | 2026-09-16 | feat(auth): optimize dashboard booking query and relation loading
+6ac92bb | 2026-09-16 | feat(admin): replace static dashboard stats with dynamic KPI metrics logic
+6a2bda5 | 2026-09-16 | feat(documents): update relation manager namespace and refine form/table schemas
+9091bd2 | 2026-09-11 | routes(web): reorganize routes for workshop single view and calendar
+bf76b29 | 2026-09-11 | feat(workshops): add interactive Livewire atelier booking module
+3cedb14 | 2026-09-11 | refactor(admin): update TrainingSessionResource schema and table layout
+486341c | 2026-09-10 | feat(training): resolve category_id requirement and integrate relation field in Filament resource
+e908f2f | 2026-09-10 | fix(security): enforce RM-28 document download policy and update session model
+e0e3169 | 2026-09-10 | feat(reviews): add comments migration, model and Filament resource (RM-30 to RM-33)
+4305fa2 | 2026-09-10 | feat(pedagogy): add progressions migration, model and Filament resource (RM-34 to RM-37)
+0ee2c44 | 2026-09-10 | refactor(trainings,bookings): simplify resource forms, tables, and controller logic
+9c14c04 | 2026-09-10 | fix(routes): register admin group and calendar route aliases
+3148d54 | 2026-09-10 | refactor(user-dashboard): update user dashboard layout with Alpine.js tabs
+4a1fa1a | 2026-09-10 | feat(admin): customize Filament panel and create admin dashboard
+de4e49d | 2026-09-10 | feat(documents): implement pedagogical document management and download
+1c27208 | 2026-09-10 | feat(dev): add laravel-ide-helper package
+8dc60be | 2026-09-08 | feat(dashboard): integrate FullCalendar (Tue-Sat) and update workshop/training links
+f7b7f82 | 2026-09-07 | feat(trainings): separation formations/ateliers, ajout relation manager sessions et refonte des vues
+0792b14 | 2026-09-05 | feat: setup newsletter subscriber management in filament v4 and FAQ accordion
+f1ed0f4 | 2026-09-05 | feat(views): fix image paths and fallback display in welcome view
+b1c4dc7 | 2026-09-04 | fix(booking): correction des imports de composants pour la création/édition
+b540eb5 | 2026-09-04 | build(filament): réinstallation propre de Filament et publication des assets
+4eac808 | 2026-09-03 | fix(filament): resolve BookingResource signature and namespace compatibility
+73f3dc8 | 2026-09-03 | chore: update gitignore to exclude uploaded public images
+5b92bbd | 2026-09-03 | feat(views): update trainings view and routes for dynamic content display
+a1991ba | 2026-09-03 | feat(filament): add ServiceResource for managing gallery and services
+af3ffc3 | 2026-09-03 | feat(filament): add TrainingSessionResource for managing workshop schedule
+92fb07e | 2026-09-03 | feat(filament): add TrainingResource for managing workshops and trainings
+64ded49 | 2026-09-03 | feat(database): add image_path to trainings table and auto-generate slug in Training model
+0a48d8c | 2026-09-02 | fix: ignorer la galerie d'images
+01a1aa3 | 2026-09-01 | fix: resolve PSR-4 class name and bootstrap cache directory
+2b206b6 | 2026-09-01 | feat(trainings): update booking calendar and view layouts
+60a75b2 | 2026-09-01 | refactor(navigation): update gallery link and clean main navigation
+ea6375e | 2026-09-01 | feat(contact): enrich contact form fields and update validation rules
+6532fe0 | 2026-09-01 | chore: update user dashboard and dependencies
+3b9dbd5 | 2026-09-01 | feat(navigation): update homepage card links and catalog navigation
+a1c7715 | 2026-09-01 | style(hero): integrate logo color scheme and align text over background whiteboard
+f9e88f4 | 2026-09-01 | feat(calendar): implement dynamic selection, theme colors and booking route
+548dfda | 2026-09-01 | fix(backend): fix training relations and update seeders with dynamic colors
+a7fa8ab | 2026-08-28 | fix(calendar): localize dates to French, fix seat counter and improve week navigation
+8298a6b | 2026-08-28 | style: harmonisation navigation, ajustement logo et layout calendrier
+9e94e6c | 2026-08-28 | feat: add user dashboard with booking list and cancel action
+fdbb3c6 | 2026-08-28 | fix: correct column name ends_at and handle nullable formatting in calendar view
+583c9e4 | 2026-08-28 | refactor: align training sessions attributes to starts_at, ends_at, and capacity_override
+bfc8f7e | 2026-08-27 | Fix database connection URL and dynamic port for Render
+901abca | 2026-08-27 | Fix training sessions migrations
+6c6e594 | 2026-08-27 | Run Laravel migrations on startup
+48fff30 | 2026-08-27 | Add PostgreSQL support for Render
+6d517ad | 2026-08-27 | Use PHP 8.4 for Laravel deployment
+b220b85 | 2026-08-27 | Prepare Laravel app for Render deployment
+81c36cb | 2026-08-26 | Connect bookings to the workshop calendar
+08119cf | 2026-08-26 | Add weekly workshop schedule and session seeding
+3283646 | 2026-08-25 | feat: integrate training calendar and update training models with seeders
+a8bb385 | 2026-08-21 | feat: add booking system migration, model, controller and view integration
+ec08b70 | 2026-08-21 | feat: add training controller, views and navigation update for public catalog access
+8ffc6dd | 2026-08-21 | feat: setup migrations and models for categories, trainings, tags, and sessions
+3e93b9b | 2026-08-21 | Refactor code structure for improved readability and maintainability
+814a08d | 2026-08-21 | feat: add testimonials feature with migration, model, and seeder
+a6d7ec1 | 2026-08-21 | feat: integration de la page d'accueil avec base de donnees services
+43afcc8 | 2026-08-19 | feat: style authentication screens
+560e7d6 | 2026-08-19 | feat: create Oft Atelier login interface
+5103577 | 2026-08-19 | feat: install Laravel Breeze authentication
+e856a6c | 2026-08-19 | feat: installation initiale de Laravel 11
