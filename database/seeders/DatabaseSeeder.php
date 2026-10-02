@@ -2,17 +2,32 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Service;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Désactiver temporairement les contraintes de clés étrangères
-        //DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Désactiver temporairement les contraintes de clés étrangères (compatible PostgreSQL)
+        Schema::disableForeignKeyConstraints();
+
+        /*
+         * ============================================================
+         * COMPTE ADMINISTRATEUR FILAMENT
+         * ============================================================
+         */
+        User::updateOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
+                'name' => 'Admin OFT',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+            ]
+        );
 
         /*
          * ============================================================
@@ -56,6 +71,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Réactiver les contraintes de clés étrangères
-Schema::enableForeignKeyConstraints();
+        Schema::enableForeignKeyConstraints();
     }
 }
