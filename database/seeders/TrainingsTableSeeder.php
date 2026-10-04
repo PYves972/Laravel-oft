@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+
 class TrainingsTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -14,11 +14,13 @@ class TrainingsTableSeeder extends Seeder
      */
     public function run()
     {
+        if (config('database.default') === 'pgsql') {
+            DB::statement('TRUNCATE TABLE trainings CASCADE;');
+        } else {
+            DB::table('trainings')->delete();
+        }
 
-
-        \DB::table('trainings')->delete();
-
-        \DB::table('trainings')->insert(array (
+        DB::table('trainings')->insert(array (
             0 =>
             array (
                 'id' => 1,
@@ -127,7 +129,7 @@ class TrainingsTableSeeder extends Seeder
                 'type' => 'atelier',
                 'image_path' => 'trainings/01M2563VHC2HVZ67GFQD9PXZ8M.jpg',
                 'slug' => 'atelier-broderie',
-                'description' => '<p>Explorez les différents points de broderie pour personnaliser vos tissus.</p>',
+                'description' => '<p>Explorez les différents points de broderie pour personaliser vos tissus.</p>',
                 'cover_image' => NULL,
                 'gallery_images' => NULL,
                 'prerequisites' => NULL,
@@ -195,7 +197,5 @@ class TrainingsTableSeeder extends Seeder
                 'updated_at' => '2026-09-10 08:27:00',
             ),
         ));
-
-
     }
 }

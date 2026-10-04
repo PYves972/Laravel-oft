@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+
 class CategoriesTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -14,11 +14,13 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
+        if (config('database.default') === 'pgsql') {
+            DB::statement('TRUNCATE TABLE categories CASCADE;');
+        } else {
+            DB::table('categories')->delete();
+        }
 
-
-        \DB::table('categories')->delete();
-
-        \DB::table('categories')->insert(array (
+        DB::table('categories')->insert(array (
             0 =>
             array (
                 'id' => 1,
@@ -74,7 +76,5 @@ class CategoriesTableSeeder extends Seeder
                 'updated_at' => '2026-09-10 07:26:34',
             ),
         ));
-
-
     }
 }
