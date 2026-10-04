@@ -6,11 +6,11 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         @forelse($images as $imagePath)
-            <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-lg">
-                <div class="w-full h-72 overflow-hidden bg-gray-50 flex items-center justify-center">
+            <div class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 p-3 transition-all duration-300 hover:shadow-lg">
+                <div class="w-full h-80 overflow-hidden bg-gray-50 rounded-xl flex items-center justify-center">
                     <img src="{{ asset($imagePath) }}"
                          alt="Réalisation Galerie"
-                         class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110">
+                         class="w-full h-full object-contain p-2 transition-transform duration-500 ease-out group-hover:scale-105">
                 </div>
             </div>
         @empty
