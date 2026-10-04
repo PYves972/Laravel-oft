@@ -38,6 +38,7 @@ class ServiceResource extends Resource
                 FileUpload::make('image_path')
                     ->label('Photo pour la Galerie')
                     ->image()
+                    ->disk('public')
                     ->directory('gallery')
                     ->visibility('public')
                     ->required()
@@ -54,7 +55,8 @@ class ServiceResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image_path')
-                    ->label('Visuel'),
+                    ->label('Visuel')
+                    ->disk('public'),
 
                 TextColumn::make('title')
                     ->label('Titre')

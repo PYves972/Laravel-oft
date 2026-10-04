@@ -2,29 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class GalleryController extends Controller
 {
     public function index()
     {
-        $galleryPath = public_path('images/galerie');
-        $images = [];
+        // Charger les éléments actifs depuis la BDD au lieu d'un dossier physique local
+        $services = Service::whereNotNull('image_path')
+            ->where('is_active', true)
+            ->latest()
+            ->get();
 
-        if (File::exists($galleryPath)) {
-            // Récupérer tous les fichiers du dossier
-            $files = File::files($galleryPath);
-
-            foreach ($files as $file) {
-                // Filtrer par extensions d'images autorisées
-                $extension = strtolower($file->getExtension());
-                if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                    $images[] = 'images/galerie/' . $file->getFilename();
-                }
-            }
-        }
-
-        return view('gallery', compact('images'));
+        return view('gallery', compact('services'));
     }
 }

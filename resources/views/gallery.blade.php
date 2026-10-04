@@ -1,26 +1,25 @@
-<x-app-layout>
-    {{-- On remplace py-12 par pt-28 pb-12 pour décaler correctement le contenu sous la navbar fixe --}}
-    <div class="pt-28 pb-12 bg-[#FDFBF7] min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-serif text-center text-gray-800 mb-8">Galerie de l'Atelier</h1>
+@extends('layouts.main')
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                @forelse($images as $image)
-                    {{-- 
-                       1. aspect-[3/4] ou aspect-square : donne un ratio vertical moderne et uniforme aux cartes.
-                       2. h-full w-full object-cover : remplit intégralement la carte sans déformer l'image ni laisser de bandes blanches.
-                    --}}
-                    <div class="overflow-hidden rounded-xl shadow-sm border border-gray-100 bg-white aspect-[3/4] relative group">
-                        <img src="{{ asset($image) }}"
-                             alt="Création de l'Atelier"
-                             class="w-full h-full object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110">
-                    </div>
-                @empty
-                    <div class="col-span-full text-center py-12 text-gray-500">
-                        <p>Aucune image disponible dans la galerie pour le moment.</p>
-                    </div>
-                @endforelse
+@section('content')
+<section class="max-w-7xl mx-auto px-6 py-12">
+    <h1 class="font-serif text-4xl text-center text-[#2D3B22] mb-12">Galerie de l'Atelier</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        @forelse($services as $service)
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                <img src="{{ asset('storage/' . $service->image_path) }}"
+                     alt="{{ $service->title }}"
+                     class="w-full h-64 object-cover">
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-900 text-lg">{{ $service->title }}</h3>
+                    @if($service->description)
+                        <p class="text-sm text-gray-600 mt-1">{{ $service->description }}</p>
+                    @endif
+                </div>
             </div>
-        </div>
+        @empty
+            <p class="col-span-full text-center text-gray-500 py-12">Aucune image disponible dans la galerie pour le moment.</p>
+        @endforelse
     </div>
-</x-app-layout>
+</section>
+@endsection
