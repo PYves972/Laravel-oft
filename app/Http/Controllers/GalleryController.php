@@ -9,9 +9,7 @@ class GalleryController extends Controller
 {
     public function index()
     {
-
         $services = Service::whereNotNull('image')
-            ->where('is_active', true)
             ->latest()
             ->get();
 
