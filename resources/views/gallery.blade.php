@@ -7,11 +7,11 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         @forelse($services as $service)
             <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                <img src="{{ asset('storage/' . $service->image_path) }}"
-                     alt="{{ $service->title }}"
+                <img src="{{ asset('storage/' . $service->image) }}"
+                     alt="{{ $service->titre }}"
                      class="w-full h-64 object-cover">
                 <div class="p-4">
-                    <h3 class="font-bold text-gray-900 text-lg">{{ $service->title }}</h3>
+                    <h3 class="font-bold text-gray-900 text-lg">{{ $service->titre }}</h3>
                     @if($service->description)
                         <p class="text-sm text-gray-600 mt-1">{{ $service->description }}</p>
                     @endif

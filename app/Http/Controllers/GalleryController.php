@@ -9,8 +9,8 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        // Charger les éléments actifs depuis la BDD au lieu d'un dossier physique local
-        $services = Service::whereNotNull('image_path')
+
+        $services = Service::whereNotNull('image')
             ->where('is_active', true)
             ->latest()
             ->get();

@@ -28,14 +28,14 @@ class ServiceResource extends Resource
     {
         return $schema
             ->components([
-                TextInput::make('title')
+                TextInput::make('titre')
                     ->label('Titre / Nom de la réalisation')
                     ->required(),
 
                 Textarea::make('description')
                     ->label('Description courte'),
 
-                FileUpload::make('image_path')
+                FileUpload::make('image')
                     ->label('Photo pour la Galerie')
                     ->image()
                     ->disk('public')
@@ -54,11 +54,11 @@ class ServiceResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image_path')
+                ImageColumn::make('image')
                     ->label('Visuel')
                     ->disk('public'),
 
-                TextColumn::make('title')
+                TextColumn::make('titre')
                     ->label('Titre')
                     ->searchable(),
 
