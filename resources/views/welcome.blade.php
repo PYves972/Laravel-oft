@@ -202,14 +202,23 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
         </div>
 
        <!-- Carte 3 : Galerie des confections -->
-        @php
-            $imageFiles = \Illuminate\Support\Facades\File::files(public_path('images/galerie'));
-            $validImages = array_filter($imageFiles, function ($file) {
-                return in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif']);
-            });
-            shuffle($validImages);
-            $randomGalleryImages = array_slice($validImages, 0, 1);
-        @endphp
+@php
+    $galeriePath = public_path('images/galerie');
+    $imageFiles = \Illuminate\Support\Facades\File::exists($galeriePath)
+        ? \Illuminate\Support\Facades\File::files($galeriePath)
+        : [];
+
+    $validImages = array_filter($imageFiles, function ($file) {
+        return in_array(strtolower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif']);
+    });
+
+    if (!empty($validImages)) {
+        shuffle($validImages);
+        $randomGalleryImages = array_slice($validImages, 0, 1);
+    } else {
+        $randomGalleryImages = [];
+    }
+@endphp
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
             <div class="border-t-4 border-purple-500">
@@ -252,7 +261,7 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
     <div class="text-center mb-12 space-y-3">
         <span class="text-xs uppercase tracking-widest text-[#B58D56] font-semibold">Témoignages</span>
         <h2 class="font-serif text-3xl md:text-5xl text-[#2D3B22] font-normal italic">
-            Elles ont poussé <span class="not-italic">la porte</span>
+            Ce qu'ils pensent de nous
         </h2>
     </div>
 
