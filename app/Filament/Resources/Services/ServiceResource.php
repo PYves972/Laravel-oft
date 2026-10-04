@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Services;
 
 use App\Filament\Resources\Services\Pages;
 use App\Models\Service;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -60,8 +62,8 @@ class ServiceResource extends Resource
                     ->dateTime('d/m/Y'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
