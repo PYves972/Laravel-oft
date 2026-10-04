@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class GalleryController extends Controller
 {
     public function index()
     {
-        $services = Service::whereNotNull('image')
-            ->latest()
-            ->get();
+        $galleryPath = public_path('images/galerie');
+        $images = [];
 
-        return view('gallery', compact('services'));
+        if (File::exists($galleryPath)) {
+            $files = File::files($galleryPath);
+
+            foreach ($files as $file) {
+                $extension = strtolower($file->getExtension());
+                if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'])) {
+                    $images[] = 'images/galerie/' . $file->getFilename();
+                }
+            }
+        }
+
+        return view('gallery', compact('images'));
     }
 }
