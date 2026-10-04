@@ -4,14 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Service;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Désactiver temporairement les contraintes de clés étrangères
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Désactiver temporairement les contraintes de clés étrangères (compatible PostgreSQL/MySQL)
+        Schema::disableForeignKeyConstraints();
 
         /*
          * ============================================================
@@ -55,6 +55,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Réactiver les contraintes de clés étrangères
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
     }
 }
