@@ -32,3 +32,5 @@ public/images/galerie/
 
 # Sécurité pour le stockage public
 /storage/app/public/*
+!public/images/galerie/
+!public/images/galerie/*

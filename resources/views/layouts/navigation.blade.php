@@ -12,20 +12,27 @@
 
         <!-- Liens Desktop (Masqués sur Mobile) -->
         <div class="hidden md:flex items-center gap-6 font-medium text-gray-700">
-            <a href="#accueil" class="hover:text-[#2D3B22] transition">Accueil</a>
-            <a href="#a-propos" class="hover:text-[#2D3B22] transition">À propos</a>
-            <a href="#offres" class="hover:text-[#2D3B22] transition">Nos Offres</a>
+            <a href="{{ url('/#accueil') }}" class="hover:text-[#2D3B22] transition">Accueil</a>
+            <a href="{{ url('/#a-propos') }}" class="hover:text-[#2D3B22] transition">À propos</a>
+            <a href="{{ url('/#offres') }}" class="hover:text-[#2D3B22] transition">Nos Offres</a>
             <a href="{{ route('gallery.index') }}" class="hover:text-[#2D3B22] transition">Galerie</a>
-            <a href="#temoignages" class="hover:text-[#2D3B22] transition">Témoignages</a>
-            <a href="#contact" class="hover:text-[#2D3B22] transition">Contact</a>
+            <a href="{{ url('/#temoignages') }}" class="hover:text-[#2D3B22] transition">Témoignages</a>
+            <a href="{{ url('/#contact') }}" class="hover:text-[#2D3B22] transition">Contact</a>
         </div>
 
         <!-- Boutons d'Action (Desktop) -->
         <div class="hidden md:flex items-center gap-4">
             @auth
-                <a href="{{ url('/admin') }}" class="px-4 py-2 text-xs font-bold text-white bg-[#2D3B22] rounded-full hover:bg-[#1a2314] transition">
-                    MON TABLEAU DE BORD
-                </a>
+                @if(auth()->user()->role === 'admin' || auth()->user()->is_admin)
+                    <a href="{{ url('/admin') }}" class="px-4 py-2 text-xs font-bold text-white bg-[#2D3B22] rounded-full hover:bg-[#1a2314] transition">
+                        MON TABLEAU DE BORD
+                    </a>
+                @else
+                    <a href="{{ route('dashboard') }}" class="px-4 py-2 text-xs font-bold text-white bg-[#2D3B22] rounded-full hover:bg-[#1a2314] transition">
+                        MON TABLEAU DE BORD
+                    </a>
+                @endif
+
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="text-xs font-bold text-red-600 hover:text-red-800 transition">
@@ -59,27 +66,25 @@
          x-transition:leave-end="opacity-0 -translate-y-2"
          class="md:hidden bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200 px-6 pt-4 pb-6 space-y-4">
 
-        <a href="#accueil" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Accueil</a>
-        <a href="#a-propos" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">À propos</a>
-        <a href="#offres" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Nos Offres</a>
+        <a href="{{ url('/#accueil') }}" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Accueil</a>
+        <a href="{{ url('/#a-propos') }}" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">À propos</a>
+        <a href="{{ url('/#offres') }}" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Nos Offres</a>
         <a href="{{ route('gallery.index') }}" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Galerie</a>
-        <a href="#temoignages" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Témoignages</a>
-        <a href="#contact" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Contact</a>
+        <a href="{{ url('/#temoignages') }}" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Témoignages</a>
+        <a href="{{ url('/#contact') }}" @click="open = false" class="block font-medium text-gray-700 hover:text-[#2D3B22]">Contact</a>
 
         <div class="pt-4 border-t border-gray-100 flex flex-col gap-3">
             @auth
-                <a href="{{ url('/admin') }}" class="w-full text-center py-2 text-xs font-bold text-white bg-[#2D3B22] rounded-full">
-                    MON TABLEAU DE BORD
-                </a>
-                <form method="POST" action="{{ route('logout') }}" class="w-full text-center">
-                    @csrf
-                    <button type="submit" class="text-xs font-bold text-red-600">DÉCONNEXION</button>
-                </form>
-            @else
-                <a href="{{ route('login') }}" class="w-full text-center py-2 text-xs font-bold text-[#2D3B22] border border-[#2D3B22] rounded-full">
-                    CONNEXION
-                </a>
-            @endauth
+    @if(auth()->user()->isAdmin())
+        <a href="{{ url('/admin') }}" class="px-4 py-2 text-xs font-bold text-white bg-[#2D3B22] rounded-full hover:bg-[#1a2314] transition">
+            MON TABLEAU DE BORD
+        </a>
+    @else
+        <a href="{{ route('dashboard') }}" class="px-4 py-2 text-xs font-bold text-white bg-[#2D3B22] rounded-full hover:bg-[#1a2314] transition">
+            MON TABLEAU DE BORD
+        </a>
+    @endif
+@endauth
         </div>
     </div>
 </nav>
