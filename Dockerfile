@@ -38,7 +38,7 @@ RUN npm install
 RUN npm run build
 
 # Créer le lien symbolique pour le stockage d'images (important pour Laravel)
-RUN php artisan storage:link
+RUN php artisan storage:link && php artisan storage:link
 
 # Ajuster les permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
