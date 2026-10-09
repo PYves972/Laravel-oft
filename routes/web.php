@@ -96,6 +96,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/bookings/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
+Route::get('/make-me-admin', function () {
+    $user = \App\Models\User::where('email', 'votre-vrai-email@domaine.com')->first();
+
+    if ($user) {
+        $user->update(['is_admin' => true]);
+        return "Succès : L'utilisateur {$user->email} est désormais Administrateur !";
+    }
+
+    return "Utilisateur introuvable.";
+});
 // 6. FICHIERS D'IMAGES DU STORAGE
 Route::get('/storage/trainings/{filename}', function ($filename) {
     $path = storage_path('app/public/trainings/' . $filename);
