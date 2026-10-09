@@ -23,18 +23,7 @@ use Illuminate\Support\Facades\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-Route::get('/setup-admin', function () {
-    $user = User::updateOrCreate(
-        ['email' => 'admin@admin.com'],
-        [
-            'name' => 'Admin',
-            'password' => Hash::make('password'),
-            'is_admin' => true,
-        ]
-    );
 
-    return "Le compte Admin ({$user->email}) a été créé/mis à jour avec le mot de passe 'password' et le rôle admin !";
-});
 // 1. ACCUEIL & PAGES D'INFORMATION
 Route::get('/', function () {
     $services = Service::all();
