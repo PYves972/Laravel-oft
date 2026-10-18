@@ -85,17 +85,17 @@ Cette commande supprime toutes les données et ne doit jamais être utilisée su
 
 ## 6. Vérifications après déploiement
 
-Après chaque déploiement, les points suivants sont contrôlés sur https://laravel-oft-1.onrender.com :
+Contrôles effectués le 17/10/2026 (après correction du `CMD` du Dockerfile) sur https://laravel-oft-1.onrender.com :
 
-- [ ] Les logs de déploiement Render ne montrent pas d'erreur (build, migrations, démarrage du serveur)
-- [ ] La page d'accueil s'affiche
-- [ ] Les images s'affichent correctement
-- [ ] Les pages de formations et de catégories affichent les données issues de la base
-- [ ] L'accès au panel d'administration Filament fonctionne
+| Point contrôlé                                   | Résultat                                                                                                                                                                                               |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Logs Render (déploiement, migrations, démarrage) | Déploiement du 17/10/2026 à 20:46 : « Nothing to migrate » (migrations déjà à jour), serveur lancé sur le port 10000, « Your service is live ». Aucune ligne de seeding au démarrage et aucune erreur. |
+| Page d'accueil                                   | S'affiche                                                                                                                                                                                              |
+| Images                                           | S'affichent correctement                                                                                                                                                                               |
+| Pages de formations et de catégories             | Affichent les données issues de la base                                                                                                                                                                |
+| Panel d'administration Filament                  | Accès fonctionnel                                                                                                                                                                                      |
 
-Résultats des contrôles effectués : _à compléter avec la date, les fonctionnalités réellement testées et leur résultat._
-
-Problèmes rencontrés et corrigés lors de la mise en production : connexion à la base de données, port d'écoute du serveur, contraintes de clés étrangères lors du seeding, affichage de certaines images.
+Problèmes rencontrés et corrigés lors de la mise en production : connexion à la base de données, port d'écoute du serveur, contraintes de clés étrangères lors du seeding, affichage de certaines images, et seeding exécuté à chaque démarrage du conteneur (`db:seed` retiré du `CMD`, corrigé le 17/10/2026).
 
 ## 7. Traçabilité et maintenance
 
