@@ -38,12 +38,13 @@ RUN npm install
 RUN npm run build
 
 # Créer le lien symbolique pour le stockage d'images (important pour Laravel)
-RUN php artisan storage:link && php artisan storage:link
+RUN php artisan storage:link
 
 # Ajuster les permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 10000
 
-# Commande de démarrage : Réinitialise et remplit la base de données
-CMD php artisan db:seed --force && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+# Commande de démarrage : applique les migrations en attente puis lance le serveur.
+# Le seeding initial n'est pas exécuté ici (voir docs/deploiement.md, section 5).
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
