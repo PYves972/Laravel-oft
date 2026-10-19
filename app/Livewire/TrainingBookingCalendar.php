@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Training;
 use App\Models\TrainingSession;
-use App\Models\Booking;
+use App\Services\BookingService;
+use DomainException;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class TrainingBookingCalendar extends Component
 {
@@ -24,35 +25,19 @@ class TrainingBookingCalendar extends Component
         $this->selectedTrainingId = $trainingId;
     }
 
-    public function bookSession($sessionId)
+    public function bookSession($sessionId, BookingService $bookings)
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             session()->flash('error', 'Vous devez être connecté pour réserver.');
             return redirect()->route('login');
         }
 
-        $session = TrainingSession::find($sessionId);
-
-        if (!$session) {
-            session()->flash('error', 'Session introuvable.');
+        try {
+            $bookings->book(Auth::user(), (int) $sessionId);
+        } catch (DomainException $e) {
+            session()->flash('error', $e->getMessage());
             return;
         }
-
-        $existingBooking = Booking::where('user_id', Auth::id())
-            ->where('training_session_id', $sessionId)
-            ->where('status', 'confirmed')
-            ->first();
-
-        if ($existingBooking) {
-            session()->flash('error', 'Vous avez déjà réservé cette session.');
-            return;
-        }
-
-        Booking::create([
-            'user_id' => Auth::id(),
-            'training_session_id' => $sessionId,
-            'status' => 'confirmed',
-        ]);
 
         session()->flash('success', 'Votre réservation a été enregistrée avec succès !');
         return redirect()->route('dashboard');

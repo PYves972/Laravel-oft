@@ -2,99 +2,73 @@
 
 namespace App\Livewire;
 
-use App\Models\Booking;
 use App\Models\Training;
 use App\Models\TrainingSession;
-use Carbon\Carbon;
+use App\Services\BookingService;
+use DomainException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ShowAtelier extends Component
+class TrainingBookingCalendar extends Component
 {
-    public Training $training;
-    public string $selectedMonth;
-    public ?string $selectedDate = null;
-    public ?int $selectedSessionId = null;
+    public $selectedTrainingId = null;
 
-    public function mount(string $slug)
+    public function mount()
     {
-        $this->training = Training::where('slug', $slug)
-            ->where('is_active', true)
-            ->firstOrFail();
-
-        $this->selectedMonth = Carbon::now()->format('Y-m-01');
+        if (request()->has('training')) {
+            $this->selectedTrainingId = request()->get('training');
+        }
     }
 
-    public function selectDate(string $date)
+    public function filterByTraining($trainingId = null)
     {
-        $this->selectedDate = $date;
-        $this->selectedSessionId = null;
+        $this->selectedTrainingId = $trainingId;
     }
 
-    public function selectSession(int $sessionId)
+    public function bookSession($sessionId, BookingService $bookings)
     {
-        $this->selectedSessionId = $sessionId;
-    }
-
-    public function addToCart()
-    {
-        // 1. Rediriger si l'utilisateur n'est pas connecté
-        if (!Auth::check()) {
+        if (! Auth::check()) {
+            session()->flash('error', 'Vous devez être connecté pour réserver.');
             return redirect()->route('login');
         }
 
-        // 2. Vérifier qu'une session est sélectionnée
-        if (!$this->selectedSessionId) {
+        try {
+            $bookings->book(Auth::user(), (int) $sessionId);
+        } catch (DomainException $e) {
+            session()->flash('error', $e->getMessage());
             return;
         }
 
-        $session = TrainingSession::findOrFail($this->selectedSessionId);
-
-        // 3. Empêcher les doublons de réservation
-        $existingBooking = Booking::where('user_id', Auth::id())
-            ->where('training_session_id', $session->id)
-            ->first();
-
-        if ($existingBooking) {
-            session()->flash('message', 'Vous avez déjà réservé ce créneau !');
-            return;
-        }
-
-        // 4. Créer l'enregistrement en base de données
-        Booking::create([
-            'user_id'             => Auth::id(),
-            'training_session_id' => $session->id,
-            'status'              => 'confirmed', // Ajustez selon vos statuts (ex: pending, confirmed)
-            'price'               => $this->training->price ?? 0,
-        ]);
-
-        // 5. Réinitialiser la sélection et afficher le message de confirmation
-        $this->selectedSessionId = null;
-        session()->flash('message', 'Votre réservation a été confirmée avec succès !');
+        session()->flash('success', 'Votre réservation a été enregistrée avec succès !');
+        return redirect()->route('dashboard');
     }
 
     public function render()
     {
-        $sessions = TrainingSession::where('training_id', $this->training->id)
-            ->where('status', 'open')
-            ->where('starts_at', '>=', Carbon::now())
-            ->get();
+        $trainings = Training::all();
 
-        $availableDates = $sessions->pluck('starts_at')
-            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d'))
-            ->unique()
-            ->toArray();
+        $sessionsQuery = TrainingSession::with('training')
+            ->where('starts_at', '>=', now());
 
-        $selectedDateSessions = collect();
-        if ($this->selectedDate) {
-            $selectedDateSessions = $sessions->filter(function ($session) {
-                return Carbon::parse($session->starts_at)->format('Y-m-d') === $this->selectedDate;
-            });
+        if ($this->selectedTrainingId) {
+            $sessionsQuery->where('training_id', $this->selectedTrainingId);
         }
 
-        return view('livewire.show-atelier', [
-            'availableDates' => $availableDates,
-            'sessionsForSelectedDate' => $selectedDateSessions,
+        $sessions = $sessionsQuery->orderBy('starts_at', 'asc')->get();
+
+        $events = $sessions->map(function ($session) {
+            return [
+                'id'    => $session->id,
+                'title' => $session->training?->title ?? $session->title,
+                'start' => $session->starts_at?->toIso8601String(),
+                'end'   => $session->ends_at?->toIso8601String(),
+                'color' => $session->training?->color ?? '#2D3B22',
+            ];
+        })->toArray();
+
+        return view('livewire.training-booking-calendar', [
+            'trainings' => $trainings,
+            'events'    => $events,
         ]);
     }
 }

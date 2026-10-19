@@ -123,7 +123,7 @@
                                             {{ \Carbon\Carbon::parse($session->starts_at)->format('H\hi') }} - {{ \Carbon\Carbon::parse($session->ends_at)->format('H\hi') }}
                                         </span>
                                         <span class="text-xs text-emerald-600 font-semibold">
-                                            ● {{ $session->capacity }} place(s) disponible(s)
+                                            ● {{ $session->placesLeft() }} place(s) disponible(s)
                                         </span>
                                     </div>
                                 </button>
