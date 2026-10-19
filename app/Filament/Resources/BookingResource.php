@@ -6,27 +6,24 @@ use App\Filament\Resources\BookingResource\Pages;
 use App\Models\Booking;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use UnitEnum;
-use BackedEnum;
 
 class BookingResource extends Resource
 {
     protected static ?string $model = Booking::class;
 
-public static function getNavigationGroup(): ?string
-{
-    return 'Gestion des Ateliers';
-}
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Gestion des Ateliers';
+    }
 
-public static function getNavigationIcon(): string|\BackedEnum|null
-{
-    return 'heroicon-o-ticket';
-}
+    public static function getNavigationIcon(): string|\BackedEnum|null
+    {
+        return 'heroicon-o-ticket';
+    }
 
     protected static ?string $navigationLabel = 'Réservations';
     protected static ?string $modelLabel = 'Réservation';
@@ -42,13 +39,17 @@ public static function getNavigationIcon(): string|\BackedEnum|null
                     ->label('Membre'),
                 Select::make('training_session_id')
                     ->relationship('trainingSession', 'id')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => ($record->training?->title ?? 'Séance') . ' — ' . $record->starts_at->format('d/m/Y H:i'))
                     ->required()
-                    ->label('Session d\'atelier'),
-                TextInput::make('seats')
-                    ->numeric()
-                    ->default(1)
+                    ->label('Séance'),
+                Select::make('status')
+                    ->options([
+                        'confirmed' => 'Confirmée',
+                        'cancelled' => 'Annulée',
+                    ])
+                    ->default('confirmed')
                     ->required()
-                    ->label('Places'),
+                    ->label('Statut'),
             ]);
     }
 
@@ -58,6 +59,9 @@ public static function getNavigationIcon(): string|\BackedEnum|null
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->label('Membre')->searchable(),
+                Tables\Columns\TextColumn::make('trainingSession.training.title')->label('Atelier'),
+                Tables\Columns\TextColumn::make('trainingSession.starts_at')->dateTime('d/m/Y H:i')->label('Séance'),
+                Tables\Columns\TextColumn::make('status')->badge()->label('Statut'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Réservé le'),
             ])
             ->actions([
