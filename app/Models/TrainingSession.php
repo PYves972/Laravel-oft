@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TrainingSession extends Model
 {
@@ -26,5 +27,21 @@ class TrainingSession extends Model
     public function training(): BelongsTo
     {
         return $this->belongsTo(Training::class);
+    }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Nombre de places restantes (capacité moins réservations confirmées).
+     */
+    public function placesLeft(): int
+    {
+        $taken = $this->confirmed_bookings_count
+            ?? $this->bookings()->where('status', 'confirmed')->count();
+
+        return max(0, $this->capacity - $taken);
     }
 }
