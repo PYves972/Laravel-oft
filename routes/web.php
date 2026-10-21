@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Controllers\CommentController;
 
 // 1. ACCUEIL & PAGES D'INFORMATION
 Route::get('/', function () {
@@ -82,7 +82,7 @@ Route::get('/calendrier/{training:slug}', [TrainingController::class, 'show'])->
 
 // 5. ESPACE CLIENT & TABLEAU DE BORD
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
-
+    Route::post('/commentaires', [CommentController::class, 'store'])->name('comments.store');
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 });
