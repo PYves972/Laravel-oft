@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Training;
-use Illuminate\Http\Request;
 
 class TrainingController extends Controller
 {
@@ -12,11 +11,11 @@ class TrainingController extends Controller
      */
     public function formations()
     {
-        $trainings = Training::whereIn('type', ['formation', 'Formation'])->get();
-
-        if ($trainings->isEmpty()) {
-            $trainings = Training::all();
-        }
+        $trainings = Training::with('category')
+            ->where('is_active', true)
+            ->whereIn('type', ['formation', 'Formation'])
+            ->orderBy('title')
+            ->get();
 
         return view('trainings.formations', compact('trainings'));
     }
@@ -26,22 +25,31 @@ class TrainingController extends Controller
      */
     public function workshops()
     {
-        $trainings = Training::whereIn('type', ['atelier', 'Atelier', 'workshop', 'Workshop'])->get();
-
-        if ($trainings->isEmpty()) {
-            $trainings = Training::all();
-        }
+        $trainings = Training::with('category')
+            ->where('is_active', true)
+            ->whereIn('type', ['atelier', 'Atelier', 'workshop', 'Workshop'])
+            ->orderBy('title')
+            ->get();
 
         return view('trainings.workshops', compact('trainings'));
     }
 
     /**
-     * Affiche la fiche détaillée d'un atelier ou d'une formation
+     * Affiche la fiche détaillée d'un atelier ou d'une formation actif(ve)
      */
-public function show($slug)
-{
-    $training = Training::where('slug', $slug)->firstOrFail();
+    public function show($slug)
+    {
+        $training = Training::where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
 
-    return view('trainings.show', compact('training'));
-}
+        // Seuls les commentaires approuvés sont publics
+        $comments = $training->comments()
+            ->approved()
+            ->with('user')
+            ->latest()
+            ->get();
+
+        return view('trainings.show', compact('training', 'comments'));
+    }
 }
