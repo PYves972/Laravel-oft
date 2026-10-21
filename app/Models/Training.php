@@ -69,4 +69,8 @@ public function documents(): \Illuminate\Database\Eloquent\Relations\HasMany
 {
     return $this->hasMany(Progression::class);
 }
+public function comments(): HasMany
+{
+    return $this->hasMany(Comment::class);
+}
 }
