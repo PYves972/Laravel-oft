@@ -64,7 +64,7 @@ Route::get('/a-propos-atelier', [AtelierController::class, 'show'])->name('ateli
 Route::get('/faq', FaqController::class)->name('faq.index');
 Route::get('/galerie', [GalleryController::class, 'index'])->name('gallery.index');
 Route::get('/temoignages', [TestimonialController::class, 'index'])->name('testimonials.index');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 Route::post('/newsletter/subscribe', [SubscriberController::class, 'store'])->name('newsletter.subscribe');
 
 // 2. GRAND CALENDRIER GLOBAL (Planning mensuel de tous les cours)
