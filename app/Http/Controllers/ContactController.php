@@ -23,6 +23,9 @@ class ContactController extends Controller
             'niveau'    => 'nullable|string|max:50',
             'fichier'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'message'   => 'required|string|max:5000',
+            'rgpd'      => 'accepted',
+        ], [
+            'rgpd.accepted' => 'Vous devez accepter que vos données soient utilisées pour traiter votre demande.',
         ]);
 
         // 2. Pièce jointe éventuelle : disque privé, sans URL publique
@@ -31,9 +34,9 @@ class ContactController extends Controller
             $pathFichier = $request->file('fichier')->store('contacts', 'local');
         }
 
-        // 3. Enregistrement en base (le champ « fichier » devient « fichier_path »)
+        // 3. Enregistrement en base (le consentement est contrôlé mais pas stocké)
         ContactMessage::create(array_merge(
-            Arr::except($validated, ['fichier']),
+            Arr::except($validated, ['fichier', 'rgpd']),
             ['fichier_path' => $pathFichier]
         ));
 
