@@ -34,3 +34,5 @@ public/images/galerie/
 /storage/app/public/*
 !public/images/galerie/
 !public/images/galerie/*
+
+historique_commits.txt
