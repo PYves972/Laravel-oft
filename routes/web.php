@@ -82,10 +82,10 @@ Route::get('/calendrier/{training:slug}', [TrainingController::class, 'show'])->
 
 // 5. ESPACE CLIENT & TABLEAU DE BORD
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
-    Route::post('/commentaires', [CommentController::class, 'store'])->name('comments.store');
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-});
+
+Route::get('/admin/dashboard', fn () => redirect()->route('filament.admin.pages.dashboard'))
+    ->middleware('auth')
+    ->name('admin.dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/documents/{document}/download', [PedagogicalDocumentController::class, 'download'])
@@ -97,6 +97,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/sessions/{session}/book', [BookingController::class, 'store'])->name('bookings.store');
     Route::delete('/bookings/{booking}', [BookingController::class, 'cancel'])->name('bookings.cancel');
+   Route::post('/commentaires', [CommentController::class, 'store'])
+    ->middleware('auth')
+    ->name('comments.store');
 });
 
 
