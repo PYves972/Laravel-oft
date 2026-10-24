@@ -45,10 +45,12 @@ class TrainingBookingCalendar extends Component
 
     public function render()
     {
-        $trainings = Training::all();
+        // Seuls les ateliers actifs sont proposés
+        $trainings = Training::where('is_active', true)->orderBy('title')->get();
 
         $sessionsQuery = TrainingSession::with('training')
-            ->where('starts_at', '>=', now());
+            ->where('starts_at', '>=', now())
+            ->whereHas('training', fn ($q) => $q->where('is_active', true));
 
         if ($this->selectedTrainingId) {
             $sessionsQuery->where('training_id', $this->selectedTrainingId);
