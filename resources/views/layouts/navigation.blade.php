@@ -5,10 +5,10 @@
      class="fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-300">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
-        <!-- Logo -->
-        <a href="{{ route('home') }}" class="flex items-center gap-2">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo OFT" class="h-10 w-auto">
-        </a>
+<!-- Logo -->
+<a href="{{ route('home') }}" class="flex items-center gap-2">
+    <img src="{{ asset('images/logo.png') }}" alt="Logo OFT" width="120" height="40" class="h-10 w-auto">
+</a>
 
         <!-- Liens Desktop (Masqués sur Mobile) -->
         <div class="hidden md:flex items-center gap-6 font-medium text-gray-700">
@@ -44,15 +44,19 @@
             @endauth
         </div>
 
-        <!-- Bouton Burger Mobile -->
-        <div class="flex md:hidden items-center">
-            <button @click="open = !open" type="button" class="text-gray-700 hover:text-[#2D3B22] focus:outline-none p-2">
-                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    <path x-show="open" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-        </div>
+<!-- Bouton Burger Mobile -->
+<div class="flex md:hidden items-center">
+    <button @click="open = !open"
+            type="button"
+            aria-label="Menu principal"
+            :aria-expanded="open.toString()"
+            class="text-gray-700 hover:text-[#2D3B22] focus:outline-none p-2">
+        <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            <path x-show="open" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+</div>
     </div>
 
     <!-- Menu Déroulant Mobile -->
