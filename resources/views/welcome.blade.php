@@ -313,85 +313,430 @@ Une formation initiale en tissage a été la porte d'entrée vers ce qui est auj
             </div>
 
             <!-- Formulaire de contact enrichi à droite -->
-            <div class="md:col-span-8 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200/60">
-                <form action="{{ route('contact.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                    @csrf
+    <div class="md:col-span-8 bg-white p-6 md:p-8 rounded-2xl
+            shadow-sm border border-stone-200/60">
 
-                    <!-- Ligne 1 : Nom & Prénom -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Nom <span class="text-red-500">*</span></label>
-                            <input type="text" name="nom" placeholder="Votre nom" value="{{ old('nom') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
-                            @error('nom') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Prénom</label>
-                            <input type="text" name="prenom" placeholder="Votre prénom" value="{{ old('prenom') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]">
-                            @error('prenom') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+    <form
+        action="{{ route('contact.store') }}"
+        method="POST"
+        enctype="multipart/form-data"
+        class="space-y-4"
+    >
+        @csrf
 
-                    <!-- Ligne 2 : Email & Téléphone -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
-                            <input type="email" name="email" placeholder="votre@email.com" value="{{ old('email') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
-                            @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Téléphone</label>
-                            <input type="tel" name="telephone" placeholder="06 96 XX XX XX" value="{{ old('telephone') }}" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]">
-                            @error('telephone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+        {{-- Ligne 1 : Nom et prénom --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-                    <!-- Ligne 3 : Objet & Niveau / Type de projet -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Sujet de la demande <span class="text-red-500">*</span></label>
-                            <select name="sujet" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>
-                                <option value="" disabled {{ old('sujet') ? '' : 'selected' }}>Sélectionnez un sujet</option>
-                                <option value="Information cours" {{ old('sujet') == 'Information cours' ? 'selected' : '' }}>Renseignement sur un cours / formation</option>
-                                <option value="Inscription atelier" {{ old('sujet') == 'Inscription atelier' ? 'selected' : '' }}>Inscription à un atelier créatif</option>
-                                <option value="Creation sur mesure" {{ old('sujet') == 'Creation sur mesure' ? 'selected' : '' }}>Commande / Confection sur-mesure</option>
-                                <option value="Privatisation" {{ old('sujet') == 'Privatisation' ? 'selected' : '' }}>Commité d'entreprise / Atelier groupe</option>
-                                <option value="Autre" {{ old('sujet') == 'Autre' ? 'selected' : '' }}>Autre demande</option>
-                            </select>
-                            @error('sujet') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Votre niveau en couture</label>
-                            <select name="niveau" class="w-full px-4 py-2.5 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]">
-                                <option value="" selected>Niveau</option>
-                                <option value="Debutant" {{ old('niveau') == 'Debutant' ? 'selected' : '' }}>Débutant</option>
-                                <option value="Intermediaire" {{ old('niveau') == 'Intermediaire' ? 'selected' : '' }}>Intermédiaire </option>
-                                <option value="Avance" {{ old('niveau') == 'Avance' ? 'selected' : '' }}>Avancé</option>
-                            </select>
-                            @error('niveau') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+            <div>
+                <label
+                    for="nom"
+                    class="block text-xs font-semibold uppercase
+                           text-gray-800 mb-1"
+                >
+                    Nom
+                    <span class="text-red-700" aria-hidden="true">*</span>
+                    <span class="sr-only">(obligatoire)</span>
+                </label>
 
-                    <!-- Ligne 5 : Message -->
-                    <div>
-                        <label class="block text-xs font-semibold uppercase text-gray-700 mb-1">Message <span class="text-red-500">*</span></label>
-                        <textarea name="message" rows="4" placeholder="Décrivez votre projet, vos disponibilités ou vos questions..." class="w-full px-4 py-3 bg-[#F9F8F3] border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#2D3B22]" required>{{ old('message') }}</textarea>
-                        @error('message') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                    </div>
+                <input
+                    id="nom"
+                    type="text"
+                    name="nom"
+                    autocomplete="family-name"
+                    placeholder="Votre nom"
+                    value="{{ old('nom') }}"
+                    @if ($errors->has('nom'))
+                        aria-invalid="true"
+                        aria-describedby="nom-erreur"
+                    @endif
+                    class="w-full px-4 py-2.5 bg-[#F9F8F3]
+                           border border-gray-300 rounded-xl text-sm
+                           text-gray-900 focus:outline-none
+                           focus:ring-2 focus:ring-[#2D4030]"
+                    required
+                >
 
-                    <!-- Ligne 6 : Consentement & Bouton -->
-                    <div class="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <label class="flex items-start gap-2 cursor-pointer text-xs text-gray-600">
-                            <input type="checkbox" name="rgpd" required class="mt-0.5 rounded border-gray-300 text-[#2D3B22] focus:ring-[#2D3B22]">
-                            <span>J'accepte que mes données soient utilisées pour traiter ma demande.</span>
-                        </label>
-
-                        <button type="submit" class="inline-flex items-center justify-center gap-2 bg-[#2D3B22] hover:bg-[#1e2817] text-white px-8 py-3 rounded-xl text-sm font-medium transition shadow-sm whitespace-nowrap">
-                            <span>Envoyer le message</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                        </button>
-                    </div>
-                </form>
+                @error('nom')
+                    <p
+                        id="nom-erreur"
+                        class="text-red-700 text-sm mt-1"
+                    >
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
+
+            <div>
+                <label
+                    for="prenom"
+                    class="block text-xs font-semibold uppercase
+                           text-gray-800 mb-1"
+                >
+                    Prénom
+                </label>
+
+                <input
+                    id="prenom"
+                    type="text"
+                    name="prenom"
+                    autocomplete="given-name"
+                    placeholder="Votre prénom"
+                    value="{{ old('prenom') }}"
+                    @if ($errors->has('prenom'))
+                        aria-invalid="true"
+                        aria-describedby="prenom-erreur"
+                    @endif
+                    class="w-full px-4 py-2.5 bg-[#F9F8F3]
+                           border border-gray-300 rounded-xl text-sm
+                           text-gray-900 focus:outline-none
+                           focus:ring-2 focus:ring-[#2D4030]"
+                >
+
+                @error('prenom')
+                    <p
+                        id="prenom-erreur"
+                        class="text-red-700 text-sm mt-1"
+                    >
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+        </div>
+
+        {{-- Ligne 2 : Email et téléphone --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <div>
+                <label
+                    for="email"
+                    class="block text-xs font-semibold uppercase
+                           text-gray-800 mb-1"
+                >
+                    Email
+                    <span class="text-red-700" aria-hidden="true">*</span>
+                    <span class="sr-only">(obligatoire)</span>
+                </label>
+
+                <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="votre@email.com"
+                    value="{{ old('email') }}"
+                    @if ($errors->has('email'))
+                        aria-invalid="true"
+                        aria-describedby="email-erreur"
+                    @endif
+                    class="w-full px-4 py-2.5 bg-[#F9F8F3]
+                           border border-gray-300 rounded-xl text-sm
+                           text-gray-900 focus:outline-none
+                           focus:ring-2 focus:ring-[#2D4030]"
+                    required
+                >
+
+                @error('email')
+                    <p
+                        id="email-erreur"
+                        class="text-red-700 text-sm mt-1"
+                    >
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div>
+                <label
+                    for="telephone"
+                    class="block text-xs font-semibold uppercase
+                           text-gray-800 mb-1"
+                >
+                    Téléphone
+                </label>
+
+                <input
+                    id="telephone"
+                    type="tel"
+                    name="telephone"
+                    autocomplete="tel"
+                    placeholder="06 96 XX XX XX"
+                    value="{{ old('telephone') }}"
+                    @if ($errors->has('telephone'))
+                        aria-invalid="true"
+                        aria-describedby="telephone-erreur"
+                    @endif
+                    class="w-full px-4 py-2.5 bg-[#F9F8F3]
+                           border border-gray-300 rounded-xl text-sm
+                           text-gray-900 focus:outline-none
+                           focus:ring-2 focus:ring-[#2D4030]"
+                >
+
+                @error('telephone')
+                    <p
+                        id="telephone-erreur"
+                        class="text-red-700 text-sm mt-1"
+                    >
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+        </div>
+
+        {{-- Ligne 3 : Sujet et niveau --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <div>
+                <label
+                    for="sujet"
+                    class="block text-xs font-semibold uppercase
+                           text-gray-800 mb-1"
+                >
+                    Sujet de la demande
+                    <span class="text-red-700" aria-hidden="true">*</span>
+                    <span class="sr-only">(obligatoire)</span>
+                </label>
+
+                <select
+                    id="sujet"
+                    name="sujet"
+                    @if ($errors->has('sujet'))
+                        aria-invalid="true"
+                        aria-describedby="sujet-erreur"
+                    @endif
+                    class="w-full px-4 py-2.5 bg-[#F9F8F3]
+                           border border-gray-300 rounded-xl text-sm
+                           text-gray-900 focus:outline-none
+                           focus:ring-2 focus:ring-[#2D4030]"
+                    required
+                >
+                    <option
+                        value=""
+                        disabled
+                        {{ old('sujet') ? '' : 'selected' }}
+                    >
+                        Sélectionnez un sujet
+                    </option>
+
+                    <option
+                        value="Information cours"
+                        {{ old('sujet') == 'Information cours' ? 'selected' : '' }}
+                    >
+                        Renseignement sur un cours / formation
+                    </option>
+
+                    <option
+                        value="Inscription atelier"
+                        {{ old('sujet') == 'Inscription atelier' ? 'selected' : '' }}
+                    >
+                        Inscription à un atelier créatif
+                    </option>
+
+                    <option
+                        value="Creation sur mesure"
+                        {{ old('sujet') == 'Creation sur mesure' ? 'selected' : '' }}
+                    >
+                        Commande / Confection sur-mesure
+                    </option>
+
+                    <option
+                        value="Privatisation"
+                        {{ old('sujet') == 'Privatisation' ? 'selected' : '' }}
+                    >
+                        Comité d'entreprise / Atelier groupe
+                    </option>
+
+                    <option
+                        value="Autre"
+                        {{ old('sujet') == 'Autre' ? 'selected' : '' }}
+                    >
+                        Autre demande
+                    </option>
+                </select>
+
+                @error('sujet')
+                    <p
+                        id="sujet-erreur"
+                        class="text-red-700 text-sm mt-1"
+                    >
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div>
+                <label
+                    for="niveau"
+                    class="block text-xs font-semibold uppercase
+                           text-gray-800 mb-1"
+                >
+                    Votre niveau en couture
+                </label>
+
+                <select
+                    id="niveau"
+                    name="niveau"
+                    @if ($errors->has('niveau'))
+                        aria-invalid="true"
+                        aria-describedby="niveau-erreur"
+                    @endif
+                    class="w-full px-4 py-2.5 bg-[#F9F8F3]
+                           border border-gray-300 rounded-xl text-sm
+                           text-gray-900 focus:outline-none
+                           focus:ring-2 focus:ring-[#2D4030]"
+                >
+                    <option
+                        value=""
+                        {{ old('niveau') ? '' : 'selected' }}
+                    >
+                        Sélectionnez votre niveau
+                    </option>
+
+                    <option
+                        value="Debutant"
+                        {{ old('niveau') == 'Debutant' ? 'selected' : '' }}
+                    >
+                        Débutant
+                    </option>
+
+                    <option
+                        value="Intermediaire"
+                        {{ old('niveau') == 'Intermediaire' ? 'selected' : '' }}
+                    >
+                        Intermédiaire
+                    </option>
+
+                    <option
+                        value="Avance"
+                        {{ old('niveau') == 'Avance' ? 'selected' : '' }}
+                    >
+                        Avancé
+                    </option>
+                </select>
+
+                @error('niveau')
+                    <p
+                        id="niveau-erreur"
+                        class="text-red-700 text-sm mt-1"
+                    >
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+        </div>
+
+        {{-- Ligne 4 : Message --}}
+        <div>
+            <label
+                for="message"
+                class="block text-xs font-semibold uppercase
+                       text-gray-800 mb-1"
+            >
+                Message
+                <span class="text-red-700" aria-hidden="true">*</span>
+                <span class="sr-only">(obligatoire)</span>
+            </label>
+
+            <textarea
+                id="message"
+                name="message"
+                rows="4"
+                placeholder="Décrivez votre projet, vos disponibilités ou vos questions..."
+                @if ($errors->has('message'))
+                    aria-invalid="true"
+                    aria-describedby="message-erreur"
+                @endif
+                class="w-full px-4 py-3 bg-[#F9F8F3]
+                       border border-gray-300 rounded-xl text-sm
+                       text-gray-900 focus:outline-none
+                       focus:ring-2 focus:ring-[#2D4030]"
+                required
+            >{{ old('message') }}</textarea>
+
+            @error('message')
+                <p
+                    id="message-erreur"
+                    class="text-red-700 text-sm mt-1"
+                >
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+
+        {{-- Ligne 5 : Consentement et envoi --}}
+        <div class="pt-2 flex flex-col sm:flex-row
+                    sm:items-center sm:justify-between gap-4">
+
+            <div>
+                <label
+                    for="rgpd"
+                    class="flex items-start gap-2 cursor-pointer
+                           text-sm text-gray-800"
+                >
+                    <input
+                        id="rgpd"
+                        type="checkbox"
+                        name="rgpd"
+                        value="1"
+                        required
+                        @checked(old('rgpd'))
+                        @if ($errors->has('rgpd'))
+                            aria-invalid="true"
+                            aria-describedby="rgpd-erreur"
+                        @endif
+                        class="mt-0.5 rounded border-gray-400
+                               text-[#2D4030] focus:ring-2
+                               focus:ring-[#2D4030]"
+                    >
+
+                    <span>
+                        J'accepte que mes données soient utilisées
+                        pour traiter ma demande.
+                        <span class="text-red-700" aria-hidden="true">*</span>
+                        <span class="sr-only">(obligatoire)</span>
+                    </span>
+                </label>
+
+                @error('rgpd')
+                    <p
+                        id="rgpd-erreur"
+                        class="text-red-700 text-sm mt-1"
+                    >
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <button
+                type="submit"
+                class="inline-flex items-center justify-center gap-2
+                       bg-[#2D4030] hover:bg-[#1A2820]
+                       text-white px-8 py-3 rounded-xl text-sm
+                       font-medium transition shadow-sm whitespace-nowrap
+                       focus-visible:outline-none
+                       focus-visible:ring-2
+                       focus-visible:ring-[#2D4030]
+                       focus-visible:ring-offset-2"
+            >
+                <span>Envoyer le message</span>
+
+                <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                    />
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>
         </div>
     </div>
 </section>
