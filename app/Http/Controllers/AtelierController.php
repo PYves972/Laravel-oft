@@ -18,11 +18,33 @@ class AtelierController extends Controller
         $annonce = Event::where('is_active', true)
                         ->where(function($query) {
                             $query->whereNull('event_date')
-                                  ->orWhere('event_date', '>=', now());
+                                ->orWhere('event_date', '>=', now());
                         })
                         ->latest()
                         ->first();
 
         return view('welcome', compact('annonce'));
+    }
+
+    /**
+     * Gère l'enregistrement d'une image et l'envoie sur Cloudflare R2.
+     */
+    public function store(Request $request)
+    {
+        // 1. Valider que le fichier envoyé est bien une image
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // 2. Envoyer le fichier sur Cloudflare R2 en spécifiant le disque 'r2'
+        $path = $request->file('image')->store('images', 'r2');
+
+        // 3. (Optionnel) Enregistrer le chemin ou l'associer dans votre base de données
+        // Event::create([
+        //     'image_path' => $path,
+        //     // ... autres champs
+        // ]);
+
+        return back()->with('success', 'Image uploadée et stockée sur Cloudflare R2 avec succès !');
     }
 }

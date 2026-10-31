@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
     ->name('comments.store');
 });
 
-
+Route::post('/atelier/store', [AtelierController::class, 'store'])->name('atelier.store');
 // 6. FICHIERS D'IMAGES DU STORAGE
 Route::get('/storage/trainings/{filename}', function ($filename) {
     $path = storage_path('app/public/trainings/' . $filename);
